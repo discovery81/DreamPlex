@@ -36,6 +36,19 @@
 		<key id="KEY_RED" mapto="red" flags="m" />
 		<key id="KEY_GREEN" mapto="green" flags="b" />
         <key id="KEY_MENU" mapto="menu" flags="m" />
+		<!-- Direct-jump shortcuts for the Carousel skin's vertical sidebar
+		     (item N gets digit N) - harmless on default/BlueMod too, since
+		     nothing there reads them without the corresponding skin
+		     template showing the digit in the first place. -->
+		<key id="KEY_1" mapto="shortcut1" flags="m" />
+		<key id="KEY_2" mapto="shortcut2" flags="m" />
+		<key id="KEY_3" mapto="shortcut3" flags="m" />
+		<key id="KEY_4" mapto="shortcut4" flags="m" />
+		<key id="KEY_5" mapto="shortcut5" flags="m" />
+		<key id="KEY_6" mapto="shortcut6" flags="m" />
+		<key id="KEY_7" mapto="shortcut7" flags="m" />
+		<key id="KEY_8" mapto="shortcut8" flags="m" />
+		<key id="KEY_9" mapto="shortcut9" flags="m" />
 	</map>
 
     <map context="DP_PluginCloser">
@@ -131,6 +144,7 @@
 			<key id="KEY_ESC" mapto="cancel" flags="m" />
 			<key id="KEY_F5" mapto="info" flags="m" />
 			<key id="KEY_F6" mapto="menu" flags="m" />
+			<key id="KEY_F9" mapto="favorite" flags="m" />
 		</device>
 		<key id="KEY_BLUE" mapto="seekManual" flags="m" />
 		<key id="KEY_RED" mapto="seekManual" flags="m" />
@@ -142,6 +156,21 @@
         <key id="KEY_EXIT" mapto="exitFunction" flags="m" />
         <key id="KEY_ESC" mapto="cancel" flags="m" />
         <key id="KEY_STOP" mapto="stop" flags="m" />
+        <key id="KEY_INFO" mapto="info" flags="m" />
+        <key id="KEY_EPG" mapto="info" flags="m" />
+        <key id="KEY_INFO" mapto="favorite" flags="l" />
+        <key id="KEY_EPG" mapto="favorite" flags="l" />
+        <key id="KEY_FAVORITES" mapto="favorite" flags="m" />
+        <key id="KEY_LEFT" mapto="left" flags="m" />
+        <key id="KEY_RIGHT" mapto="right" flags="m" />
+        <key id="KEY_UP" mapto="up" flags="m" />
+        <key id="KEY_DOWN" mapto="down" flags="m" />
+        <key id="KEY_1" mapto="1" flags="m" />
+        <key id="KEY_2" mapto="2" flags="m" />
+        <key id="KEY_3" mapto="3" flags="m" />
+        <key id="KEY_4" mapto="4" flags="m" />
+        <key id="KEY_5" mapto="5" flags="m" />
+        <key id="KEY_0" mapto="0" flags="m" />
 
 	</map>
 

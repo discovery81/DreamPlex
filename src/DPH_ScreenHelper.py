@@ -42,6 +42,7 @@ from .DPH_Singleton import Singleton
 from .DP_ViewFactory import translateValues
 
 from .__common__ import printl2 as printl, addNewScreen, closePlugin, getSkinResolution, getSkinHighlightedColor, getSkinNormalColor
+from . import _  # _ is translation
 
 #===============================================================================
 #
@@ -58,7 +59,7 @@ class DPH_ScreenHelper(object):
 	def __init__(self, forceMiniTv=False):
 		printl("", self, "S")
 
-		self.stopLiveTvOnStartup = config.plugins.dreamplex.stopLiveTvOnStartup.value
+		self.stopLiveTvOnStartup = Singleton().getSettingsInstance().stopLiveTvOnStartup.getValue()
 
 		# we use this e.g in DP_View to use miniTv for backdrops via libiframe
 		self.forceMiniTv = forceMiniTv
@@ -160,22 +161,22 @@ class DPH_PlexScreen(object):
 		try:
 			self["btn_red"].instance.setPixmapFromFile(self.guiElements["key_red"])
 
-		except:
+		except Exception:
 			pass
 
 		try:
 			self["btn_green"].instance.setPixmapFromFile(self.guiElements["key_green"])
-		except:
+		except Exception:
 			pass
 
 		try:
 			self["btn_yellow"].instance.setPixmapFromFile(self.guiElements["key_yellow"])
-		except:
+		except Exception:
 			pass
 
 		try:
 			self["btn_blue"].instance.setPixmapFromFile(self.guiElements["key_blue"])
-		except:
+		except Exception:
 			pass
 
 #===============================================================================
@@ -218,7 +219,7 @@ class DPH_MultiColorFunctions(object):
 		# we put this into try because if there is no function registered it will come a gs
 		try:
 			return self.colorFunctionContainer[color][level][1]
-		except:
+		except Exception:
 			return False
 
 		printl("", self, "C")
@@ -298,7 +299,7 @@ class DPH_Screen(Screen):
 
 		self["globalActions"] = HelpableActionMap(self, "DP_PluginCloser",
 			{
-			    "stop": (self.closePlugin, ""),
+			    "stop": (self.closePlugin, _("Close DreamPlex")),
 			}, -2)
 
 		self.onLayoutFinish.append(self.addNewScreen)
