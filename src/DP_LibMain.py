@@ -29,19 +29,19 @@ import os
 from six import PY2
 try:
 	import cPickle as pickle
-except:
+except Exception:
 	import pickle
 from Screens.Screen import Screen
-
-from Components.config import config
 
 from .DP_ViewFactory import getViews
 from .DP_View import DP_View
 
 from .DPH_Singleton import Singleton
+from .DPH_CacheGuard import isCacheFileTrusted, secureCacheFile
 
 from .__common__ import printl2 as printl
-from . import defaultPluginFolderPath
+from . import SettingsStorage
+
 
 #===============================================================================
 #
@@ -62,14 +62,16 @@ class DP_LibMain(Screen):
 
 		self._views = getViews(libraryName)
 
+		settings: SettingsStorage = Singleton().getSettingsInstance()
+
 		if self._libraryName == "movies":
-			self.currentViewIndex = int(config.plugins.dreamplex.defaultMovieView.value)
+			self.currentViewIndex = int(settings.defaultMovieView.getValue())
 
 		elif self._libraryName == "shows":
-			self.currentViewIndex = int(config.plugins.dreamplex.defaultShowView.value)
+			self.currentViewIndex = int(settings.defaultShowView.getValue())
 
 		elif self._libraryName == "music":
-			self.currentViewIndex = int(config.plugins.dreamplex.defaultMusicView.value)
+			self.currentViewIndex = int(settings.defaultMusicView.getValue())
 
 		else:
 			self.currentViewIndex = 0
@@ -125,10 +127,6 @@ class DP_LibMain(Screen):
 
 		if cause is not None:
 			if cause[0] == DP_View.ON_CLOSED_CAUSE_SAVE_DEFAULT:
-				selection = None
-
-				if len(cause) >= 2 and cause[1] is not None:
-					selection = cause[1]
 				self.close()
 
 			elif cause[0] == DP_View.ON_CLOSED_CAUSE_CHANGE_VIEW or cause[0] == DP_View.ON_CLOSED_CAUSE_CHANGE_VIEW_FORCE_UPDATE:
@@ -164,7 +162,7 @@ class DP_LibMain(Screen):
 			try:
 				source = entryData["source"]
 				uuid = entryData["uuid"]
-			except:
+			except Exception:
 				source = "plex"
 				uuid = None
 		else:
@@ -199,11 +197,13 @@ class DP_LibMain(Screen):
 	def getLibraryData(self, source, url, nextViewMode, currentViewMode, uuid, forceUpdate=False):
 		printl("", self, "S")
 
-		if config.plugins.dreamplex.useCache.value:
+		settings: SettingsStorage = Singleton().getSettingsInstance()
+
+		if settings.useCache.getValue():
 			pickleFileExists = False
 			regeneratePickleFile = False
 			#noinspection PyAttributeOutsideInit
-			self.pickleName = "%s%s_%s.cache" % (config.plugins.dreamplex.cachefolderpath.value, uuid, nextViewMode)
+			self.pickleName = "%s%s_%s.cache" % (settings.cacheFolderPath.getValue(), uuid, nextViewMode)
 			if os.path.exists(self.pickleName):
 				pickleFileExists = True
 
@@ -213,7 +213,7 @@ class DP_LibMain(Screen):
 				try:
 					library = self.getLibraryDataFromPickle()
 					printl("from pickle", self, "D")
-				except:
+				except Exception:
 					printl("cache file not found", self, "D")
 					library = self.getLibraryDataFromPlex(url, nextViewMode, currentViewMode)
 					regeneratePickleFile = True
@@ -239,6 +239,12 @@ class DP_LibMain(Screen):
 	def getLibraryDataFromPickle(self):
 		printl("", self, "S")
 
+		# pickle.load() executes the content of the file: loading one we did
+		# not write ourselves amounts to running arbitrary code as root.
+		if not isCacheFileTrusted(self.pickleName):
+			printl("", self, "C")
+			raise IOError("untrusted cache file: %s" % self.pickleName)
+
 		fd = open(self.pickleName, "rb")
 		pickleData = pickle.load(fd)
 		fd.close()
@@ -259,33 +265,48 @@ class DP_LibMain(Screen):
 
 		# MUSIC
 		if nextViewMode == "artist":
-			library, mediaContainer = Singleton().getPlexInstance().getMusicByArtist(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getMusicByArtist(url)
 
 		elif nextViewMode == "ShowAlbums" or (currentViewMode == "ShowAlbums" and nextViewMode == "ShowDirectory"):
-			library, mediaContainer = Singleton().getPlexInstance().getMusicByAlbum(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getMusicByAlbum(url)
 
 		elif nextViewMode == "ShowTracks":
-			library, mediaContainer = Singleton().getPlexInstance().getMusicTracks(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getMusicTracks(url)
 
 		# MOVIES
 		elif nextViewMode == "movie" or (currentViewMode == "ShowMovies" and nextViewMode == "ShowDirectory"):
-			library, mediaContainer = Singleton().getPlexInstance().getMoviesFromSection(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getMoviesFromSection(url)
 
 		elif nextViewMode == "mixed":
-			library, mediaContainer = Singleton().getPlexInstance().getMixedContentFromSection(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getMixedContentFromSection(url)
+
+		# Plex-only: the top-level Playlists listing itself (<Playlist> XML
+		# rows) - entering one specific playlist uses "mixed" above instead,
+		# via its own "key" attribute. Jellyfin's Playlists row goes through
+		# "mixed" directly even at this top level (see
+		# JellyfinLibrary._collectionsAndPlaylistsEntries()), so this
+		# branch is never reached for it.
+		elif nextViewMode == "playlists":
+			library, mediaContainer = Singleton().getMediaLibrary().getPlaylists(url)
+
+		# Plex-only: Collections for one specific movie library section -
+		# entering one specific collection uses "mixed" above instead, via
+		# its own "key" attribute, same as a playlist.
+		elif nextViewMode == "collections":
+			library, mediaContainer = Singleton().getMediaLibrary().getCollectionsForSection(url)
 
 		# SHOWS
-		elif nextViewMode == "show":
-			library, mediaContainer = Singleton().getPlexInstance().getShowsFromSection(url)
+		elif nextViewMode == "show" or (currentViewMode == "ShowShows" and nextViewMode == "ShowDirectory"):
+			library, mediaContainer = Singleton().getMediaLibrary().getShowsFromSection(url)
 
 		elif nextViewMode == "ShowEpisodesDirect":
-			library, mediaContainer = Singleton().getPlexInstance().getEpisodesOfSeason(url, directMode=True)
+			library, mediaContainer = Singleton().getMediaLibrary().getEpisodesOfSeason(url, directMode=True)
 
 		elif nextViewMode == "ShowSeasons":
-			library, mediaContainer = Singleton().getPlexInstance().getSeasonsOfShow(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getSeasonsOfShow(url)
 
 		elif nextViewMode == "ShowEpisodes":
-			library, mediaContainer = Singleton().getPlexInstance().getEpisodesOfSeason(url)
+			library, mediaContainer = Singleton().getMediaLibrary().getEpisodesOfSeason(url)
 
 		printl("", self, "C")
 		return library, mediaContainer
@@ -301,6 +322,7 @@ class DP_LibMain(Screen):
 			fd = open(self.pickleName, "wb")
 			pickle.dump(pickleData, fd, 2)  # pickle.HIGHEST_PROTOCOL
 			fd.close()
+			secureCacheFile(self.pickleName)
 		except Exception as e:
 			printl("Error while saving cache file: " + str(e), self, "D")
 

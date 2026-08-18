@@ -25,11 +25,12 @@ You should have received a copy of the GNU General Public License
 # IMPORT
 #===============================================================================
 from Components.config import config
+from . import Singleton
 
 from .DP_View import DP_View
 
 from .__common__ import printl2 as printl, encodeThat
-from .__init__ import _  # _ is translation
+from . import _  # _ is translation
 
 #===============================================================================
 #
@@ -62,7 +63,7 @@ class DPS_ViewShows(DP_View):
 
 		self.setTitle(_("Shows"))
 
-		self.playTheme = config.plugins.dreamplex.playTheme.value
+		self.playTheme = Singleton().getSettingsInstance().playTheme.getValue()
 
 		printl("", self, "C")
 

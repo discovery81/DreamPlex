@@ -26,6 +26,7 @@ You should have received a copy of the GNU General Public License
 #===============================================================================
 import math
 import os
+from os.path import join as path_join
 
 #noinspection PyUnresolvedReferences
 from enigma import eTimer
@@ -49,12 +50,12 @@ from enigma import ePicLoad
 
 from six import PY2
 
+from . import SettingsStorage
+
 try:
 	from urllib.parse import quote_plus
-except:
+except Exception:
 	from urllib import quote_plus
-
-from twisted.web.client import downloadPage
 
 from .DP_Player import DP_Player
 from .DP_Settings import DPS_Settings
@@ -65,9 +66,9 @@ from .DPH_Singleton import Singleton
 from .DPH_ScreenHelper import DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Screen, DPH_Filter
 from .DP_ViewFactory import getNoneDirectoryElements, getDefaultDirectoryElementsList, getGuiElements
 
-from .__common__ import printl2 as printl, loadPicture, durationToTime, getLiveTv, encodeThat, checkXmlFile, getXmlContent, getSkinResolution
+from .__common__ import printl2 as printl, loadPicture, durationToTime, getLiveTv, encodeThat, checkXmlFile, getXmlContent, getSkinResolution, downloadFileAsync
 from .__plugin__ import Plugin
-from .__init__ import _, defaultSkinsFolderPath  # _ is translation
+from . import _  # _ is translation
 
 #===========================================================================
 #
@@ -181,10 +182,11 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		self.currentViewType = str(self.viewParams["settings"]["type"])
 
-		self.stillPictureEnabledInView = self.viewParams["settings"]["backdropVideos"]
-		self.stillPictureEnabledInSettings = config.plugins.dreamplex.useBackdropVideos.value
+		self.plexInstance = Singleton().getMediaLibrary()
+		self.settings: SettingsStorage = Singleton().getSettingsInstance()
 
-		self.plexInstance = Singleton().getPlexInstance()
+		self.stillPictureEnabledInView = self.viewParams["settings"]["backdropVideos"]
+		self.stillPictureEnabledInSettings = self.settings.useBackdropVideos.getValue()
 
 		self.libraryName = libraryName
 		self.loadLibrary = loadLibraryFnc
@@ -193,7 +195,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		self.skinResulution = getSkinResolution()
 
-		self.usePicCache = config.plugins.dreamplex.usePicCache.value
+		self.usePicCache = self.settings.usePicCache.getValue()
 
 		self.noneDirectoryElementsList = getNoneDirectoryElements()
 		self.directoryElementsList = getDefaultDirectoryElementsList()
@@ -206,29 +208,35 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		self.unseenPng = None
 		self.startedPng = None
 
+		# Descriptions below are the ones directly useful for browsing
+		# (including opening a Folder/Collection/Playlist entry, which is
+		# just onKeyOk() on that row like any other item - see
+		# DPS_ViewMixed._refresh()). red/yellow/green/blue are left without
+		# one: their behavior is dynamic (getColorFunction() per
+		# currentFunctionLevel), and each already shows its own live label
+		# on the on-screen colour buttons, so a static Help entry here would
+		# go stale or be actively misleading. (menu/red_long/yellow_long/
+		# blue_long used to be bound here too, to handlers that did nothing
+		# at all - removed as dead code, not left unexplained.)
 		self["actions"] = HelpableActionMap(self, "DP_View",
 		{
-			"ok": (self.onKeyOk, ""),
-			"cancel": (self.onKeyCancel, ""),
-			"left": (self.onKeyLeft, ""),
-			"right": (self.onKeyRight, ""),
-			"up": (self.onKeyUp, ""),
-			"down": (self.onKeyDown, ""),
-			"info": (self.onKeyInfo, ""),
-			"menu": (self.onKeyMenu, ""),
-			"video": (self.onKeyVideo, ""),
-			"audio": (self.onKeyAudio, ""),
+			"ok": (self.onKeyOk, _("Open (movie, episode, folder, collection or playlist)")),
+			"cancel": (self.onKeyCancel, _("Go back")),
+			"left": (self.onKeyLeft, _("Previous page")),
+			"right": (self.onKeyRight, _("Next page")),
+			"up": (self.onKeyUp, _("Previous item")),
+			"down": (self.onKeyDown, _("Next item")),
+			"info": (self.onKeyInfo, _("Show extended info")),
+			"video": (self.onKeyVideo, _("Play trailer / extra")),
+			"audio": (self.onKeyAudio, _("Audio track menu")),
 			"red": (self.onKeyRed, ""),
 			"yellow": (self.onKeyYellow, ""),
 			"blue": (self.onKeyBlue, ""),
 			"green": (self.onKeyGreen, ""),
-			"text": (self.onKeyText, ""),
-			"red_long": (self.onKeyRedLong, ""),
-			"yellow_long": (self.onKeyYellowLong, ""),
-			"blue_long": (self.onKeyBlueLong, ""),
+			"text": (self.onKeyText, _("Subtitle menu")),
 
-			"bouquet_up": (self.bouquetUp, ""),
-			"bouquet_down": (self.bouquetDown, ""),
+			"bouquet_up": (self.bouquetUp, _("Scroll description up")),
+			"bouquet_down": (self.bouquetDown, _("Scroll description down")),
 
 		}, -2)
 
@@ -238,10 +246,10 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		#DP_View.setListViewElementsCount("DPS_ViewList")
 
 		# get needed config parameters
-		self.mediaPath = config.plugins.dreamplex.mediafolderpath.value
-		self.fastScroll = config.plugins.dreamplex.fastScroll.value
-		self.liveTvInViews = config.plugins.dreamplex.liveTvInViews.value
-		self.startWithFilterMode = config.plugins.dreamplex.startWithFilterMode.value
+		self.mediaPath = self.settings.mediaFolderPath.getValue()
+		self.fastScroll = self.settings.fastScroll.getValue()
+		self.liveTvInViews = self.settings.liveTvInViews.getValue()
+		self.startWithFilterMode = self.settings.startWithFilterMode.getValue()
 
 		# get data from plex library
 		self.image_prefix = self.plexInstance.getServerName().lower()
@@ -409,7 +417,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		# now we try to enable stillPictureSupport
 		if self.stillPictureEnabledInSettings and self.stillPictureEnabledInView:
 			# if liveTv is not stopped on startup we have to do so now
-			if not config.plugins.dreamplex.stopLiveTvOnStartup.value:
+			if not self.settings.stopLiveTvOnStartup.getValue():
 				self.session.nav.stopService()
 
 			try:
@@ -546,30 +554,20 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	#===========================================================================
 	#
 	#===========================================================================
-	def onKeyMenu(self):
-		printl("", self, "S")
-
-		#self.displayOptionsMenu()
-
-		printl("", self, "C")
-
-	#===========================================================================
-	#
-	#===========================================================================
 	def onKeyVideo(self):
 		printl("", self, "S")
 
-		if self.serverConfig.loadExtraData.value == "1":
+		if self.serverConfig.loadExtraData().getValue() == "1":
 			#self.onEnter(loadExtraData=True)
 			selection = self["listview"].getCurrent()
 			media_id = selection[1]['ratingKey']
 			server = selection[1]['server']
 
-			count, options, server = Singleton().getPlexInstance().getMediaOptionsToPlay(media_id, server, False, myType=selection[1]['tagType'], loadExtraData=True)
+			count, options, server = Singleton().getMediaLibrary().getMediaOptionsToPlay(media_id, server, False, myType=selection[1]['tagType'], loadExtraData=True)
 
 			self.selectMedia(count, options, server)
 
-		elif self.serverConfig.loadExtraData.value == "2":
+		elif self.serverConfig.loadExtraData().getValue() == "2":
 			try:
 				from Plugins.Extensions.YTTrailer.plugin import YTTrailer
 				ytTrailer = YTTrailer(self.session)
@@ -657,7 +655,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		else:
 			self.sessionData = False
-			if not config.plugins.dreamplex.stopLiveTvOnStartup.value and self.liveTvInViews:
+			if not self.settings.stopLiveTvOnStartup.getValue() and self.liveTvInViews:
 				self.restoreLiveTv()
 
 		printl("", self, "C")
@@ -821,10 +819,10 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			printl("currentRemotePath: " + str(currentRemotePath), self, "D")
 			printl("currentLocalPath: " + str(currentLocalPath), self, "D")
 
-			serverID = self.serverConfig.id.value
+			serverID = self.serverConfig.id().getValue()
 			printl("serverID: " + str(serverID), self, "D")
 
-			self.location = config.plugins.dreamplex.configfolderpath.value + "mountMappings"
+			self.location = self.settings.configFolderPath.getValue() + "mountMappings"
 			checkXmlFile(self.location)
 			tree = getXmlContent(self.location)
 
@@ -1032,7 +1030,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 
 		self.playbackModes = [("0", _("Streamed")), ("1", _("Transcoded")), ("2", _("Direct Local"))]
-		self.configuredPlaybackMode = int(self.serverConfig.playbackType.value)
+		self.configuredPlaybackMode = int(self.serverConfig.playbackType().getValue())
 		self.nextPlaybackMode = self.configuredPlaybackMode
 		self.lengthOfPlaybackModes = len(self.playbackModes)
 
@@ -1054,6 +1052,17 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		myName = self.playbackModes[self.nextPlaybackMode][1]
 
 		self.playbackMode = self.nextPlaybackMode
+
+		# this used to only live on self.playbackMode, a plain instance
+		# attribute on the view screen - toggling the mode with the blue
+		# button "stuck" only until the view closed, never persisted to the
+		# server's own playbackType setting the way choices made from the
+		# Settings screen are
+		try:
+			self.serverConfig.playbackType().setValue(str(self.nextPlaybackMode))
+			self.serverConfig.saveChanges()
+		except Exception as e:
+			printl("could not persist playback mode: " + str(e), self, "W")
 
 		self["btn_" + color + "Text"].setText("playback mode '" + myName + "'")
 
@@ -1119,28 +1128,12 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	#===========================================================================
 	#
 	#===========================================================================
-	def onKeyRedLong(self):
-		printl("", self, "S")
-
-		printl("", self, "C")
-
-	#===========================================================================
-	#
-	#===========================================================================
 	def onKeyYellow(self):
 		printl("", self, "S")
 
 		func = self.getColorFunction("yellow", self.currentFunctionLevel)
 		if func:
 			func()
-
-		printl("", self, "C")
-
-	#===========================================================================
-	#
-	#===========================================================================
-	def onKeyYellowLong(self):
-		printl("", self, "S")
 
 		printl("", self, "C")
 
@@ -1321,18 +1314,10 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	#===========================================================================
 	#
 	#===========================================================================
-	def onKeyBlueLong(self):
-		printl("", self, "S")
-
-		printl("", self, "C")
-
-	#===========================================================================
-	#
-	#===========================================================================
 	def onToggleView(self):
 		printl("", self, "S")
 
-		if config.plugins.dreamplex.useBackdropVideos.value and self.loadedStillPictureLib:
+		if self.settings.useBackdropVideos.getValue() and self.loadedStillPictureLib:
 			self.stopBackdropVideo()
 		cause = (DP_View.ON_CLOSED_CAUSE_CHANGE_VIEW, )
 		self.leaveNow(cause)
@@ -1391,6 +1376,17 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 		index = self["listview"].getIndex()
 
+		# Already on page 1 (same boundary math as refresh()'s own
+		# pageCurrent, further below) - there is nowhere "previous" to page
+		# to, so LEFT falls through to going back a level instead, the way
+		# a Carousel-skin sidebar column does. This was a pure no-op before
+		# (index clamped to itself, then refresh()), so the fallback is safe
+		# for every skin: nothing that used to happen here still doesn't.
+		if index < self.itemsPerPage:
+			self.onLeave()
+			printl("", self, "C")
+			return
+
 		if index < 0:
 			index = 0
 		self["listview"].setIndex(index)
@@ -1428,7 +1424,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			# we need this for onEnter-func in child lib
 
 			if entryData['tagType'] == "Track" or entryData['tagType'] == "Video":
-				if config.plugins.dreamplex.useBackdropVideos.value and self.loadedStillPictureLib:
+				if self.settings.useBackdropVideos.getValue() and self.loadedStillPictureLib:
 					self.stopBackdropVideo()
 
 				currentIndex = self["listview"].getIndex()
@@ -1436,8 +1432,8 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 				if self.sessionData and str(self.sessionData[2]) == str(self.listViewList[int(currentIndex)][1]['ratingKey']):
 					self.session.openWithCallback(self.myCallback, DP_Player, self.listViewList, currentIndex, self.libraryName, self.autoPlayMode, self.resumeMode, self.playbackMode, sessionData=self.sessionData)
 				else:
-					if self.serverConfig.useForcedSubtitles.value and self.serverConfig.playbackType.value == "2":
-						self.subtitleData = Singleton().getPlexInstance().getSelectedSubtitleDataById(entryData["server"], entryData["ratingKey"], True)  # mh : pass in forcedOnly
+					if self.serverConfig.useForcedSubtitles().getValue() and self.serverConfig.playbackType().getValue() == "2":
+						self.subtitleData = Singleton().getMediaLibrary().getSelectedSubtitleDataById(entryData["server"], entryData["ratingKey"], True)  # mh : pass in forcedOnly
 						printl("mh: setting subtitleData=" + str(self.subtitleData), self, "D")
 
 					self.session.openWithCallback(self.myCallback, DP_Player, self.listViewList, currentIndex, self.libraryName, self.autoPlayMode, self.resumeMode, self.playbackMode, subtitleData=self.subtitleData)
@@ -1536,7 +1532,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		if self.detailsPaneVisible:
 			self.hideDetails()
 
-		if config.plugins.dreamplex.playTheme.value:
+		if self.settings.playTheme.getValue():
 			printl("stoping theme playback", self, "D")
 			if self.themeMusicIsRunning:
 				self.session.nav.stopService()
@@ -1572,7 +1568,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			self.stopBackdropVideo()
 
 		# this seems to be uneeded
-		# if not config.plugins.dreamplex.stopLiveTvOnStartup.value and cause is None:
+		# if not self.settings.stopLiveTvOnStartup.getValue() and cause is None:
 		# 	self.restoreLiveTv()
 
 		if cause is not None:
@@ -1675,7 +1671,18 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			printl("currentViewMode: " + str(self.currentViewMode), self, "D")
 			self.processSubViewElements(myType=self.currentViewMode)
 		else:
-			text = "You have no data in this section!"
+			text = _("You have no data in this section!")
+			# an empty list here is indistinguishable, on its own, from a
+			# fetch that actually failed (auth/network) - getLastErrorMessage()
+			# is empty for a genuinely empty section, but non-empty when
+			# _request_json() hit an exception, which used to just look like
+			# "no data" too with no way to tell the two apart from the box
+			try:
+				err = Singleton().getMediaLibrary().getLastErrorMessage()
+				if err:
+					text = text + "\n" + str(err)
+			except Exception:
+				pass
 			self.session.open(MessageBox, _("\n%s") % text, MessageBox.TYPE_INFO)
 			self.leaveNow()
 
@@ -1890,7 +1897,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			for element in self.noneDirectoryElementsList:
 				try:
 					self.toggleElementVisibilityWithLabel(element, "hide")
-				except:
+				except Exception:
 					pass
 
 			self.hideMediaFunctions()
@@ -1906,7 +1913,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		self["shortDescription"].setText(title)
 
 		# FIXME there is no /all/folder-fs8.png
-		self.whatPoster = defaultSkinsFolderPath + "/" + config.plugins.dreamplex.skin.value + "/all/folder-fs8.png"
+		self.whatPoster = path_join(self.settings.skinFolderPath.getValue(), self.settings.skinName.getValue(), "all/folder-fs8.png")
 		self["poster"].show()
 
 		printl("", self, "C")
@@ -2156,7 +2163,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			self.media_id = selection[1]['ratingKey']
 			self.server = selection[1]['server']
 
-			self.subtitlesList = Singleton().getPlexInstance().getSubtitlesById(self.server, self.media_id)
+			self.subtitlesList = Singleton().getMediaLibrary().getSubtitlesById(self.server, self.media_id)
 
 		printl("", self, "C")
 
@@ -2166,6 +2173,58 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	def displaySubtitleMenu(self):
 		printl("", self, "S")
 
+		# Backends that already embed the stream list in the entry's context
+		# menu data (Jellyfin) skip the round-trip below entirely - a backend
+		# that does not (Plex) returns None here and falls through.
+		try:
+			contextSubs = self.plexInstance.getContextSubtitleStreams(self.context)
+			if contextSubs is not None:
+				subs = contextSubs
+				functionList = []
+				for s in subs:
+					lang = s.get('language') or 'unknown'
+					idx = s.get('index')
+					forced = s.get('isForced')
+					codec = s.get('codec') or ''
+					label = "%s %s %s" % (lang, ("[%s]" % codec) if codec else "", "[forced]" if forced else "")
+					functionList.append((label.strip(), idx, lang, forced))
+
+				def _cb(choice):
+					if not choice:
+						return
+					try:
+						_, idx, lang, forced = choice
+					except Exception:
+						return
+					try:
+						self.serverConfig._subtitlesLanguage.setValue((lang or '').lower())
+						if forced is not None:
+							self.serverConfig._useForcedSubtitles.setValue(bool(forced))
+						# Apply the subtitle index override for immediate playback
+						if hasattr(self.serverConfig, '_overrideSubtitleIndex') and idx is not None:
+							try:
+								self.serverConfig._overrideSubtitleIndex.setValue(int(idx))
+							except Exception:
+								pass
+						self.serverConfig.saveChanges()
+						self.session.open(MessageBox, _("Subtitle preference saved. Will apply on next playback."), MessageBox.TYPE_INFO)
+						# Start playback right away with the override if we are on a playable item
+						try:
+							selection = self["listview"].getCurrent()
+							if selection and selection[1].get('tagType') in ("Track", "Video"):
+								self.onEnter()
+						except Exception:
+							pass
+					except Exception:
+						pass
+
+				self.session.openWithCallback(_cb, ChoiceBox, title=_("Select Subtitle Track (applies to next playback)"), list=functionList)
+				printl("", self, "C")
+				return
+		except Exception:
+			pass
+
+		# Default (Plex)
 		self.getSubtitleList()
 
 		functionList = []
@@ -2215,6 +2274,54 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	def displayAudioMenu(self):
 		printl("", self, "S")
 
+		# Same reasoning as displaySubtitleMenu() above.
+		try:
+			contextAuds = self.plexInstance.getContextAudioStreams(self.context)
+			if contextAuds is not None:
+				auds = contextAuds
+				functionList = []
+				for a in auds:
+					lang = a.get('language') or 'unknown'
+					idx = a.get('index')
+					codec = a.get('codec') or ''
+					ch = a.get('channels')
+					label = "%s %s %s" % (lang, ("[%s]" % codec) if codec else "", ("(%sch)" % str(ch)) if ch else "")
+					functionList.append((label.strip(), idx, lang))
+
+				def _cb(choice):
+					if not choice:
+						return
+					try:
+						_, idx, lang = choice
+					except Exception:
+						return
+					try:
+						self.serverConfig._audioLanguage.setValue((lang or '').lower())
+						# Apply the audio index override for immediate playback
+						if hasattr(self.serverConfig, '_overrideAudioIndex') and idx is not None:
+							try:
+								self.serverConfig._overrideAudioIndex.setValue(int(idx))
+							except Exception:
+								pass
+						self.serverConfig.saveChanges()
+						self.session.open(MessageBox, _("Audio preference saved. Will apply on next playback."), MessageBox.TYPE_INFO)
+						# Start playback right away with the override if we are on a playable item
+						try:
+							selection = self["listview"].getCurrent()
+							if selection and selection[1].get('tagType') in ("Track", "Video"):
+								self.onEnter()
+						except Exception:
+							pass
+					except Exception:
+						pass
+
+				self.session.openWithCallback(_cb, ChoiceBox, title=_("Select Audio Track (applies to next playback)"), list=functionList)
+				printl("", self, "C")
+				return
+		except Exception:
+			pass
+
+		# Default (Plex)
 		selection = self["listview"].getCurrent()
 
 		media_id = selection[1]['ratingKey']
@@ -2222,7 +2329,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		functionList = []
 
-		audioList = Singleton().getPlexInstance().getAudioById(server, media_id)
+		audioList = Singleton().getMediaLibrary().getAudioById(server, media_id)
 
 		for item in audioList:
 
@@ -2255,7 +2362,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 		self.forceUpdate = True
 
-		Singleton().getPlexInstance().doRequest(self.unseenUrl)
+		Singleton().getMediaLibrary().doRequest(self.unseenUrl)
 
 		currentIndex = self["listview"].getIndex()
 		currentSelection = self["listview"].getCurrent()
@@ -2277,7 +2384,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 		self.forceUpdate = True
 
-		Singleton().getPlexInstance().doRequest(self.seenUrl)
+		Singleton().getMediaLibrary().doRequest(self.seenUrl)
 
 		currentIndex = self["listview"].getIndex()
 		currentSelection = self["listview"].getCurrent()
@@ -2300,7 +2407,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		self.forceUpdate = True
 
 		if not self.isFolder:
-			Singleton().getPlexInstance().doRequest(self.refreshUrl)
+			Singleton().getMediaLibrary().doRequest(self.refreshUrl)
 			self.getViewListData()
 
 		printl("", self, "C")
@@ -2322,7 +2429,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 
 		if confirm:
-			Singleton().getPlexInstance().doRequest(self.deleteUrl)
+			Singleton().getMediaLibrary().doRequest(self.deleteUrl)
 			self.getViewListData()
 		else:
 			self.session.open(MessageBox, _("Deleting aborted!"), MessageBox.TYPE_INFO)
@@ -2340,7 +2447,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		printl("choice" + str(choice), self, "D")
 
-		Singleton().getPlexInstance().setAudioById(choice[4], choice[3], choice[5])
+		Singleton().getMediaLibrary().setAudioById(choice[4], choice[3], choice[5])
 
 		printl("", self, "C")
 
@@ -2355,7 +2462,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		printl("choice" + str(choice), self, "D")
 
-		Singleton().getPlexInstance().setSubtitleById(choice[4], choice[3], choice[5])
+		Singleton().getMediaLibrary().setSubtitleById(choice[4], choice[3], choice[5])
 
 		printl("", self, "C")
 
@@ -2369,8 +2476,8 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			printl("start pĺaying theme", self, "D")
 			theme = self.details["theme"]
 			server = self.details["server"]
-			accessToken = Singleton().getPlexInstance().get_aTokenForServer(server)
-			http = Singleton().getPlexInstance().http
+			accessToken = Singleton().getMediaLibrary().get_aTokenForServer(server)
+			http = Singleton().getMediaLibrary().http
 			printl("theme: " + str(theme), self, "D")
 			url = "%s://%s%s%s" % (http, str(server), str(theme), str(accessToken))
 			sref = "4097:0:0:0:0:0:0:0:0:0:%s" % quote_plus(url)
@@ -2461,7 +2568,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	def resetCurrentImages(self):
 		printl("", self, "S")
 
-		ptr = "/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/" + config.plugins.dreamplex.skin.value + "/images/picreset.png"
+		ptr = path_join(self.settings.skinFolderPath.getValue(), self.settings.skinName.getValue(), "images/picreset.png")
 
 		if self.viewParams["elements"]["poster"]["visible"]:
 			if self.resetPoster:
@@ -2491,10 +2598,13 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 				printl("starting download", self, "D")
 				authHeader = self.plexInstance.get_hTokenForServer(self.details["server"])
 				printl("header: " + str(authHeader), self, "D")
-				download_url = str(download_url) if PY2 else str(download_url).encode("UTF-8")
-				if not PY2 and 'X-Plex-Token' in authHeader:
-					authHeader = {b'X-Plex-Token': authHeader["X-Plex-Token"].encode("UTF-8")}
-				downloadPage(download_url, self.whatPoster, headers=authHeader).addCallback(lambda _: self.showPoster(forceShow=True))
+
+				def _onPosterError(ex):
+					printl("poster download failed: " + str(ex), self, "W")
+					self.noPicData()
+
+				self._posterDownloadTimer = downloadFileAsync(download_url, self.whatPoster, headers=authHeader,
+																callback=lambda: self.showPoster(forceShow=True), errback=_onPosterError)
 			else:
 				self.noPicData()
 		else:
@@ -2520,10 +2630,13 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 				printl("starting download", self, "D")
 				authHeader = self.plexInstance.get_hTokenForServer(self.details["server"])
 				printl("header: " + str(authHeader), self, "D")
-				download_url = str(download_url) if PY2 else str(download_url).encode("UTF-8")
-				if not PY2 and 'X-Plex-Token' in authHeader:
-					authHeader = {b'X-Plex-Token': authHeader["X-Plex-Token"].encode("UTF-8")}
-				downloadPage(download_url, self.whatBackdrop, headers=authHeader).addCallback(lambda _: self.showBackdrop(forceShow=True))
+
+				def _onBackdropError(ex):
+					printl("backdrop download failed: " + str(ex), self, "W")
+					self.noPicData()
+
+				self._backdropDownloadTimer = downloadFileAsync(download_url, self.whatBackdrop, headers=authHeader,
+																 callback=lambda: self.showBackdrop(forceShow=True), errback=_onBackdropError)
 			else:
 				self.noPicData()
 		else:
@@ -2584,14 +2697,14 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		self.getSeenVisus()
 
 		# enable audio and subtitles information if we have transcoding active
-		if self.serverConfig.playbackType.value == "1":  # transcoded
+		if self.serverConfig.playbackType().getValue() == "1":  # transcoded
 			printl("audio: " + str(self.viewParams["elements"]["audio"]), self, "D")
 			if self.viewParams["elements"]["audio"]["visible"]:
 				self.toggleElementVisibilityWithLabel("audio")
 			else:
 				self.toggleElementVisibilityWithLabel("audio", "hide")
 
-		if self.serverConfig.playbackType.value == "2" or self.serverConfig.playbackType.value == "1":  # direct local and transcoded
+		if self.serverConfig.playbackType().getValue() == "2" or self.serverConfig.playbackType().getValue() == "1":  # direct local and transcoded
 			if self.viewParams["elements"]["subtitles"]["visible"]:
 				self.toggleElementVisibilityWithLabel("subtitles")
 			else:
@@ -2812,7 +2925,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	def resetBackdropImage(self):
 		printl("", self, "S")
 
-		ptr = "/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/" + config.plugins.dreamplex.skin.value + "/images/picreset.png"
+		ptr = path_join(self.settings.skinFolderPath.getValue(), self.settings.skinName.getValue(), "images/picreset.png")
 		self["backdrop"].instance.setPixmapFromFile(ptr)
 
 		printl("", self, "C")
@@ -3106,7 +3219,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		if not self.usePicCache:
 			self.pname = "temp"
 			self.bname = "temp"
-			self.mediaPath = config.plugins.dreamplex.logfolderpath.value
+			self.mediaPath = self.settings.logFolderPath.getValue()
 
 		printl("bname: " + str(self.bname), self, "D")
 		printl("pname: " + str(self.pname), self, "D")
@@ -3161,7 +3274,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	def closePlugin(self):
 		printl("", self, "S")
 
-		if config.plugins.dreamplex.useBackdropVideos.value and self.loadedStillPictureLib:
+		if self.settings.useBackdropVideos.getValue() and self.loadedStillPictureLib:
 			self.stopBackdropVideo()
 
 		super(DP_View, self).closePlugin()
