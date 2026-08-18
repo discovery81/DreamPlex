@@ -45,23 +45,8 @@ from Components.Pixmap import Pixmap
 
 try:
 	from urllib.request import URLopener
-except ImportError:
-	try:
-		from urllib import URLopener
-	except ImportError:
-		from urllib.request import Request, urlopen
-
-		class URLopener:
-			def __init__(self):
-				self.addheaders = []
-
-			def addheader(self, name, value):
-				self.addheaders.append((name, value))
-
-			def retrieve(self, url, filename):
-				request = Request(url, headers=dict(self.addheaders))
-				with urlopen(request) as response, open(filename, "wb") as out_file:
-					out_file.write(response.read())
+except:
+	from urllib import URLopener
 
 from Screens.Screen import Screen
 
