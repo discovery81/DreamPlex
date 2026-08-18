@@ -1,155 +1,125 @@
+# Thai translations for enigma2-plugin-extensions-dreamplex package.
+# Copyright (C) 2026 THE enigma2-plugin-extensions-dreamplex'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the enigma2-plugin-extensions-dreamplex package.
+# Automatically generated, 2026.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: DreamPlex\n"
+"Project-Id-Version: enigma2-plugin-extensions-dreamplex 3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-08-18 23:30+0200\n"
-"PO-Revision-Date: 2015-04-06 20:16+0100\n"
-"Last-Translator: DonDavici <dondavici@gmail.com>\n"
-"Language-Team: dondavici@gmail.com <dondavici@gmail.com>\n"
-"Language: fr\n"
+"PO-Revision-Date: 2026-08-14 23:05+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: th\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-Basepath: .\n"
-"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
-"X-Poedit-SearchPath-0: /hdd/workspaces/DreamPlex/src\n"
 
 msgid ""
 "\n"
 "\n"
 "Cancelled!"
 msgstr ""
-"\n"
-"\n"
-"Cancelado!"
 
 msgid ""
 "\n"
 "\n"
 "Fetching complete library data. This could take a while ..."
 msgstr ""
-"\n"
-"\n"
-"Obtención de datos completa de la biblioteca. Tomará unos momentos ..."
 
 msgid ""
 "\n"
 "\n"
 "Files found: "
 msgstr ""
-"\n"
-"\n"
-"Ficheros no encontrados:"
 
 msgid ""
 "\n"
 "\n"
 "Finished"
 msgstr ""
-"\n"
-"\n"
-"Terminado"
 
 msgid ""
 "\n"
 "\n"
 "No Files found. Nothing to do!"
 msgstr ""
-"\n"
-"\n"
-"No se encontraron ficheros. NAda que hacer!"
 
 msgid ""
 "\n"
 "\n"
 "Starting to search for picture files with 1280x720 in its name ..."
 msgstr ""
-"\n"
-"\n"
-"Comenzando la busqueda de fotos con 1280x720 en el nombre..."
 
 msgid ""
 "\n"
 "\n"
 "Starting to search for picture files with 1920x1080 in its name ..."
 msgstr ""
-"\n"
-"\n"
-"Comenzando la busqueda de fotos con 1920x1080 en el nombre..."
 
 msgid ""
 "\n"
 "\n"
 "We are done!"
 msgstr ""
-"\n"
-"\n"
-"Terminado!"
 
 msgid ""
 "\n"
 "\n"
 "starting ..."
 msgstr ""
-"\n"
-"\n"
-"Comenzando ..."
 
 #, python-format
 msgid ""
 "\n"
 "%s"
 msgstr ""
-"\n"
-"%s"
 
 msgid " "
-msgstr " "
+msgstr ""
 
 msgid " > API Key (optional)"
 msgstr ""
 
 msgid " > Autostart"
-msgstr " > Autoinicio"
+msgstr ""
 
 msgid " > Connection Type"
-msgstr " > Tipo de conexión"
+msgstr ""
 
 msgid " > Local Authentication"
-msgstr "> Autenticación local"
+msgstr ""
 
 msgid " > Name"
-msgstr " > Nombe"
+msgstr ""
 
 msgid " > Password"
 msgstr ""
 
 msgid " > Playback Type"
-msgstr "> Tipo de Reproducción"
+msgstr ""
 
 msgid " > Server Type"
-msgstr " > Servertype"
+msgstr " > ประเภทเซิร์ฟเวอร์"
 
 msgid " > State"
-msgstr "> Estado"
+msgstr ""
 
 msgid " > Sync Movies Medias"
-msgstr "> Sincronizar Peliculas"
+msgstr ""
 
 msgid " > Sync Music Medias"
-msgstr "> Sincronizar Música"
+msgstr ""
 
 msgid " > Sync Shows Medias"
-msgstr "> Sincronizar Series"
+msgstr ""
 
 msgid " > Trailer"
-msgstr "> Trailer"
+msgstr ""
 
 msgid " > Use Wake on Lan (WoL)"
-msgstr "> Usar  Wake on Lan (WoL)"
+msgstr ""
 
 msgid " > Username"
 msgstr ""
@@ -161,22 +131,22 @@ msgid " >> Custom Max Bitrate (0 = auto)"
 msgstr ""
 
 msgid " >> DNS"
-msgstr " >> DNS"
+msgstr ""
 
 msgid " >> Enable Subtitle renaming in direct local mode"
 msgstr ""
 
 msgid " >> IP"
-msgstr " >> IP"
+msgstr ""
 
 msgid " >> Mac address (Size: 12 alphanumeric no seperator) only for WoL"
-msgstr " >> Dirección Mac (Tamaño : 12 caracteres alfanumericos. sin espacios) solo para WOL"
+msgstr ""
 
 msgid " >> Port"
-msgstr " >> Puerto"
+msgstr ""
 
 msgid " >> Segmentsize in seconds"
-msgstr " >> Tamaño de Segmento (en segundos)"
+msgstr ""
 
 msgid " >> Settings Pincode"
 msgstr ""
@@ -191,7 +161,7 @@ msgid " >> Target subtitle language"
 msgstr ""
 
 msgid " >> Transcoding quality"
-msgstr " >> Calidad de Transcodificación"
+msgstr ""
 
 msgid " >> Use Settings Protection"
 msgstr ""
@@ -200,16 +170,16 @@ msgid " >> Use forced subtitles"
 msgstr ""
 
 msgid " >> Use universal Transcoder"
-msgstr " >> Usar Transcodificación Universal"
+msgstr ""
 
 msgid " >> Wait for server delay (max 180 seconds) only for WoL"
-msgstr ">> Espere por demora del servidor (max 180 seg) solo para WoL"
+msgstr ""
 
 msgid " >> plex.tv Home Users"
 msgstr ""
 
 msgid " >> plex.tv Password"
-msgstr " >> Contraseña plex.tv"
+msgstr ""
 
 msgid " >> plex.tv Pin Protection"
 msgstr ""
@@ -218,47 +188,44 @@ msgid " >> plex.tv Pincode"
 msgstr ""
 
 msgid " >> plex.tv URL"
-msgstr ">> plex.tv URL"
+msgstr ""
 
 msgid " >> plex.tv Username"
-msgstr " >> Usuario plex.tv"
+msgstr ""
 
 msgid ""
 " This file was partially played.\n"
 "\n"
 " Do you want to resume?"
 msgstr ""
-"El fichero fue pactialmente reproducido.\n"
-"\n"
-"Quiere renudarlo?"
 
 #, python-format
 msgid "%d min"
-msgstr "%d min."
+msgstr "%d นาที"
 
 msgid "(PIN protected)"
-msgstr "(PIN-beskyttet)"
+msgstr "(ป้องกันด้วย PIN)"
 
 msgid "(YELLOW = delete left, GREEN = delete right)"
-msgstr "(GUL = slet til venstre, GRØN = slet til højre)"
+msgstr "(เหลือง = ลบด้านซ้าย, เขียว = ลบด้านขวา)"
 
 msgid "(clone)"
-msgstr "(klon)"
+msgstr "(โคลน)"
 
 msgid "(re)create remote Token"
-msgstr "(gen)opret fjern-token"
+msgstr "สร้างโทเคนระยะไกล (ใหม่)"
 
 msgid "-"
-msgstr "-"
+msgstr ""
 
 msgid "... failed"
-msgstr "... Falló"
+msgstr ""
 
 msgid "... success"
-msgstr "... Exito"
+msgstr ""
 
 msgid "/"
-msgstr "/"
+msgstr ""
 
 msgid "/hdd/dreamplex/cache"
 msgstr ""
@@ -273,154 +240,154 @@ msgid "/tmp"
 msgstr ""
 
 msgid "1-5: select stars   RED: clear   OK: confirm   EXIT: cancel"
-msgstr "1-5: vælg stjerner   RØD: ryd   OK: bekræft   EXIT: annuller"
+msgstr "1-5: เลือกดาว   แดง: ล้างค่า   OK: ยืนยัน   EXIT: ยกเลิก"
 
 msgid "1.5Mbps, 480p"
-msgstr "1.5Mbps, 480p"
+msgstr ""
 
 msgid "1.5Mbps, 480p, 30fps"
 msgstr ""
 
 msgid "1024x768, 2mbps"
-msgstr "1024x768, 2mbps"
+msgstr ""
 
 msgid "10Mbps, 1080p"
-msgstr "10Mbps, 1080p"
+msgstr ""
 
 msgid "10Mbps, 1080p, 30fps"
 msgstr ""
 
 msgid "1280x720, 3mbps"
-msgstr "1280x720, 3mbps"
+msgstr ""
 
 msgid "1280x720, 4mbps"
-msgstr "1280x720, 4mbps"
+msgstr ""
 
 msgid "12Mbps, 1080p"
-msgstr "12Mbps, 1080p"
+msgstr ""
 
 msgid "12Mbps, 1080p, 30fps"
 msgstr ""
 
 msgid "1920x1080, 10mbps"
-msgstr "1920x1080, 10mbps"
+msgstr ""
 
 msgid "1920x1080, 12mbps"
-msgstr "1920x1080, 12mbps"
+msgstr ""
 
 msgid "1920x1080, 20mbps"
-msgstr "1920x1080, 20mbps"
+msgstr ""
 
 msgid "1920x1080, 8mbps"
-msgstr "1920x1080, 8mbps"
+msgstr ""
 
 msgid "1: mark   0/RED: unmark   OK: confirm   EXIT: cancel"
-msgstr "1: markér   0/RØD: fjern   OK: bekræft   EXIT: annuller"
+msgstr "1: ทำเครื่องหมาย   0/แดง: ยกเลิก   OK: ยืนยัน   EXIT: ยกเลิก"
 
 msgid "208kbps, 160p, 15fps"
-msgstr "208kbps, 160p, 15fps"
+msgstr ""
 
 msgid "20Mbps, 1080p"
-msgstr "20Mbps, 1080p"
+msgstr ""
 
 msgid "20Mbps, 1080p, 30fps"
 msgstr ""
 
 msgid "2Mbps, 720p"
-msgstr "2Mbps, 720p"
+msgstr ""
 
 msgid "2Mbps, 720p, 30fps"
 msgstr ""
 
 msgid "320kbps, 240p"
-msgstr "320kbps, 240p"
+msgstr ""
 
 msgid "320kbps, 240p, 15fps"
 msgstr ""
 
 msgid "3Mbps, 720p"
-msgstr "3Mbps, 720p"
+msgstr ""
 
 msgid "420x240, 320kbps"
-msgstr "420x240, 320kbps"
+msgstr ""
 
 msgid "4Mbps, 720p"
-msgstr "4Mbps, 720p"
+msgstr ""
 
 msgid "4Mbps, 720p, 30fps"
 msgstr ""
 
 msgid "576x320, 720 kbps"
-msgstr "576x320, 720 kbps"
+msgstr ""
 
 msgid "64kbps, 128p, 3fps"
-msgstr "64kbps, 128p, 3fps"
+msgstr ""
 
 msgid "720kbps, 320p"
-msgstr "720kbps, 320p"
+msgstr ""
 
 msgid "720kbps, 320p, 30fps"
 msgstr ""
 
 msgid "720x480, 1,5mbps"
-msgstr "720x480, 1,5mbps"
+msgstr ""
 
 msgid "8Mbps, 1080p"
-msgstr "8Mbps, 1080p"
+msgstr ""
 
 msgid "8Mbps, 1080p, 30fps"
 msgstr ""
 
 msgid "96kbps, 128p, 12fps"
-msgstr "96kbps, 128p, 12fps"
+msgstr ""
 
 msgid "<unknown>"
 msgstr ""
 
 msgid "> Activate Remote Player"
-msgstr "> Activar Reproductor Remoto"
+msgstr ""
 
 msgid "> Boxname"
-msgstr "> Nombre del Receptor"
+msgstr ""
 
 msgid "> Cache Folder Path"
-msgstr "> Ruta de la carpeta de Cache"
+msgstr ""
 
 msgid "> Config Folder Path"
-msgstr "> Ruta de la carpeta de configuración"
+msgstr ""
 
 msgid "> Debug Mode"
-msgstr "> Modo Depuración"
+msgstr ""
 
 msgid "> Default View for Movies"
-msgstr "> Vista por defecto para las Peliculas"
+msgstr ""
 
 msgid "> Default View for Music"
-msgstr "> Vista por defecto para la Música"
+msgstr ""
 
 msgid "> Default View for Shows"
-msgstr "> Vista por defecto para las Series"
+msgstr ""
 
 msgid "> Detail type for additional data"
-msgstr "> Tipo de detalles para datos adicionales"
+msgstr ""
 
 msgid "> Exit function in Player"
 msgstr ""
 
 msgid "> Log Folder Path"
-msgstr "> Ruta de la carpeta de Log's"
+msgstr ""
 
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr ""
 
 msgid "> Media Folder Path"
-msgstr "> Ubicación de carpeta de medios"
+msgstr ""
 
 msgid "> Offer next episode"
 msgstr ""
 
 msgid "> Player Temp Path"
-msgstr "> Ubicación temporal del Reproductor"
+msgstr ""
 
 msgid "> Remote Player Port"
 msgstr ""
@@ -429,61 +396,61 @@ msgid "> Search and use forced subtitles"
 msgstr ""
 
 msgid "> Show Backdrops as Videos"
-msgstr "> Mostrar Fondos como Videos"
+msgstr ""
 
 msgid "> Show Filter for Section"
-msgstr "> Mostrar Filtro para Secciones"
+msgstr ""
 
 msgid "> Show Player Poster on external LCD"
-msgstr "> Mostrar Poster en el LCD externo"
+msgstr ""
 
 msgid "> Show Plugin in Main Menu"
-msgstr "> Mostrar Plugin en el Menú Principal"
+msgstr ""
 
 msgid "> Show Seen/Unseen count in TvShows"
-msgstr "> Mostrar Contador de Visto/No Visto en Series"
+msgstr ""
 
 msgid "> Show additional data for plex.tv sections"
-msgstr "> Mostrar datos adicionales para las secciones plex.tv"
+msgstr ""
 
 msgid "> Show liveTv in Views instead of backdrops"
-msgstr "> Mostar TV en Driecto en vistas en lugar de fondos"
+msgstr ""
 
 msgid "> Start with Filtermode"
-msgstr "> Iniciar con Filtrado"
+msgstr ""
 
 msgid "> Stop Live TV on startup"
-msgstr "> Parar Tv en Directo en el inicio"
+msgstr ""
 
 msgid "> Summerize Sections"
-msgstr "> Resumen de Secciones"
+msgstr ""
 
 msgid "> Summerize Servers"
 msgstr ""
 
 msgid "> Use Cache for Sections"
-msgstr ">Utilizar la caché para las Secciones"
+msgstr ""
 
 msgid "> Use Picture Cache"
-msgstr "> Usar caché de imagenes"
+msgstr ""
 
 msgid "> Use fastScroll as default"
-msgstr "> Utilizar FastScroll por defecto"
+msgstr ""
 
 msgid "> Used Skin"
-msgstr "> Skin usado"
+msgstr ""
 
 msgid "> Write debugfile"
-msgstr "> Escritura fichero de depuración"
+msgstr ""
 
 msgid ">> Autoplay the suggested movie"
-msgstr "Afspil det foreslåede filmforslag automatisk"
+msgstr "เล่นภาพยนตร์ที่แนะนำโดยอัตโนมัติ"
 
 msgid ">> Countdown before playing next"
 msgstr ""
 
 msgid ">> Play Themes in TV Shows"
-msgstr ">> Reproducir Temas en Series"
+msgstr ""
 
 msgid ">> Refresh suggestions after this many rotations"
 msgstr ""
@@ -495,10 +462,10 @@ msgid "A friendly name for this server."
 msgstr ""
 
 msgid "Abort"
-msgstr "Anular"
+msgstr ""
 
 msgid "About"
-msgstr "Sobre"
+msgstr ""
 
 msgid "Accept / play now"
 msgstr ""
@@ -507,10 +474,10 @@ msgid "Activate to be able to use with any app with remote function for Plex."
 msgstr ""
 
 msgid "Add"
-msgstr "Añadir"
+msgstr ""
 
 msgid "Add Entry"
-msgstr "Añadir entrada"
+msgstr ""
 
 msgid "Add User"
 msgstr ""
@@ -519,7 +486,7 @@ msgid "Add user"
 msgstr ""
 
 msgid "Adding new mapping was not completed"
-msgstr "AAñadiendo su mapeo no fue completado"
+msgstr ""
 
 msgid "Adding new user was not completed"
 msgstr ""
@@ -531,7 +498,7 @@ msgid "Albums"
 msgstr ""
 
 msgid "All"
-msgstr "Todos"
+msgstr ""
 
 msgid "All (A-Z)"
 msgstr ""
@@ -540,19 +507,19 @@ msgid "All (Z-A)"
 msgstr ""
 
 msgid "All Filmy"
-msgstr "Toda la Filmografia"
+msgstr ""
 
 msgid "All Movies"
-msgstr "Todas las peliculas"
+msgstr ""
 
 msgid "All Shows"
-msgstr "Todas las Series"
+msgstr ""
 
 msgid "All episodes"
-msgstr "Todos los Episodios"
+msgstr ""
 
 msgid "Are you sure?"
-msgstr "Está seguro?"
+msgstr ""
 
 msgid "Artists"
 msgstr ""
@@ -561,22 +528,19 @@ msgid "Ask for pin?"
 msgstr ""
 
 msgid "Aspect Ratio:"
-msgstr "Relación de Aspecto:"
+msgstr ""
 
 msgid "Audio Channels:"
-msgstr "Canales de Audio"
+msgstr ""
 
 msgid "Audio Codec:"
-msgstr "Codec de Audio:"
+msgstr ""
 
 msgid ""
 "Audio Functions\n"
 "\n"
 "Please take note that switching the language here will take only effect if you enable transcoding!"
 msgstr ""
-"Opciones de Audio\n"
-"\n"
-"Tome nota que cambiando el Audio tendrán efecto si habilita transcodificación!"
 
 msgid "Audio preference saved. Will apply on next playback."
 msgstr ""
@@ -585,64 +549,64 @@ msgid "Audio track menu"
 msgstr ""
 
 msgid "Audio:"
-msgstr "Audio:"
+msgstr ""
 
 msgid "Authentication "
 msgstr ""
 
 msgid "Backdrops"
-msgstr "Fondos de pantalla"
+msgstr ""
 
 msgid "Background"
-msgstr "Plan alternativo"
+msgstr ""
 
 msgid "Bitrate:"
-msgstr "Bitrate:"
+msgstr ""
 
 msgid "By Collection"
-msgstr "Por Collección"
+msgstr ""
 
 msgid "By Content Rating"
-msgstr "Por Clasificación de contenido"
+msgstr ""
 
 msgid "By Country"
-msgstr "Por País"
+msgstr ""
 
 msgid "By Decade"
-msgstr "Por Década"
+msgstr ""
 
 msgid "By Director"
-msgstr "Por Director"
+msgstr ""
 
 msgid "By Duration…"
 msgstr ""
 
 msgid "By First Letter"
-msgstr "Por Primera Letra"
+msgstr ""
 
 msgid "By Folder"
-msgstr "Por Carpeta"
+msgstr ""
 
 msgid "By Genre"
-msgstr "Por Genero"
+msgstr ""
 
 msgid "By Genre…"
 msgstr ""
 
 msgid "By Rating"
-msgstr "Por Clasificación"
+msgstr ""
 
 msgid "By Rating…"
 msgstr ""
 
 msgid "By Resolution"
-msgstr "Por Resocución"
+msgstr ""
 
 msgid "By Starring Actor"
-msgstr "Por Actor Principal"
+msgstr ""
 
 msgid "By Year"
-msgstr "Por Año"
+msgstr ""
 
 msgid "By Year…"
 msgstr ""
@@ -654,29 +618,29 @@ msgid "Calculate and show them for tv shows."
 msgstr ""
 
 msgid "Cancel"
-msgstr "Cancelar"
+msgstr ""
 
 msgid "Cancel rating / dismiss suggestion"
 msgstr ""
 
 msgid "Cast:"
-msgstr "Casting:"
+msgstr ""
 
 #, python-format
 msgid "Cast: %s"
-msgstr "Medvirkende: %s"
+msgstr "นักแสดง: %s"
 
 msgid "Change PIN"
-msgstr "Skift PIN"
+msgstr "เปลี่ยน PIN"
 
 msgid "Change the port to your needs."
 msgstr ""
 
 msgid "Channels"
-msgstr "Canales"
+msgstr ""
 
 msgid "Choose a pincode for this profile"
-msgstr "Vælg en PIN-kode til denne profil"
+msgstr "เลือกรหัส PIN สำหรับโปรไฟล์นี้"
 
 msgid "Choose how to deliver subtitles (External/Embed)."
 msgstr ""
@@ -685,14 +649,14 @@ msgid ""
 "Clone this server's settings into a new server entry?\n"
 "You will be asked for a username/password for the new one."
 msgstr ""
-"Klon denne servers indstillinger til en ny serverpost?\n"
-"Du vil blive bedt om brugernavn/adgangskode til den nye bruger."
+"โคลนการตั้งค่าของเซิร์ฟเวอร์นี้ไปยังรายการเซิร์ฟเวอร์ใหม่หรือไม่?\n"
+"ระบบจะขอชื่อผู้ใช้/รหัสผ่านสำหรับผู้ใช้ใหม่"
 
 msgid "Close DreamPlex"
 msgstr ""
 
 msgid "Collections"
-msgstr "Samlinger"
+msgstr "คอลเลกชัน"
 
 msgid "Confirm rating / accept suggested title"
 msgstr ""
@@ -707,8 +671,8 @@ msgid ""
 "Could not reach the server.\n"
 "Please check host, port and network connectivity."
 msgstr ""
-"Kunne ikke oprette forbindelse til serveren.\n"
-"Kontroller host, port og netværksforbindelse."
+"ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้\n"
+"โปรดตรวจสอบโฮสต์ พอร์ต และการเชื่อมต่อเครือข่าย"
 
 msgid "Current User:"
 msgstr ""
@@ -717,32 +681,32 @@ msgid "Custom scan…"
 msgstr ""
 
 msgid "DNS"
-msgstr "DNS"
+msgstr ""
 
 msgid "Delete"
-msgstr "Eliminar"
+msgstr ""
 
 msgid "Delete Entry"
-msgstr "Eliminar entrada"
+msgstr ""
 
 msgid "Delete User"
 msgstr ""
 
 msgid "Deleting aborted!"
-msgstr "SEliminación anulada!"
+msgstr ""
 
 msgid "Direct Local"
-msgstr "Direct Local"
+msgstr ""
 
 msgid "Director:"
-msgstr "Director:"
+msgstr ""
 
 #, python-format
 msgid "Director: %s"
-msgstr "Instruktør: %s"
+msgstr "ผู้กำกับ: %s"
 
 msgid "Discover"
-msgstr "Descubrir"
+msgstr ""
 
 msgid "Discover Jellyfin"
 msgstr ""
@@ -754,24 +718,24 @@ msgid "Dismiss"
 msgstr ""
 
 msgid "DreamPlex"
-msgstr "DreamPlex"
+msgstr ""
 
 #, python-format
 msgid ""
 "DreamPlex was updated to version %s.\n"
 "Restart the GUI now to apply it?"
 msgstr ""
-"DreamPlex er opdateret til version %s.\n"
-"Genstart brugerfladen nu for at anvende den?"
+"DreamPlex ได้รับการอัปเดตเป็นเวอร์ชัน %s\n"
+"รีสตาร์ทอินเทอร์เฟซตอนนี้เพื่อใช้งานหรือไม่?"
 
 msgid "DreamPlex: Mediasync finished!\n"
-msgstr "DreamPlex: Mediasync terminado!\n"
+msgstr ""
 
 msgid "DreamPlex: Rendering finished!\n"
-msgstr "DreamPlex: Renderizado terminado!\n"
+msgstr ""
 
 msgid "EXIT: close"
-msgstr "EXIT: luk"
+msgstr "EXIT: ปิด"
 
 msgid "Edit User"
 msgstr ""
@@ -804,16 +768,16 @@ msgid "Enter subnet base (e.g. 192.168.1)"
 msgstr ""
 
 msgid "Enter the current pincode"
-msgstr "Indtast den nuværende PIN-kode"
+msgstr "ป้อนรหัส PIN ปัจจุบัน"
 
 msgid "Enter the current pincode to remove it"
-msgstr "Indtast den nuværende PIN-kode for at fjerne den"
+msgstr "ป้อนรหัส PIN ปัจจุบันเพื่อลบออก"
 
 msgid "Enter the name of your box, e.g. Livingroom."
-msgstr "Introduzca el nombre del Receptor, ejmpl : salón."
+msgstr ""
 
 msgid "Enter the new pincode"
-msgstr "Indtast den nye PIN-kode"
+msgstr "ป้อนรหัส PIN ใหม่"
 
 msgid "Enter the pin here:"
 msgstr ""
@@ -822,21 +786,19 @@ msgid "Enter the username here:"
 msgstr ""
 
 msgid "Enter this server automatically on startup."
-msgstr "Entrar en este servidor autoáticamente en el inicio."
+msgstr ""
 
 msgid "Enter year(s), comma separated"
 msgstr ""
 
 msgid "Enter your remote path segment here:"
-msgstr "Entre su destino remoto aquí:"
+msgstr ""
 
 #, python-format
 msgid ""
 "Error!\n"
 "Error-message:%s"
 msgstr ""
-"Error!\n"
-"Mensaje de Error:%s"
 
 #, python-format
 msgid ""
@@ -844,15 +806,12 @@ msgid ""
 "Error-message:%s\n"
 "Press Exit to close."
 msgstr ""
-"Erreur!\n"
-"Mensaje de Error:%s\n"
-"Pulsar Exit para cerrar."
 
 msgid "Error:"
-msgstr "Error:"
+msgstr ""
 
 msgid "Error: "
-msgstr "Error:"
+msgstr ""
 
 msgid "Exit player"
 msgstr ""
@@ -861,22 +820,22 @@ msgid "External"
 msgstr ""
 
 msgid "Favorite"
-msgstr "Favorit"
+msgstr "รายการโปรด"
 
 msgid "File:"
-msgstr "Fichero:"
+msgstr ""
 
 msgid "Framerate:"
-msgstr "Framerate:"
+msgstr ""
 
 msgid "Functions List:"
-msgstr "Lista de Funciones:"
+msgstr ""
 
 msgid "General Settings "
 msgstr ""
 
 msgid "Genre:"
-msgstr "Género:"
+msgstr ""
 
 msgid "Go back"
 msgstr ""
@@ -891,13 +850,13 @@ msgid "How many times the banner cycles through its current list of suggestions 
 msgstr ""
 
 msgid "I will now try to play the file via transcode."
-msgstr "Intentaré ejcutando el fichero Transcodificado."
+msgstr ""
 
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 msgid "If off (default), the related-title suggestion for a movie waits for OK and never starts itself."
-msgstr "Hvis slået fra (standard), venter forslaget til en relateret film på OK og starter aldrig af sig selv."
+msgstr "หากปิดอยู่ (ค่าเริ่มต้น) คำแนะนำชื่อเรื่องที่เกี่ยวข้องสำหรับภาพยนตร์จะรอ OK และจะไม่เริ่มเองเลย"
 
 msgid "If present, it will be used instead of username/password."
 msgstr ""
@@ -906,25 +865,25 @@ msgid "If server summerize is off you can here add additional information for be
 msgstr ""
 
 msgid "If you are using plex.tv"
-msgstr "Si usted esta usando plex.tv"
+msgstr ""
 
 msgid "If you change the skin you have to restart at least the GUI!"
-msgstr "Si cambia el Skin debe reinicar por lo menos el GUI!"
+msgstr ""
 
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr ""
 
 msgid "Info:"
-msgstr "Info:"
+msgstr ""
 
 msgid "Initiate Library refresh"
-msgstr "Iniciar actualización de la Libreria"
+msgstr ""
 
 msgid "Interrupt the Jellyfin server search?"
-msgstr "Afbryd søgningen efter Jellyfin-servere?"
+msgstr "ยกเลิกการค้นหาเซิร์ฟเวอร์ Jellyfin หรือไม่?"
 
 msgid "Invalid Location"
-msgstr "Ubicación invalida"
+msgstr ""
 
 msgid "Invalid credentials"
 msgstr ""
@@ -934,7 +893,7 @@ msgstr ""
 
 #, python-format
 msgid "Jellyfin port (default %d)"
-msgstr "Jellyfin-port (standard %d)"
+msgstr "พอร์ต Jellyfin (ค่าเริ่มต้น %d)"
 
 msgid "Jump to menu item 1"
 msgstr ""
@@ -964,16 +923,16 @@ msgid "Jump to menu item 9"
 msgstr ""
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
-msgstr "VENSTRE/HØJRE: gennemse     OP/NED: rul     OK: afspil nu     EXIT: annuller"
+msgstr "ซ้าย/ขวา: เรียกดู     ขึ้น/ลง: เลื่อน     OK: เล่นตอนนี้     EXIT: ยกเลิก"
 
 msgid "LiveTv"
-msgstr "TV en directo"
+msgstr ""
 
 msgid "Local Token:"
-msgstr "Token Local:"
+msgstr ""
 
 msgid "Location:"
-msgstr "Ubicación:"
+msgstr ""
 
 msgid "Login failed"
 msgstr ""
@@ -983,15 +942,15 @@ msgid ""
 "\n"
 "Protect this profile with a PIN before switching to it later?"
 msgstr ""
-"Login lykkedes.\n"
+"เข้าสู่ระบบสำเร็จ\n"
 "\n"
-"Vil du beskytte denne profil med en PIN-kode, før du kan vælge den igen senere?"
+"ต้องการปกป้องโปรไฟล์นี้ด้วยรหัส PIN ก่อนที่จะสามารถเลือกได้อีกครั้งในภายหลังหรือไม่?"
 
 msgid "MENU: Clone for another user"
-msgstr "MENU: Klon til en anden bruger"
+msgstr "เมนู: โคลนสำหรับผู้ใช้อื่น"
 
 msgid "Main Menu"
-msgstr "Menu Principal"
+msgstr ""
 
 msgid "Malformed response from server"
 msgstr ""
@@ -1000,25 +959,25 @@ msgid "Manual seek / clear rating"
 msgstr ""
 
 msgid "Mappings"
-msgstr "Mapeos"
+msgstr ""
 
 msgid "Mark media unwatched"
-msgstr "Marcar el medio como no visualizado"
+msgstr ""
 
 msgid "Mark media watched"
-msgstr "Marcar el medio como visualizado"
+msgstr ""
 
 msgid "Media Functions"
-msgstr "Funciones de Medios"
+msgstr ""
 
 msgid "Medias:"
-msgstr "Medios:"
+msgstr ""
 
 msgid "Misc Settings "
 msgstr ""
 
 msgid "Mixed"
-msgstr "Diverso"
+msgstr ""
 
 msgid "Monitor playback to activate subtitles automatically if needed. You have to enable subtitles with 'Text'-Buttion first."
 msgstr ""
@@ -1027,19 +986,19 @@ msgid "Most Played"
 msgstr ""
 
 msgid "Movies"
-msgstr "Peliculas"
+msgstr ""
 
 msgid "Music"
-msgstr "Musica"
+msgstr ""
 
 msgid "Name                                         IP/plex.tv                                            Port/Email                                        Active"
-msgstr "Nombre                                       IP/plex.tv                                            Puerto/Email                                      Activo"
+msgstr ""
 
 msgid "Name                                         IP/plex.tv                                 Port/Email                                  Active"
-msgstr "Nombre                                      IP/plex.tv                                 Puerto/Email                                Activo"
+msgstr ""
 
 msgid "New"
-msgstr "Nuevo"
+msgstr ""
 
 #, python-format
 msgid "Next episode in %d s"
@@ -1058,16 +1017,13 @@ msgid "No authentication credentials provided"
 msgstr ""
 
 msgid "No data in this section!"
-msgstr "çSin datos en la sección!"
+msgstr ""
 
 msgid ""
 "No extras found ...\n"
 "\n"
 "Press exit to return."
 msgstr ""
-"Sin Extras encontrados ... \n"
-"\n"
-"Pulse sobre Exit para retornar."
 
 msgid "No servers discovered"
 msgstr ""
@@ -1079,10 +1035,10 @@ msgid "OK: play now     EXIT: cancel"
 msgstr ""
 
 msgid "Ok"
-msgstr "Ok"
+msgstr ""
 
 msgid "On Deck"
-msgstr "En Curso"
+msgstr ""
 
 msgid "Open (movie, episode, folder, collection or playlist)"
 msgstr ""
@@ -1094,16 +1050,16 @@ msgid "Override bitrate from quality profile."
 msgstr ""
 
 msgid "PIN changed"
-msgstr "PIN ændret"
+msgstr "เปลี่ยนรหัส PIN แล้ว"
 
 msgid "PIN removed"
-msgstr "PIN fjernet"
+msgstr "ลบรหัส PIN แล้ว"
 
 msgid "PIN set for this profile"
-msgstr "PIN indstillet for denne profil"
+msgstr "ตั้งรหัส PIN สำหรับโปรไฟล์นี้แล้ว"
 
 msgid "Pages:"
-msgstr "Páginas:"
+msgstr ""
 
 msgid "Password for Jellyfin account."
 msgstr ""
@@ -1112,10 +1068,10 @@ msgid "Path Settings "
 msgstr ""
 
 msgid "Pathselector"
-msgstr "Selección de destino"
+msgstr ""
 
 msgid "Pictures"
-msgstr "Fotos"
+msgstr ""
 
 msgid "Pincode for changing settings"
 msgstr ""
@@ -1142,7 +1098,7 @@ msgid "Playback Settings "
 msgstr ""
 
 msgid "Playlists"
-msgstr "Afspilningslister"
+msgstr "เพลย์ลิสต์"
 
 msgid "Plays tv show themes automatically."
 msgstr ""
@@ -1151,14 +1107,12 @@ msgid "Please enter the pincode!"
 msgstr ""
 
 msgid "Please enter your search string: "
-msgstr "Introduzca la cadena de busqueda:"
+msgstr ""
 
 msgid ""
 "Please note to run at least once the sync media function within the server menu.\n"
 "This will download the needed files in the right size of 1280x720."
 msgstr ""
-"Tenga en cuenta para ejecutar al menos una vez la función de sincronización de medios en el menú servidor.\n"
-"Esto descargará los fichero necesarios en el tamaño correcto de 1280x720."
 
 msgid ""
 "Please note to run at least once the sync media function within the server menu.\n"
@@ -1166,17 +1120,15 @@ msgid ""
 msgstr ""
 
 msgid "Please select a server type before saving."
-msgstr "Vælg en servertype, før du gemmer."
+msgstr "โปรดเลือกประเภทเซิร์ฟเวอร์ก่อนบันทึก"
 
 msgid "Please verify you direct local settings"
-msgstr "Verifique la configuración de Direct Local"
+msgstr ""
 
 msgid ""
 "Plexserver seems to be offline. Please check your your settings or connection!\n"
 " Retry?"
 msgstr ""
-"El servidor Plex parece fuera de linea. Verifique la configuración o la conexión!\n"
-"Reintentar?"
 
 msgid ""
 "Plexserver seems to be offline. Start with Wake on Lan settings? \n"
@@ -1184,10 +1136,6 @@ msgid ""
 "Please note: \n"
 "If you press yes the spinner will run for "
 msgstr ""
-"El servidor Plex parece fuera de linea. Comenzar la configuración Wake on Lan?\n"
-"\n"
-"Por favor anote: \n"
-"Si pulsa sobre SI, comenzará la ejecución"
 
 msgid "Prefer forced subtitles if available."
 msgstr ""
@@ -1199,7 +1147,7 @@ msgid "Preferred subtitles language."
 msgstr ""
 
 msgid "Press exit to return"
-msgstr "Pulse exit para salir"
+msgstr ""
 
 msgid "Previous item"
 msgstr ""
@@ -1211,8 +1159,6 @@ msgid ""
 "Process aborted.\n"
 "Press Exit to close."
 msgstr ""
-"Proceso anulado.\n"
-"Pulsar Exit para cerrar."
 
 msgid "Quick scan (/24)"
 msgstr ""
@@ -1239,55 +1185,55 @@ msgid "Rate 5 stars"
 msgstr ""
 
 msgid "Rating"
-msgstr "Bedømmelse"
+msgstr "คะแนน"
 
 msgid "Really delete this Server Entry?"
-msgstr "Realmente elimiar esta entrada de Servidor?"
+msgstr ""
 
 msgid "Recently Added"
-msgstr "Recientemente Añadido"
+msgstr ""
 
 msgid "Recently Aired"
-msgstr "Recientemente Difundido"
+msgstr ""
 
 msgid "Recently Released"
-msgstr "Recientemente Realizado"
+msgstr ""
 
 msgid "Recently Viewed"
-msgstr "Recintemente Visualizado"
+msgstr ""
 
 msgid "Recently Viewed Episodes"
-msgstr "Episodios Recintemente Visualizados"
+msgstr ""
 
 msgid "Recently Viewed Shows"
-msgstr "Series Recintemente Visualizadas"
+msgstr ""
 
 msgid "Reconnecting to background task ...\n"
-msgstr "Reconectando a la tarea en segundo plano ...\n"
+msgstr ""
 
 msgid "Remote Settings "
 msgstr ""
 
 msgid "Remote Token:"
-msgstr "Fjern-token:"
+msgstr "โทเคนระยะไกล:"
 
 msgid "Remove PIN"
-msgstr "Fjern PIN"
+msgstr "ลบรหัส PIN"
 
 msgid "Renames filename.eng.srt automatically to filename.srt so e2 is able to read them."
 msgstr ""
 
 msgid "Resultion:"
-msgstr "Resolución:"
+msgstr ""
 
 msgid "Revoke cache files manually"
 msgstr ""
 
 msgid "Runtime:"
-msgstr "Duración:"
+msgstr ""
 
 msgid "Save"
-msgstr "Salvado"
+msgstr ""
 
 msgid "Save plex server answers in cache to speed up a bit."
 msgstr ""
@@ -1308,28 +1254,28 @@ msgid "Scroll suggestion text up"
 msgstr ""
 
 msgid "Search ..."
-msgstr "Busqueda ..."
+msgstr ""
 
 msgid "Search Episodes..."
-msgstr "Buscar un Episodio"
+msgstr ""
 
 msgid "Search Shows..."
-msgstr "Buscar une serie"
+msgstr ""
 
 msgid "Search string that should be removed from srt file."
 msgstr ""
 
 msgid "Search..."
-msgstr "Buscar"
+msgstr ""
 
 msgid "Search…"
 msgstr ""
 
 msgid "Season"
-msgstr "Temporada"
+msgstr ""
 
 msgid "Seasons:"
-msgstr "Temporada:"
+msgstr ""
 
 msgid "Seek back / previous suggestion"
 msgstr ""
@@ -1338,7 +1284,7 @@ msgid "Seek forward / next suggestion"
 msgstr ""
 
 msgid "Seen:"
-msgstr "Visualizado:"
+msgstr ""
 
 msgid "Select Audio Track (applies to next playback)"
 msgstr ""
@@ -1353,43 +1299,43 @@ msgid "Select discovery"
 msgstr ""
 
 msgid "Select media to play"
-msgstr "Seleccione el medio a reproducir"
+msgstr ""
 
 msgid "Select plex folder"
 msgstr ""
 
 msgid "Select server"
-msgstr "Seleccionar Servidor"
+msgstr ""
 
 msgid "Select the type of server to add."
-msgstr "Vælg den servertype, der skal tilføjes."
+msgstr "เลือกประเภทเซิร์ฟเวอร์ที่จะเพิ่ม"
 
 msgid "Select your type how the box is reachable."
 msgstr ""
 
 msgid "Series"
-msgstr "Serie"
+msgstr ""
 
 msgid "Server"
-msgstr "Servidor"
+msgstr ""
 
 msgid "Server Config"
 msgstr ""
 
 msgid "Server List:"
-msgstr "Lista de Servidores:"
+msgstr ""
 
 msgid "Server Menu"
-msgstr "Menú Servidor"
+msgstr ""
 
 msgid "Server Syncer"
 msgstr ""
 
 msgid "Set PIN"
-msgstr "Indstil PIN"
+msgstr "ตั้งรหัส PIN"
 
 msgid "Settings"
-msgstr "Configuraciones"
+msgstr ""
 
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr ""
@@ -1404,19 +1350,19 @@ msgid "Show playback info (long press: rate/favorite)"
 msgstr ""
 
 msgid "Shows"
-msgstr "Series"
+msgstr ""
 
 msgid "Simply a name for better overview"
 msgstr ""
 
 msgid "Something went wrong while opening mappings xml!"
-msgstr "Algo falló en la apertura de mappings.xml"
+msgstr ""
 
 msgid "Something went wrong while opening users xml!"
 msgstr ""
 
 msgid "Sorry I didn't find the file on the provided locations"
-msgstr "Lo lamentamos, no encontramos el fichero en la ubucación indicada"
+msgstr ""
 
 msgid "Specifiy the type of additional data."
 msgstr ""
@@ -1428,10 +1374,10 @@ msgid "Specify what view type should start automatically."
 msgstr ""
 
 msgid "Start Rendering"
-msgstr "Comenzando Renderizado"
+msgstr ""
 
 msgid "Start Sync"
-msgstr "Arrancar Sync"
+msgstr ""
 
 msgid "Start host (1-254)"
 msgstr ""
@@ -1446,10 +1392,10 @@ msgid "Stop live TV. Enables 'play themes', 'use backdrop videos'"
 msgstr ""
 
 msgid "Streamed"
-msgstr "Streamed"
+msgstr ""
 
 msgid "Studio:"
-msgstr "Estudio:"
+msgstr ""
 
 msgid ""
 "Subtitle Functions\n"
@@ -1467,11 +1413,11 @@ msgid "Subtitle preference saved. Will apply on next playback."
 msgstr ""
 
 msgid "Subtitles:"
-msgstr "Subtitulos:"
+msgstr ""
 
 #, python-format
 msgid "Suggestion in %d s"
-msgstr "Forslag om %d s"
+msgstr "คำแนะนำในอีก %d วินาที"
 
 msgid "Summerize sections in an additional menu step."
 msgstr ""
@@ -1483,7 +1429,7 @@ msgid "Switch User"
 msgstr ""
 
 msgid "Switch to this user"
-msgstr "Skift til denne bruger"
+msgstr "สลับไปยังผู้ใช้นี้"
 
 msgid "Switch user"
 msgstr ""
@@ -1492,7 +1438,7 @@ msgid "Sync"
 msgstr ""
 
 msgid "Sync Media"
-msgstr "Sync Medios"
+msgstr ""
 
 msgid "Sync Settings "
 msgstr ""
@@ -1501,8 +1447,6 @@ msgid ""
 "Sync or Renderer is still running!\n"
 "Continue in background?"
 msgstr ""
-"Sync o el renderizado todavia está en ejecución!\n"
-"Continuar en segundo plano?"
 
 msgid "Sync this content."
 msgstr ""
@@ -1511,10 +1455,10 @@ msgid "Sync/cache server data"
 msgstr ""
 
 msgid "System"
-msgstr "Sistema"
+msgstr ""
 
 msgid "System - Systemcheck"
-msgstr "Sistema - Verificación del sistema"
+msgstr ""
 
 msgid "System Server"
 msgstr ""
@@ -1523,13 +1467,13 @@ msgid "System Settings"
 msgstr ""
 
 msgid "Systemcheck"
-msgstr "Verificación del sisetma"
+msgstr ""
 
 msgid "TV Shows"
-msgstr "Series TV"
+msgstr ""
 
 msgid "Target: "
-msgstr "Destino:"
+msgstr ""
 
 msgid "The Carousel skin's main-menu banner switches to another suggested title after this many seconds. 0 keeps showing the same one."
 msgstr ""
@@ -1545,16 +1489,13 @@ msgstr ""
 
 #, python-format
 msgid "This Box can't decode %s streams!"
-msgstr "Este receptor no puede decodificar %s streams !"
+msgstr ""
 
 msgid ""
 "This will download all medias from the selected server.\n"
 "\n"
 "Additional to this we download the pictures in 1280x720 for better fullscreen backdrops."
 msgstr ""
-"Esto descargará todos los medios del servidor seleccionado.\n"
-"\n"
-"Adicionalmente a esto descargaremos las fotos en 1280x720 para mejorar los fondos a pantalla completa."
 
 msgid ""
 "This will download all medias from the selected server.\n"
@@ -1569,28 +1510,28 @@ msgid "Toggle on/off to show or hide this server."
 msgstr ""
 
 msgid "Toggle state to on/off to show this server in lost or not."
-msgstr "Modificar el estado On/Off para mostrar este servidor en perdidos o no."
+msgstr ""
 
 msgid "Total:"
-msgstr "Total:"
+msgstr ""
 
 msgid "Towards the end of an episode (or a related-title suggestion towards the end of a movie), offer to jump to the next one."
-msgstr "Mod slutningen af et afsnit (eller et relateret titelforslag mod slutningen af en film), tilbyd at springe til det næste."
+msgstr "ใกล้จบตอน (หรือคำแนะนำชื่อเรื่องที่เกี่ยวข้องใกล้จบภาพยนตร์) เสนอให้ข้ามไปตอนถัดไป"
 
 msgid "Tracks"
 msgstr ""
 
 msgid "Transcoded"
-msgstr "Transcodificado"
+msgstr ""
 
 msgid "Tv Shows"
-msgstr "Series TV"
+msgstr ""
 
 msgid "UNEXPECTED ERROR:"
-msgstr "ERROR NO ESPERADO:"
+msgstr ""
 
 msgid "UP/DOWN: scroll     OK: play now     EXIT: cancel"
-msgstr "OP/NED: rul     OK: afspil nu     EXIT: annuller"
+msgstr "ขึ้น/ลง: เลื่อน     OK: เล่นตอนนี้     EXIT: ยกเลิก"
 
 msgid "Unauthorized"
 msgstr ""
@@ -1602,7 +1543,7 @@ msgid "Unmark favorite"
 msgstr ""
 
 msgid "Unseen:"
-msgstr "Sin visualizar:"
+msgstr ""
 
 msgid "Unsupported mapping for this server"
 msgstr ""
@@ -1611,7 +1552,7 @@ msgid "Unsupported users for this server"
 msgstr ""
 
 msgid "Unwatched"
-msgstr "Si  Visualizar"
+msgstr ""
 
 msgid "Use Home Users?"
 msgstr ""
@@ -1620,7 +1561,7 @@ msgid "Use Pinprotection for switch back to plex.tv user?"
 msgstr ""
 
 msgid "Use this if you have m1v videos as backdrops"
-msgstr "Use esto si tiene videos m1v como fondos"
+msgstr ""
 
 msgid "Use this if you secured your plex server in the settings."
 msgstr ""
@@ -1644,99 +1585,97 @@ msgid "Users"
 msgstr ""
 
 msgid "Video Codec:"
-msgstr "Codec de video:"
+msgstr ""
 
 msgid "View '"
-msgstr "Vistas '"
+msgstr ""
 
 msgid "Wake On Lan Settings "
 msgstr ""
 
 msgid "Warning:"
-msgstr "Atención:"
+msgstr ""
 
 msgid "We did it :-)"
-msgstr "Lo conseguimos  :-)"
+msgstr ""
 
 msgid "Without this option we just print to console."
-msgstr "Sin esta opción solo se mostrará en la consola."
+msgstr ""
 
 msgid "Writer:"
-msgstr "Escritor:"
+msgstr ""
 
 msgid "Wrong pincode!"
-msgstr "Forkert PIN-kode!"
+msgstr "รหัส PIN ไม่ถูกต้อง!"
 
 msgid "Year:"
-msgstr "Año:"
+msgstr ""
 
 msgid "You can use Systemcheck in the menu."
-msgstr "Puede usar Systemcheck en el menu"
+msgstr ""
 
 msgid "You have no data in this section!"
-msgstr "Der er ingen data i denne sektion!"
+msgstr "ไม่มีข้อมูลในส่วนนี้!"
 
 msgid "You need gstreamer_fragmented installed for this feature! Please check in System ... "
-msgstr "Necesita gstreamer_fragmented instalado para usar esta función. Verifiquelo en Sistema ..."
+msgstr ""
 
 #, python-format
 msgid ""
 "Your Box can't decode this video stream!\n"
 "%s"
 msgstr ""
-"Su receptor no puede decodificar este Video stream vidéo!\n"
-"%s"
 
 msgid "Your cinema, at home"
 msgstr ""
 
 msgid "backdrop not found, trying to download ..."
-msgstr "No encontrado Fondo de pantalla, intentando descargar ..."
+msgstr ""
 
 msgid "backdrop video exists under the location "
-msgstr "El video en segundo plano existe en la ubicación"
+msgstr ""
 
 msgid "delete Medias"
-msgstr "Borrar los medios"
+msgstr ""
 
 msgid "e.g. lcd4linux"
-msgstr "ejempl. lcd4linux"
+msgstr ""
 
 msgid "fastScroll 'Off'"
-msgstr "fastScroll 'Off'"
+msgstr ""
 
 msgid "fastScroll 'On'"
-msgstr "Défilement rapide 'On'"
+msgstr ""
 
 msgid "for the user:"
-msgstr "para el usuario:"
+msgstr ""
 
 msgid "found backdrop - size("
-msgstr "Encontrado Fondo de pantalla - tamaño("
+msgstr ""
 
 msgid "found poster - size("
-msgstr "Poster encontrado- tamaño("
+msgstr ""
 
 msgid "get local auth Token"
-msgstr "Obtener un Token local"
+msgstr ""
 
 msgid "no Data"
-msgstr "Sin dato"
+msgstr ""
 
 msgid "playback mode '"
-msgstr "Modo de Reprodcción '"
+msgstr ""
 
 msgid "playmode 'multi'"
-msgstr "Mode de reproducción 'multi'"
+msgstr ""
 
 msgid "playmode 'single'"
-msgstr "Mode de reproducción 'single'"
+msgstr ""
 
 msgid "plex client for enigma2"
-msgstr "Un cliente Plex para Enigma2"
+msgstr ""
 
 msgid "plex.tv"
-msgstr "plex.tv"
+msgstr ""
 
 #, python-format
 msgid ""
@@ -1744,45 +1683,42 @@ msgid ""
 "Check Username and Password.\n"
 "%s"
 msgstr ""
-"Error de Token plex.tv:\n"
-"Verifique usuario y contraseña.\n"
-"%s"
 
 msgid "poster not found, trying to download ..."
-msgstr "Poster no encontrado, intentando descargar ..."
+msgstr ""
 
 msgid "press 'Audio' or 'Radio'"
 msgstr ""
 
 msgid "press 'Info'"
-msgstr "Presione 'Info'"
+msgstr ""
 
 msgid "press 'Text'"
-msgstr "Puksar sobre 'Text'"
+msgstr ""
 
 msgid "resume 'Off'"
-msgstr "Resumir 'Off'"
+msgstr ""
 
 msgid "resume 'On'"
-msgstr "Resumir 'On'"
+msgstr ""
 
 msgid "show 'Description'"
-msgstr "Mostrar 'Descripción'"
+msgstr ""
 
 msgid "show 'Details'"
-msgstr "Mostrar 'Detalles'"
+msgstr ""
 
 msgid "skipping because unsupported image type. "
 msgstr ""
 
 msgid "title: "
-msgstr "Título:"
+msgstr ""
 
 msgid "trying to render backdrop now ...: "
-msgstr "Intentando renderizar en segundo plano ahora ...:"
+msgstr ""
 
 msgid "turn filter mode off"
-msgstr "Desactivar filtrado"
+msgstr ""
 
 msgid "unsupported mapping:"
 msgstr ""
@@ -1797,189 +1733,13 @@ msgid "with the id:"
 msgstr ""
 
 msgid "☆☆☆☆☆  (cleared)"
-msgstr "☆☆☆☆☆  (ryddet)"
-
-#~ msgid " >> plex.tv renew plex.tv token"
-#~ msgstr " >> plex.tv Token erneuern"
-
-#~ msgid "(re)create plex.tv Token"
-#~ msgstr "(re)crear un Token plex.tv"
+msgstr "☆☆☆☆☆  (ล้างแล้ว)"
 
 #~ msgid "1: mark   0: unmark   OK: confirm   EXIT: cancel"
-#~ msgstr "1: aktivér   0: deaktivér   OK: bekræft   EXIT: annuller"
-
-#~ msgid "> Check for updates on startup"
-#~ msgstr "> Verificar actualizaciones en el inicio"
-
-#~ msgid "> Show Infobar when buffer drained"
-#~ msgstr "> Mostrar Infobar cuando el buufer esté lleno"
-
-#~ msgid "> Updatetype"
-#~ msgstr "> Tipo de actualización"
-
-#~ msgid "Check for gst-plugin-fragmented"
-#~ msgstr "Chequear gst-plugin-fragmentado"
-
-#~ msgid "Check for gst-plugin-fragmented if you are using OE16."
-#~ msgstr "Chequear gst-plugin-fragmentado si usa OE16"
-
-#~ msgid "Check for gst-plugins-bad-fragmented"
-#~ msgstr "Chequear gst-plugin-fragmentado"
-
-#~ msgid "Check for gst-plugins-bad-fragmented if you are using OE20."
-#~ msgstr "Chequear gst-plugin-fragmentado si usa OE20"
-
-#~ msgid "Check for update."
-#~ msgstr "Verificar actualización"
-
-#~ msgid "Check mjpegtools intallation data."
-#~ msgstr "Verificar instalación de Mjpegtools?"
-
-#~ msgid "Check openSSL installation data."
-#~ msgstr "Verificar instalación openSSL."
-
-#~ msgid "Check python imaging installation data."
-#~ msgstr "Verificar instalación de la imagen Python?"
-
-#~ msgid "Check python textutils installation data."
-#~ msgstr "Verificar instalación de Python textutils?"
-
-#~ msgid "Connection Settings"
-#~ msgstr "Parámetros de conexión"
-
-#~ msgid "Could not install "
-#~ msgstr "No se puede instalar"
-
-#~ msgid ""
-#~ "Enigma2 must be restarted!\n"
-#~ "Should Enigma2 now restart?"
-#~ msgstr ""
-#~ "Debe reiniciarse Enigma2!\n"
-#~ "Debe reiniciarse Enigma2 ahora?"
-
-#~ msgid ""
-#~ "For currentlyRunning feature just activate.\n"
-#~ "For section management you have to connect your server successfully to plex.tv once.\n"
-#~ "After that just disable your Portforwarding policy."
-#~ msgstr ""
-#~ "Für currentlyRunning einfach aktivieren.\n"
-#~ "Für Sektionenmanagement muss einmal mittels"
-
-#~ msgid "General Settings"
-#~ msgstr "Configuración General"
-
-#~ msgid "If activated on each start we will check if there is a new version depending on your update type."
-#~ msgstr "Si está activo en cada inicio chequearemos si hay nueva versión dependiendo del tipo de actualización"
-
-#~ msgid "Information:\n"
-#~ msgstr "Información:\n"
+#~ msgstr "1: เปิดใช้งาน   0: ปิดใช้งาน   OK: ยืนยัน   EXIT: ยกเลิก"
 
 #~ msgid "LEFT/RIGHT: browse     OK: play now     EXIT: cancel"
-#~ msgstr "VENSTRE/HØJRE: gennemse     OK: afspil nu     EXIT: annuller"
-
-#~ msgid "Misc Settings"
-#~ msgstr "Configuración Variada"
-
-#~ msgid "No internet connection available or openssl is not installed!"
-#~ msgstr "No hay conexión a Internet ó openssl no instalado"
-
-#~ msgid "No update available"
-#~ msgstr "No hay actualizaciones disponibles"
-
-#~ msgid "Path Settings"
-#~ msgstr "Parametros de Ubicaciones"
-
-#~ msgid "Playback Settings"
-#~ msgstr "Parámetros de Reproducción"
-
-#~ msgid ""
-#~ "Process aborted.\n"
-#~ "Press OK to close."
-#~ msgstr ""
-#~ "Prozess abgebrochen.\n"
-#~ "Drücke OK um zu schließen."
-
-#~ msgid "Reading section of the server ..."
-#~ msgstr "lese section vom server ..."
-
-#~ msgid "Remote Settings"
-#~ msgstr "Parametros del mando"
-
-#~ msgid ""
-#~ "Subtitle Functions\n"
-#~ "\n"
-#~ "Please take note that switching the subtitles here will take only effect if you enable transcoding!"
-#~ msgstr ""
-#~ "Opciones de subtitulos\n"
-#~ "\n"
-#~ "Tome nota que cambiando los subtitulos tendrán efecto si habilita transcodificación!"
-
-#~ msgid "Sync Settings"
-#~ msgstr "Parámetros de sincronización"
-
-#~ msgid ""
-#~ "The selected plugin is not installed!\n"
-#~ " Do you want to proceed to install?"
-#~ msgstr ""
-#~ "El plugin seleccionado no esta disponible!\n"
-#~ "Quiere proceder a la instalación?"
-
-#~ msgid "Toggle state to on/off"
-#~ msgstr "Statuswechsel on/off"
-
-#~ msgid "Use Beta only if you really want to help with testing"
-#~ msgstr "Utilize la versión Beta únicamente si quiere ayudar con el testeo."
-
-#~ msgid "Use this if you do not have enough space on your box e.g. no hdd drive just flash."
-#~ msgstr "Utilize essto si no tiene sufuciente esspacio en su receptorx, ejempl : Sin disco duro usar la memoria flash."
-
-#~ msgid "Userinterface Settings"
-#~ msgstr "Parámetros del Interfaz"
-
-#~ msgid "Wake On Lan Settings"
-#~ msgstr "Parámetros de Wake On Lan"
-
-#~ msgid "You need openSSL installed for this feature! Please check in System ..."
-#~ msgstr "Necesita tener instalado opneSSL para esta función. Por favor reviselo en Sistema ..."
-
-#~ msgid "Your current Version is "
-#~ msgstr "Su versión actual es "
-
-#~ msgid "check plex.tv Token"
-#~ msgstr "Verficar Token plex.tv"
-
-#~ msgid "checking for  "
-#~ msgstr "suche nach"
-
-#~ msgid "checking for medias with ratingKey: "
-#~ msgstr "prüfe auf Medias mit dem ratingKey:"
-
-#~ msgid "download_url: "
-#~ msgstr "download_url:"
-
-#~ msgid "got movie url: "
-#~ msgstr "movie url:"
-
-#~ msgid "got music url: "
-#~ msgstr "music url:"
-
-#~ msgid "got show url: "
-#~ msgstr "serien url:"
-
-#~ msgid "onDeck"
-#~ msgstr "En Curso"
-
-#~ msgid "please check if python-pyopenssl is installed."
-#~ msgstr "Verificar si python-pyopenssl esta instalado"
-
-#~ msgid "plex.tv Localtoken:"
-#~ msgstr "plex.tv Token Local:"
-
-#~ msgid "plex.tv Token:"
-#~ msgstr "plex.tv Token:"
-
-#~ msgid "press 'Audio'"
-#~ msgstr "Presione 'Audio'"
+#~ msgstr "ซ้าย/ขวา: เรียกดู     OK: เล่นตอนนี้     EXIT: ยกเลิก"
 
 #~ msgid "♡  (unmarked)"
-#~ msgstr "♡  (fjernet)"
+#~ msgstr "♡  (ยกเลิกแล้ว)"
