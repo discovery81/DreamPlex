@@ -61,12 +61,17 @@ class DP_MediaLibrary(ABC, Screen):
 		Returns an empty list if nothing was found/the backend does not
 		support this - never None.
 
+		Two buckets, in-progress/continue-watching titles first, filled out
+		with recently-added/suggested ones: each entryData carries a
+		'heroKind' of 'continue' or 'suggested' so DP_ServerMenu can badge
+		the hero banner accordingly.
+
 		Deliberately its OWN abstract method rather than DP_MainMenu calling
-		an existing "on deck/recently added" fetch directly: today's
-		implementation happens to just be that fetch, backend by backend,
-		but a future change to what the hero should show (e.g. weighted
-		toward unwatched titles) only ever touches this one method, per
-		backend, never the caller."""
+		an existing fetch directly: today's implementation happens to just
+		combine two existing fetches, backend by backend, but a future
+		change to what the hero should show (e.g. weighted toward unwatched
+		titles) only ever touches this one method, per backend, never the
+		caller."""
 		pass
 
 	@abstractmethod
@@ -278,6 +283,18 @@ class DP_MediaLibrary(ABC, Screen):
 
 	@abstractmethod
 	def doRequest(self, url, myType="GET"):
+		pass
+
+	@abstractmethod
+	def refreshLibrarySection(self, token):
+		"""Ask the server to rescan the library section currently being
+		browsed (DP_View's yellow "refresh Library" button at color level
+		2) - `token` is opaque and backend-specific: Plex's own
+		context['libraryRefreshURL'] is already the full URL to GET
+		(unchanged, see DP_PlexLibrary.buildContextMenu()); Jellyfin's is
+		the section's item id, POSTed to its /Items/{id}/Refresh endpoint.
+		No-ops if `token` is falsy - not every listing (e.g. hero/similar
+		suggestions, which never set this context field at all) has one."""
 		pass
 
 	@abstractmethod

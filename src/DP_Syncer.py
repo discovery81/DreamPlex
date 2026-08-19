@@ -116,11 +116,17 @@ class DPS_Syncer(Screen, DPH_ScreenHelper, DPH_PlexScreen):
 		# we use this counter to reset scorll label every x entries to stay responsive
 		self.counter = 0
 
-		self["Title"] = Label(_("Server Syncer"))
+		# "Server Syncer"/"Start Sync" read as "mirror the whole server
+		# locally" - in "sync" mode this only ever downloads posters/
+		# backdrops and metadata into the local cache (see
+		# syncThroughMediaLibrary()), never the actual video files. "render"
+		# mode (backdrop-video rendering, a different feature entirely) is
+		# untouched.
+		self["Title"] = Label(_("Catalog Download") if self._mode == "sync" else _("Server Syncer"))
 
 		self["btn_greenText"] = Label()
 		if self._mode == "sync":
-			self["btn_greenText"].setText(_("Start Sync"))
+			self["btn_greenText"].setText(_("Start Download"))
 		else:
 			self["btn_greenText"].setText(_("Start Rendering"))
 		self["btn_green"] = Pixmap()
@@ -137,7 +143,6 @@ class DPS_Syncer(Screen, DPH_ScreenHelper, DPH_PlexScreen):
 										 {
 											 "red": self.keyRed,
 											 "blue": self.keyBlue,
-											 "yellow": self.keyYellow,
 											 "green": self.keyGreen,
 											 "bouquet_up": self.keyBouquetUp,
 											 "bouquet_down": self.keyBouquetDown,
@@ -154,7 +159,7 @@ class DPS_Syncer(Screen, DPH_ScreenHelper, DPH_PlexScreen):
 	def finishLayout(self):
 		printl("", self, "S")
 
-		self.setTitle("Server - Syncer")
+		self.setTitle(_("Catalog Download") if self._mode == "sync" else "Server - Syncer")
 
 		# first we set the pics for buttons
 		self.setColorFunctionIcons()
@@ -250,14 +255,6 @@ class DPS_Syncer(Screen, DPH_ScreenHelper, DPH_PlexScreen):
 
 			self["btn_redText"].hide()
 			self["btn_red"].hide()
-
-		printl("", self, "C")
-
-	#===========================================================================
-	#
-	#===========================================================================
-	def keyYellow(self):
-		printl("", self, "S")
 
 		printl("", self, "C")
 

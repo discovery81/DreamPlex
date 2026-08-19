@@ -118,6 +118,13 @@ class DPS_MainMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper):
 		if self._fillerEnabled:
 			self["menuFillerLine1"] = Label()
 			self["menuFillerLine2"] = Label()
+			# Contextual hint next to the marquee, updated on every selection
+			# change (see _updateMenuHint()) - "what happens if I press OK on
+			# this row", since the row itself only shows a name/number.
+			self["menuHintEyebrow"] = Label()
+			self["menuHintTitle"] = Label()
+			self["menuHintBody"] = Label()
+			self["menu"].onSelectionChanged.append(self._updateMenuHint)
 
 		self["actions"] = HelpableActionMap(self, "DP_MainMenuActions",
 											{
@@ -176,6 +183,61 @@ class DPS_MainMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper):
 		self.menu_main_list = self["menu"].list
 
 		self.refreshMenu()
+
+		if self._fillerEnabled:
+			# onSelectionChanged (registered above) fires on later moves, but
+			# setList() just above does not retroactively fire it for the
+			# row it lands on first - without this the hint stays blank
+			# until the user actually presses up/down once.
+			self._updateMenuHint()
+
+		printl("", self, "C")
+
+	#===============================================================================
+	# One short line each, per row "kind" - the same tags DPS_MainMenu's own
+	# picon widgets already key off of (MenuEntryCompare in skin.xml:
+	# serverEntry/settingsEntry/aboutEntry/systemEntry/LiveTv), so this
+	# reuses a distinction the skin already makes rather than inventing a
+	# new one. Falls back to a generic "Open <name>" for anything else
+	# (e.g. "settingsEntry" rows from getSettingsMenu()'s own submenu -
+	# Settings/Server/Systemcheck/Backdrops - there is no single kind tag
+	# reused across those four, so a bespoke line per row is not worth it).
+	#===============================================================
+	def _updateMenuHint(self):
+		printl("", self, "S")
+
+		current = self["menu"].getCurrent()
+		if current is None:
+			printl("", self, "C")
+			return
+
+		name = current[0]
+		kind = current[2] if len(current) > 2 else None
+
+		if kind == "serverEntry":
+			eyebrow = _("Server")
+			title = _("Enter %s") % name
+			body = _("Browse Movies, TV Shows and Music on this server.")
+		elif kind == "systemEntry":
+			eyebrow = _("Settings")
+			title = _("Open Settings")
+			body = _("Configure the plugin: servers, skin, cache and more.")
+		elif kind == "LiveTv":
+			eyebrow = _("Live TV")
+			title = _("Back to live TV")
+			body = ""
+		elif kind == "aboutEntry":
+			eyebrow = _("Info")
+			title = _("About")
+			body = _("Information and credits for the plugin.")
+		else:
+			eyebrow = ""
+			title = _("Open %s") % name
+			body = ""
+
+		self["menuHintEyebrow"].setText(eyebrow)
+		self["menuHintTitle"].setText(title)
+		self["menuHintBody"].setText(body)
 
 		printl("", self, "C")
 

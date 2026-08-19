@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-plugin-extentions-dreamplex 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 23:30+0200\n"
+"POT-Creation-Date: 2026-08-20 00:05+0200\n"
 "PO-Revision-Date: 2024-05-24 00:00+0100\n"
 "Last-Translator: Alessio Maramici <discovery81@gmail.com>\n"
 "Language-Team: none\n"
@@ -413,6 +413,9 @@ msgstr "> Percorso Cartella Log"
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr "> Rotazione banner hero menu principale (secondi, 0=off)"
 
+msgid "> Max hero suggestions to request"
+msgstr "> Numero massimo di suggerimenti hero"
+
 msgid "> Media Folder Path"
 msgstr "> Percorso Cartella Media"
 
@@ -590,6 +593,9 @@ msgstr "Audio:"
 msgid "Authentication "
 msgstr "Autenticazione "
 
+msgid "Back to live TV"
+msgstr "Torna alla diretta TV"
+
 msgid "Backdrops"
 msgstr "Sfondi"
 
@@ -598,6 +604,12 @@ msgstr "In background"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
+
+msgid "Browse"
+msgstr "Sfoglia"
+
+msgid "Browse Movies, TV Shows and Music on this server."
+msgstr "Sfoglia Film, Serie TV e Musica di questo server."
 
 msgid "By Collection"
 msgstr "Per Collezione"
@@ -666,6 +678,12 @@ msgstr "Cast:"
 msgid "Cast: %s"
 msgstr "Cast: %s"
 
+msgid "Catalog"
+msgstr "Catalogo"
+
+msgid "Catalog Download"
+msgstr "Scarica catalogo"
+
 msgid "Change PIN"
 msgstr "Cambia PIN"
 
@@ -694,6 +712,21 @@ msgstr "Chiudi DreamPlex"
 msgid "Collections"
 msgstr "Collezioni"
 
+msgid "Color buttons: filter mode"
+msgstr "Tasti colore: modalità filtro"
+
+msgid "Color buttons: playback mode / resume / watched / quality"
+msgstr "Tasti colore: modalità riproduzione / riprendi / visto / qualità"
+
+msgid "Color buttons: server settings / general settings / delete / path mapping"
+msgstr "Tasti colore: impostazioni server / impostazioni generali / elimina / mappatura percorsi"
+
+msgid "Color buttons: view / fast scroll / refresh library / details"
+msgstr "Tasti colore: vista / scorrimento rapido / aggiorna libreria / dettagli"
+
+msgid "Configure the plugin: servers, skin, cache and more."
+msgstr "Configura il plugin: server, skin, cache e altro."
+
 msgid "Confirm rating / accept suggested title"
 msgstr "Conferma voto / accetta titolo suggerito"
 
@@ -702,6 +735,9 @@ msgstr "L'utente confermato da Plex è stato configurato!"
 
 msgid "Connection Settings "
 msgstr "Impostazioni di connessione "
+
+msgid "Continue watching"
+msgstr "Continua a guardare"
 
 msgid ""
 "Could not reach the server.\n"
@@ -753,6 +789,9 @@ msgstr "Rileva Plex"
 msgid "Dismiss"
 msgstr "Ignora"
 
+msgid "Download posters and info (not videos)"
+msgstr "Scarica locandine e info (non i video)"
+
 msgid "DreamPlex"
 msgstr "DreamPlex"
 
@@ -787,6 +826,10 @@ msgstr "Abilita la funzione trailer. Funziona solo con PlexPass o con il plugin 
 
 msgid "End host (1-254)"
 msgstr "Host finale (1-254)"
+
+#, python-format
+msgid "Enter %s"
+msgstr "Entra in %s"
 
 msgid "Enter Jellyfin password"
 msgstr "Inserisci la password Jellyfin"
@@ -867,10 +910,13 @@ msgid "File:"
 msgstr "File:"
 
 msgid "Framerate:"
-msgstr "Frequenza fotogrammi:"
+msgstr "Framerate:"
 
 msgid "Functions List:"
 msgstr "Elenco delle funzioni:"
+
+msgid "General Settings"
+msgstr "Impostazioni Generali"
 
 msgid "General Settings "
 msgstr "Impostazioni generali "
@@ -914,8 +960,14 @@ msgstr "Se cambi la skin dovrai riavviare almeno la GUI!"
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr "Se non fai nulla, la puntata successiva parte dopo questi secondi."
 
+msgid "Info"
+msgstr "Info"
+
 msgid "Info:"
 msgstr "Info:"
+
+msgid "Information and credits for the plugin."
+msgstr "Informazioni e crediti del plugin."
 
 msgid "Initiate Library refresh"
 msgstr "Avvia ricaricamento Library"
@@ -965,6 +1017,9 @@ msgstr "Vai alla voce di menu 9"
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
 msgstr "SINISTRA/DESTRA: sfoglia     SU/GIÙ: scorri     OK: riproduci ora     EXIT: annulla"
+
+msgid "Live TV"
+msgstr "TV live"
 
 msgid "LiveTv"
 msgstr "TV live"
@@ -1084,8 +1139,18 @@ msgstr "Ok"
 msgid "On Deck"
 msgstr "In Primo Piano"
 
+#, python-format
+msgid "Open %s"
+msgstr "Apri %s"
+
 msgid "Open (movie, episode, folder, collection or playlist)"
 msgstr "Apri (film, episodio, cartella, collezione o playlist)"
+
+msgid "Open Settings"
+msgstr "Apri le impostazioni"
+
+msgid "Open series"
+msgstr "Apri la serie"
 
 msgid "Original Quality"
 msgstr "Qualità originale"
@@ -1286,7 +1351,7 @@ msgid "Revoke cache files manually"
 msgstr "Elimina manualmente i file di cache"
 
 msgid "Runtime:"
-msgstr "Stato corrente:"
+msgstr "Durata:"
 
 msgid "Save"
 msgstr "Salva"
@@ -1384,6 +1449,9 @@ msgstr "Elenco dei server:"
 msgid "Server Menu"
 msgstr "Menu del server"
 
+msgid "Server Settings"
+msgstr "Impostazioni Server"
+
 msgid "Server Syncer"
 msgstr "Sincronizzazione del server"
 
@@ -1396,8 +1464,14 @@ msgstr "Impostazioni"
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr "Mostra un filtro aggiuntivo in un passaggio di menu ulteriore, es. OnDeck"
 
+msgid "Show cast/director/rating details"
+msgstr "Mostra cast/regia/valutazione"
+
 msgid "Show extended info"
 msgstr "Mostra informazioni estese"
+
+msgid "Show help"
+msgstr "Mostra la guida"
 
 msgid "Show live tv while you are navigating through your libs."
 msgstr "Mostra la TV live mentre navighi nelle librerie."
@@ -1429,11 +1503,11 @@ msgstr "Specifica cosa deve fare il tasto Exit nel player."
 msgid "Specify what view type should start automatically."
 msgstr "Specifica quale tipo di vista deve avviarsi automaticamente."
 
+msgid "Start Download"
+msgstr "Avvia download"
+
 msgid "Start Rendering"
 msgstr "Avvia il rendering"
-
-msgid "Start Sync"
-msgstr "Avvia la sincronizzazione"
 
 msgid "Start host (1-254)"
 msgstr "Host iniziale (1-254)"
@@ -1474,6 +1548,9 @@ msgstr "Preferenza dei sottotitoli salvata. Sarà applicata alla prossima riprod
 msgid "Subtitles:"
 msgstr "Sottotitoli:"
 
+msgid "Suggested"
+msgstr "Proposto"
+
 #, python-format
 msgid "Suggestion in %d s"
 msgstr "Suggerimento tra %d s"
@@ -1493,9 +1570,6 @@ msgstr "Passa a questo utente"
 msgid "Switch user"
 msgstr "Cambia utente"
 
-msgid "Sync"
-msgstr "Sincronizza"
-
 msgid "Sync Media"
 msgstr "Sincronizza i media"
 
@@ -1511,9 +1585,6 @@ msgstr ""
 
 msgid "Sync this content."
 msgstr "Sincronizza questo contenuto."
-
-msgid "Sync/cache server data"
-msgstr "Sincronizza/metti in cache i dati del server"
 
 msgid "System"
 msgstr "Sistema"
@@ -1621,6 +1692,12 @@ msgstr "Utenti non supportati per questo server"
 msgid "Unwatched"
 msgstr "Non Visto"
 
+msgid "Updating..."
+msgstr "Aggiornamento in corso..."
+
+msgid "Upper limit only - the server may return fewer, depending on what it has to offer."
+msgstr "Solo un limite massimo - il server può restituirne meno, in base a cosa ha disponibile."
+
 msgid "Use Home Users?"
 msgstr "Usare gli utenti Home?"
 
@@ -1670,7 +1747,11 @@ msgid "Without this option we just print to console."
 msgstr "Senza questa opzione scriviamo solo sulla console."
 
 msgid "Writer:"
-msgstr "Sceneggiatura:"
+msgstr "Autore:"
+
+#, python-format
+msgid "Writer: %s"
+msgstr "Autore: %s"
 
 msgid "Wrong pincode!"
 msgstr "Codice PIN errato!"
@@ -1768,11 +1849,20 @@ msgstr "premi 'Info'"
 msgid "press 'Text'"
 msgstr "premi 'Text'"
 
+msgid "refresh Library"
+msgstr "aggiorna Libreria"
+
 msgid "resume 'Off'"
 msgstr "ripresa 'Off'"
 
 msgid "resume 'On'"
 msgstr "ripresa 'On'"
+
+msgid "set 'Seen'"
+msgstr "segna 'Visto'"
+
+msgid "set 'Unseen'"
+msgstr "segna 'Non visto'"
 
 msgid "show 'Description'"
 msgstr "mostra 'Descrizione'"
@@ -1878,8 +1968,8 @@ msgstr "☆☆☆☆☆  (cancellato)"
 #~ msgid "Exit"
 #~ msgstr "Esci"
 
-#~ msgid "General Settings"
-#~ msgstr "Impostazioni Generali"
+#~ msgid "Force refresh (also redownloads posters/backdrops)"
+#~ msgstr "Aggiorna forzatamente (riscarica anche locandine/sfondi)"
 
 #~ msgid "Help"
 #~ msgstr "Aiuto"
@@ -1947,17 +2037,23 @@ msgstr "☆☆☆☆☆  (cancellato)"
 #~ msgid "Set view as default"
 #~ msgstr "Imposta Visto come predefinito"
 
-#~ msgid "Show media details"
-#~ msgstr "Mostra informazioni media"
-
 #~ msgid "Sorry unable to perform action, something has failed!!"
 #~ msgstr "Impossibile eseguire l'azione, qualcoda non ha funzionato!!"
+
+#~ msgid "Start Sync"
+#~ msgstr "Avvia la sincronizzazione"
 
 #~ msgid "State"
 #~ msgstr "Stato"
 
 #~ msgid "Subtitle Functions"
 #~ msgstr "Funzioni Sottotitoli"
+
+#~ msgid "Sync"
+#~ msgstr "Sincronizza"
+
+#~ msgid "Sync/cache server data"
+#~ msgstr "Sincronizza/metti in cache i dati del server"
 
 #~ msgid ""
 #~ "The selected plugin is not installed!\n"

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DreamPlex\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 23:30+0200\n"
+"POT-Creation-Date: 2026-08-20 00:05+0200\n"
 "PO-Revision-Date: 2014-10-07 22:19+0100\n"
 "Last-Translator: DonDavici <dondavici@gmail.com>\n"
 "Language-Team: dondavici@gmail.com <dondavici@gmail.com>\n"
@@ -408,6 +408,9 @@ msgstr "> Log-Verzeichnis"
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr ""
 
+msgid "> Max hero suggestions to request"
+msgstr ""
+
 msgid "> Media Folder Path"
 msgstr "> Medien-Verzeichnis"
 
@@ -585,6 +588,9 @@ msgstr "Audio:"
 msgid "Authentication "
 msgstr ""
 
+msgid "Back to live TV"
+msgstr ""
+
 msgid "Backdrops"
 msgstr "Hintergründe"
 
@@ -593,6 +599,12 @@ msgstr "Hintergrund"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse Movies, TV Shows and Music on this server."
+msgstr ""
 
 msgid "By Collection"
 msgstr "nach Sammlung"
@@ -661,6 +673,12 @@ msgstr "Cast:"
 msgid "Cast: %s"
 msgstr "Besetzung: %s"
 
+msgid "Catalog"
+msgstr ""
+
+msgid "Catalog Download"
+msgstr ""
+
 msgid "Change PIN"
 msgstr "PIN ändern"
 
@@ -689,6 +707,21 @@ msgstr ""
 msgid "Collections"
 msgstr "Sammlungen"
 
+msgid "Color buttons: filter mode"
+msgstr ""
+
+msgid "Color buttons: playback mode / resume / watched / quality"
+msgstr ""
+
+msgid "Color buttons: server settings / general settings / delete / path mapping"
+msgstr ""
+
+msgid "Color buttons: view / fast scroll / refresh library / details"
+msgstr ""
+
+msgid "Configure the plugin: servers, skin, cache and more."
+msgstr ""
+
 msgid "Confirm rating / accept suggested title"
 msgstr ""
 
@@ -696,6 +729,9 @@ msgid "Confirmed User from Plex was configured!"
 msgstr ""
 
 msgid "Connection Settings "
+msgstr ""
+
+msgid "Continue watching"
 msgstr ""
 
 msgid ""
@@ -748,6 +784,9 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "Download posters and info (not videos)"
+msgstr ""
+
 msgid "DreamPlex"
 msgstr "DreamPlex"
 
@@ -781,6 +820,10 @@ msgid "Enable trailer function. Only works with PlexPass or YYTrailer plugin."
 msgstr ""
 
 msgid "End host (1-254)"
+msgstr ""
+
+#, python-format
+msgid "Enter %s"
 msgstr ""
 
 msgid "Enter Jellyfin password"
@@ -867,6 +910,9 @@ msgstr "Framerate:"
 msgid "Functions List:"
 msgstr "Medien Funktionen"
 
+msgid "General Settings"
+msgstr "Generelle Einstellungen"
+
 msgid "General Settings "
 msgstr ""
 
@@ -909,8 +955,14 @@ msgstr "Bei Skinwechsel muss die GUI neugestartet werden!"
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
 msgid "Info:"
 msgstr "Info:"
+
+msgid "Information and credits for the plugin."
+msgstr ""
 
 msgid "Initiate Library refresh"
 msgstr "Initiiere Bibliotheksaktualisierung"
@@ -960,6 +1012,9 @@ msgstr ""
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
 msgstr "LINKS/RECHTS: durchsuchen     HOCH/RUNTER: scrollen     OK: jetzt abspielen     EXIT: abbrechen"
+
+msgid "Live TV"
+msgstr ""
 
 msgid "LiveTv"
 msgstr "LiveTv"
@@ -1079,7 +1134,17 @@ msgstr "Ok"
 msgid "On Deck"
 msgstr "On Deck"
 
+#, python-format
+msgid "Open %s"
+msgstr ""
+
 msgid "Open (movie, episode, folder, collection or playlist)"
+msgstr ""
+
+msgid "Open Settings"
+msgstr ""
+
+msgid "Open series"
 msgstr ""
 
 msgid "Original Quality"
@@ -1371,6 +1436,9 @@ msgstr "Serverliste:"
 msgid "Server Menu"
 msgstr "Server Menu"
 
+msgid "Server Settings"
+msgstr ""
+
 msgid "Server Syncer"
 msgstr ""
 
@@ -1383,7 +1451,13 @@ msgstr "Einstellungen"
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr ""
 
+msgid "Show cast/director/rating details"
+msgstr ""
+
 msgid "Show extended info"
+msgstr ""
+
+msgid "Show help"
 msgstr ""
 
 msgid "Show live tv while you are navigating through your libs."
@@ -1416,11 +1490,11 @@ msgstr ""
 msgid "Specify what view type should start automatically."
 msgstr ""
 
+msgid "Start Download"
+msgstr ""
+
 msgid "Start Rendering"
 msgstr "Rendering starten"
-
-msgid "Start Sync"
-msgstr "Sync starten"
 
 msgid "Start host (1-254)"
 msgstr ""
@@ -1458,6 +1532,9 @@ msgstr ""
 msgid "Subtitles:"
 msgstr "Untertitel:"
 
+msgid "Suggested"
+msgstr ""
+
 #, python-format
 msgid "Suggestion in %d s"
 msgstr "Vorschlag in %d s"
@@ -1477,9 +1554,6 @@ msgstr "Zu diesem Benutzer wechseln"
 msgid "Switch user"
 msgstr ""
 
-msgid "Sync"
-msgstr ""
-
 msgid "Sync Media"
 msgstr "Sync Medias"
 
@@ -1494,9 +1568,6 @@ msgstr ""
 "Im Hintergrund fortsetzen?"
 
 msgid "Sync this content."
-msgstr ""
-
-msgid "Sync/cache server data"
 msgstr ""
 
 msgid "System"
@@ -1602,6 +1673,12 @@ msgstr ""
 msgid "Unwatched"
 msgstr "Nicht gesehen"
 
+msgid "Updating..."
+msgstr ""
+
+msgid "Upper limit only - the server may return fewer, depending on what it has to offer."
+msgstr ""
+
 msgid "Use Home Users?"
 msgstr ""
 
@@ -1652,6 +1729,10 @@ msgstr "Ohne diese Option werden die Logmeldungen nur in der Console angezeigt."
 
 msgid "Writer:"
 msgstr "Autor:"
+
+#, python-format
+msgid "Writer: %s"
+msgstr ""
 
 msgid "Wrong pincode!"
 msgstr "Falscher PIN!"
@@ -1747,11 +1828,20 @@ msgstr "drücke 'Info'"
 msgid "press 'Text'"
 msgstr "drücke 'Text'"
 
+msgid "refresh Library"
+msgstr ""
+
 msgid "resume 'Off'"
 msgstr "resume 'Off'"
 
 msgid "resume 'On'"
 msgstr "resume 'On'"
+
+msgid "set 'Seen'"
+msgstr ""
+
+msgid "set 'Unseen'"
+msgstr ""
 
 msgid "show 'Description'"
 msgstr "zeige 'Beschreibung'"
@@ -1852,9 +1942,6 @@ msgstr "☆☆☆☆☆  (gelöscht)"
 #~ "Für currentlyRunning einfach aktivieren.\n"
 #~ "Für Sektionenmanagement muss einmal mittels"
 
-#~ msgid "General Settings"
-#~ msgstr "Generelle Einstellungen"
-
 #~ msgid "If activated on each start we will check if there is a new version depending on your update type."
 #~ msgstr "Wenn aktiviert, wird anhand des Update-Typs auf eine neue Version beim Start geprüft"
 
@@ -1891,6 +1978,9 @@ msgstr "☆☆☆☆☆  (gelöscht)"
 
 #~ msgid "Remote Settings"
 #~ msgstr "Remoteeinstellungen"
+
+#~ msgid "Start Sync"
+#~ msgstr "Sync starten"
 
 #~ msgid ""
 #~ "Subtitle Functions\n"

@@ -108,9 +108,15 @@ Il plugin include le skin `default`, `default_FHD`, `BlueMod`, `BlueMod_FHD`,
 laterale verticale: le voci di menu hanno una scorciatoia numerica (1-9), e
 il menu server mostra un banner "hero" con rotazione (locandina, trama,
 conto alla rovescia al prossimo suggerimento) avviabile direttamente con OK
-o il tasto blu. L'intervallo di rotazione e dopo quanti giri recuperare
-nuovi suggerimenti sono entrambi configurabili in Impostazioni (0 disattiva
-la rotazione).
+o il tasto blu. I suggerimenti uniscono titoli in corso/prossimo episodio
+("Continua a guardare") e aggiunti di recente ("Proposto"), ciascuno
+etichettato; scegliendo una serie intera si apre la sfoglia
+stagioni/episodi invece di avviarne la riproduzione. L'intervallo di
+rotazione, dopo quanti giri recuperare nuovi suggerimenti, e il numero
+massimo di suggerimenti richiesti sono tutti configurabili in Impostazioni
+(intervallo 0 disattiva la rotazione). Nel selettore server (nessun server
+ancora scelto), un testo contestuale accanto al banner DreamPlex spiega cosa
+fa ciascuna voce di menu.
 
 ## Traduzioni
 

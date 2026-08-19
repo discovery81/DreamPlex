@@ -193,11 +193,19 @@ class DPS_ViewMixed(DP_View):
 
 		content = "writer", "cast", "studio", "genre", "year", "director", "subtitles", "audio", "duration"
 
+		# One skin missing a widget for a single tag (e.g. no "subtitles"/
+		# "subtitlesLabel" pair declared for this view) used to raise here
+		# and abort the loop for every tag still to come - same defensive
+		# pattern setToDirectoryMode() already uses for its own per-element
+		# loop, just missing here.
 		for tag in content:
-			if myType in ("season", "Folder", "Directory"):
-				self.toggleElementVisibilityWithLabel(tag, "hide")
-			else:
-				self.toggleElementVisibilityWithLabel(tag)
+			try:
+				if myType in ("season", "Folder", "Directory"):
+					self.toggleElementVisibilityWithLabel(tag, "hide")
+				else:
+					self.toggleElementVisibilityWithLabel(tag)
+			except Exception as ex:
+				printl("could not toggle visibility for " + str(tag) + ": " + str(ex), self, "W")
 
 		printl("", self, "C")
 

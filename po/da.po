@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DreamPlex\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 23:30+0200\n"
+"POT-Creation-Date: 2026-08-20 00:05+0200\n"
 "PO-Revision-Date: 2015-04-06 20:16+0100\n"
 "Last-Translator: DonDavici <dondavici@gmail.com>\n"
 "Language-Team: dondavici@gmail.com <dondavici@gmail.com>\n"
@@ -413,6 +413,9 @@ msgstr "> Ruta de la carpeta de Log's"
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr ""
 
+msgid "> Max hero suggestions to request"
+msgstr ""
+
 msgid "> Media Folder Path"
 msgstr "> Ubicación de carpeta de medios"
 
@@ -590,6 +593,9 @@ msgstr "Audio:"
 msgid "Authentication "
 msgstr ""
 
+msgid "Back to live TV"
+msgstr ""
+
 msgid "Backdrops"
 msgstr "Fondos de pantalla"
 
@@ -598,6 +604,12 @@ msgstr "Plan alternativo"
 
 msgid "Bitrate:"
 msgstr "Bitrate:"
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse Movies, TV Shows and Music on this server."
+msgstr ""
 
 msgid "By Collection"
 msgstr "Por Collección"
@@ -666,6 +678,12 @@ msgstr "Casting:"
 msgid "Cast: %s"
 msgstr "Medvirkende: %s"
 
+msgid "Catalog"
+msgstr ""
+
+msgid "Catalog Download"
+msgstr ""
+
 msgid "Change PIN"
 msgstr "Skift PIN"
 
@@ -694,6 +712,21 @@ msgstr ""
 msgid "Collections"
 msgstr "Samlinger"
 
+msgid "Color buttons: filter mode"
+msgstr ""
+
+msgid "Color buttons: playback mode / resume / watched / quality"
+msgstr ""
+
+msgid "Color buttons: server settings / general settings / delete / path mapping"
+msgstr ""
+
+msgid "Color buttons: view / fast scroll / refresh library / details"
+msgstr ""
+
+msgid "Configure the plugin: servers, skin, cache and more."
+msgstr ""
+
 msgid "Confirm rating / accept suggested title"
 msgstr ""
 
@@ -701,6 +734,9 @@ msgid "Confirmed User from Plex was configured!"
 msgstr ""
 
 msgid "Connection Settings "
+msgstr ""
+
+msgid "Continue watching"
 msgstr ""
 
 msgid ""
@@ -753,6 +789,9 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "Download posters and info (not videos)"
+msgstr ""
+
 msgid "DreamPlex"
 msgstr "DreamPlex"
 
@@ -786,6 +825,10 @@ msgid "Enable trailer function. Only works with PlexPass or YYTrailer plugin."
 msgstr ""
 
 msgid "End host (1-254)"
+msgstr ""
+
+#, python-format
+msgid "Enter %s"
 msgstr ""
 
 msgid "Enter Jellyfin password"
@@ -872,6 +915,9 @@ msgstr "Framerate:"
 msgid "Functions List:"
 msgstr "Lista de Funciones:"
 
+msgid "General Settings"
+msgstr "Configuración General"
+
 msgid "General Settings "
 msgstr ""
 
@@ -914,8 +960,14 @@ msgstr "Si cambia el Skin debe reinicar por lo menos el GUI!"
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
 msgid "Info:"
 msgstr "Info:"
+
+msgid "Information and credits for the plugin."
+msgstr ""
 
 msgid "Initiate Library refresh"
 msgstr "Iniciar actualización de la Libreria"
@@ -965,6 +1017,9 @@ msgstr ""
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
 msgstr "VENSTRE/HØJRE: gennemse     OP/NED: rul     OK: afspil nu     EXIT: annuller"
+
+msgid "Live TV"
+msgstr ""
 
 msgid "LiveTv"
 msgstr "TV en directo"
@@ -1084,7 +1139,17 @@ msgstr "Ok"
 msgid "On Deck"
 msgstr "En Curso"
 
+#, python-format
+msgid "Open %s"
+msgstr ""
+
 msgid "Open (movie, episode, folder, collection or playlist)"
+msgstr ""
+
+msgid "Open Settings"
+msgstr ""
+
+msgid "Open series"
 msgstr ""
 
 msgid "Original Quality"
@@ -1382,6 +1447,9 @@ msgstr "Lista de Servidores:"
 msgid "Server Menu"
 msgstr "Menú Servidor"
 
+msgid "Server Settings"
+msgstr ""
+
 msgid "Server Syncer"
 msgstr ""
 
@@ -1394,7 +1462,13 @@ msgstr "Configuraciones"
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr ""
 
+msgid "Show cast/director/rating details"
+msgstr ""
+
 msgid "Show extended info"
+msgstr ""
+
+msgid "Show help"
 msgstr ""
 
 msgid "Show live tv while you are navigating through your libs."
@@ -1427,11 +1501,11 @@ msgstr ""
 msgid "Specify what view type should start automatically."
 msgstr ""
 
+msgid "Start Download"
+msgstr ""
+
 msgid "Start Rendering"
 msgstr "Comenzando Renderizado"
-
-msgid "Start Sync"
-msgstr "Arrancar Sync"
 
 msgid "Start host (1-254)"
 msgstr ""
@@ -1469,6 +1543,9 @@ msgstr ""
 msgid "Subtitles:"
 msgstr "Subtitulos:"
 
+msgid "Suggested"
+msgstr ""
+
 #, python-format
 msgid "Suggestion in %d s"
 msgstr "Forslag om %d s"
@@ -1488,9 +1565,6 @@ msgstr "Skift til denne bruger"
 msgid "Switch user"
 msgstr ""
 
-msgid "Sync"
-msgstr ""
-
 msgid "Sync Media"
 msgstr "Sync Medios"
 
@@ -1505,9 +1579,6 @@ msgstr ""
 "Continuar en segundo plano?"
 
 msgid "Sync this content."
-msgstr ""
-
-msgid "Sync/cache server data"
 msgstr ""
 
 msgid "System"
@@ -1613,6 +1684,12 @@ msgstr ""
 msgid "Unwatched"
 msgstr "Si  Visualizar"
 
+msgid "Updating..."
+msgstr ""
+
+msgid "Upper limit only - the server may return fewer, depending on what it has to offer."
+msgstr ""
+
 msgid "Use Home Users?"
 msgstr ""
 
@@ -1663,6 +1740,10 @@ msgstr "Sin esta opción solo se mostrará en la consola."
 
 msgid "Writer:"
 msgstr "Escritor:"
+
+#, python-format
+msgid "Writer: %s"
+msgstr ""
 
 msgid "Wrong pincode!"
 msgstr "Forkert PIN-kode!"
@@ -1760,11 +1841,20 @@ msgstr "Presione 'Info'"
 msgid "press 'Text'"
 msgstr "Puksar sobre 'Text'"
 
+msgid "refresh Library"
+msgstr ""
+
 msgid "resume 'Off'"
 msgstr "Resumir 'Off'"
 
 msgid "resume 'On'"
 msgstr "Resumir 'On'"
+
+msgid "set 'Seen'"
+msgstr ""
+
+msgid "set 'Unseen'"
+msgstr ""
 
 msgid "show 'Description'"
 msgstr "Mostrar 'Descripción'"
@@ -1865,9 +1955,6 @@ msgstr "☆☆☆☆☆  (ryddet)"
 #~ "Für currentlyRunning einfach aktivieren.\n"
 #~ "Für Sektionenmanagement muss einmal mittels"
 
-#~ msgid "General Settings"
-#~ msgstr "Configuración General"
-
 #~ msgid "If activated on each start we will check if there is a new version depending on your update type."
 #~ msgstr "Si está activo en cada inicio chequearemos si hay nueva versión dependiendo del tipo de actualización"
 
@@ -1904,6 +1991,9 @@ msgstr "☆☆☆☆☆  (ryddet)"
 
 #~ msgid "Remote Settings"
 #~ msgstr "Parametros del mando"
+
+#~ msgid "Start Sync"
+#~ msgstr "Arrancar Sync"
 
 #~ msgid ""
 #~ "Subtitle Functions\n"

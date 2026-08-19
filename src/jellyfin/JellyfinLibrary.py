@@ -140,6 +140,11 @@ class JellyfinLibrary(DP_MediaLibrary):
 	g_lastUrl = None
 	g_lastAuthToken = None
 	g_lastError = None
+	# Set by _pick_stream_indices() (see getMediaOptionsToPlay()), same idea
+	# and shape as DP_PlexLibrary's own attribute of this name - read back by
+	# DP_Player.play() to auto-select this embedded subtitle once the native
+	# player reports its track list (see DP_Player.subtitleChecker()).
+	g_SelectedEmbeddedSubtitleData = None
 	# Set by DP_ServerMenu right after a successful switch to a saved
 	# profile (or a fresh login) - held in memory only, for the lifetime of
 	# this JellyfinLibrary instance, never written to disk here. Used by
@@ -385,16 +390,37 @@ class JellyfinLibrary(DP_MediaLibrary):
 			audio_idx = audio_candidates[0].get('Index')
 
 		sub_idx = None
+		forced_stream = None
 		# Preferisci forced se richiesto
 		if prefer_forced:
 			forced = [s for s in sub_candidates if s.get('IsForced')]
 			if forced:
 				sub_idx = forced[0].get('Index')
+				forced_stream = forced[0]
 		if sub_idx is None and pref_lang:
 			for s in sub_candidates:
 				if (s.get('Language') or '').lower() == pref_lang and s.get('Index') is not None:
 					sub_idx = s.get('Index')
 					break
+
+		# Mirrors DP_PlexLibrary.getStreamDataById(): only auto-select an
+		# embedded subtitle for DP_Player's native-track watcher (see
+		# getSelectedEmbeddedSubtitleData()/DP_Player.play()) when it is
+		# specifically the *forced* stream and the user has that setting on
+		# - a plain language-only match is left to the SubtitleStreamIndex/
+		# SubtitleMethod request params above instead, same split Plex uses.
+		if forced_stream is not None:
+			self.g_SelectedEmbeddedSubtitleData = {
+				'id': forced_stream.get('Index'),
+				'index': forced_stream.get('Index'),
+				'language': forced_stream.get('Language') or '',
+				'languageCode': forced_stream.get('Language') or '',
+				'format': forced_stream.get('Codec') or '',
+				'partid': myId,
+			}
+		else:
+			self.g_SelectedEmbeddedSubtitleData = None
+
 		return audio_idx, sub_idx
 
 	def _stream_params(self, myId, direct=True, aidx_override: int | None = None, sidx_override: int | None = None) -> dict:
@@ -805,6 +831,12 @@ class JellyfinLibrary(DP_MediaLibrary):
 		# the list itself, so they are dropped here. The detail panel will
 		# show "unknown"/blank for those until a per-item fetch is added.
 		params = {"Recursive": "true", "Fields": "PrimaryImageAspectRatio,Path,Overview,ChildCount,RecursiveItemCount"}
+		# Threaded into every row below as refreshParentId - same id the
+		# "refresh Library" button (DP_View.initiateRefresh()) later POSTs
+		# to /Items/{id}/Refresh, see refreshLibrarySection(). Every row on
+		# one listing shares the same id, same as Plex's own
+		# context['libraryRefreshURL'] (built once per page, not per row).
+		parent_id = None
 		# Se url è un dict con filtri/ordinamenti, applicali
 		if isinstance(url, dict):
 			parent_id = url.get('parentId') or url.get('ParentId')
@@ -859,6 +891,7 @@ class JellyfinLibrary(DP_MediaLibrary):
 			params["IncludeItemTypes"] = include_types
 		if isinstance(url, str) and url and url.isalnum():
 			params["ParentId"] = url
+			parent_id = url
 			# A bare id here only ever comes from descending into a "By
 			# Folder" sub-folder (its own id, set as nextUrl by _to_entry()) -
 			# keep it non-recursive so each ok press goes one level deeper
@@ -881,7 +914,7 @@ class JellyfinLibrary(DP_MediaLibrary):
 			data = self._request_json("GET", f"/Users/{user_id}/Items", params=params)
 		if data and isinstance(data, dict):
 			for item in data.get('Items', []) or []:
-				media.append(self._to_entry(item, currentViewMode=currentViewMode))
+				media.append(self._to_entry(item, currentViewMode=currentViewMode, refreshParentId=parent_id))
 		printl("", self, "C")
 		return media, self._mediaContainer()
 
@@ -1134,6 +1167,29 @@ class JellyfinLibrary(DP_MediaLibrary):
 			printl("", self, "C")
 			return None
 
+	def refreshLibrarySection(self, token):
+		printl("", self, "S")
+
+		# token is the library section's (or "By Folder" sub-folder's) own
+		# item id, threaded in by getMediaData() -> _to_entry() for every
+		# row of that listing (see there) - same shape as Plex's own
+		# context['libraryRefreshURL'], just an id instead of a ready-made
+		# URL, since Jellyfin's refresh is a POST to a per-item endpoint
+		# rather than a GET on a section-specific one.
+		if token:
+			try:
+				self._request_json("POST", f"/Items/{token}/Refresh", params={
+					"Recursive": "true",
+					"MetadataRefreshMode": "Default",
+					"ImageRefreshMode": "Default",
+					"ReplaceAllMetadata": "false",
+					"ReplaceAllImages": "false",
+				})
+			except Exception as e:
+				printl("could not refresh library section: " + str(e), self, "W")
+
+		printl("", self, "C")
+
 	def mediaType(self, partData, server):
 		printl("", self, "S")
 		# getMediaOptionsToPlay() already built the fully-resolved stream URL
@@ -1224,12 +1280,9 @@ class JellyfinLibrary(DP_MediaLibrary):
 		return info
 
 	def getSelectedEmbeddedSubtitleData(self):
-		printl("", self, "S")
-		
-		# This would be implemented to get selected embedded subtitle data
-		
-		printl("", self, "C")
-		return None
+		# Set by _pick_stream_indices(), called from getMediaOptionsToPlay()
+		# just before this - see the comment there.
+		return self.g_SelectedEmbeddedSubtitleData
 
 	def getMediaOptionsToPlay(self, myId, vids, override=False, myType="Video", loadExtraData=False):
 		printl("", self, "S")
@@ -1424,20 +1477,46 @@ class JellyfinLibrary(DP_MediaLibrary):
 		printl("", self, "C")
 		return entries
 
+	def _fetchHeroBucket(self, path, limit, heroKind, user_id):
+		"""One hero bucket (see getHeroSuggestions()) - path is one of
+		Jellyfin's own endpoints ("Items/Resume", "Items/Latest"), heroKind
+		tags every entryData so DP_ServerMenu can show a "Continue"/
+		"Suggested" badge on the hero banner."""
+		params = {"Limit": limit, "Fields": "Overview,Genres,ProductionYear,OfficialRating,CommunityRating,RunTimeTicks"}
+		items = self._request_json("GET", f"/Users/{user_id}/{path}", params=params) or []
+		# /Items/Latest returns a bare list, /Items/Resume a {"Items": [...]}
+		# envelope like every other Items query - same asymmetry the "Latest"
+		# fetch already had to handle before this bucket was split out.
+		if isinstance(items, dict):
+			items = items.get("Items") or []
+		entries = []
+		for item in items:
+			title, entryData, contextMenu, viewState, nextUrl = self._to_entry(item)
+			entryData['heroKind'] = heroKind
+			entries.append((title, entryData, contextMenu, viewState, nextUrl))
+		return entries
+
 	def getHeroSuggestions(self, limit=6):
-		"""Recently-added titles, via Jellyfin's own Latest endpoint - the
-		concrete fetch behind DP_MediaLibrary.getHeroSuggestions() (see
-		there for why this is its own method rather than something
-		DP_MainMenu calls directly)."""
+		"""Jellyfin's own "Continue Watching" (Resume) endpoint for the
+		"continue" bucket, and "Latest" (recently added, its existing
+		fetch) for "suggested" once Resume runs out of items - the concrete
+		fetch behind DP_MediaLibrary.getHeroSuggestions() (see there for why
+		this is its own method rather than something DP_MainMenu calls
+		directly)."""
 		printl("", self, "S")
 
+		user_id = self._user_id()
+		if not user_id:
+			printl("", self, "C")
+			return []
+
 		try:
-			user_id = self._user_id()
-			params = {"Limit": limit, "Fields": "Overview,Genres,ProductionYear,OfficialRating,CommunityRating,RunTimeTicks"}
-			if user_id:
-				params["UserId"] = user_id
-			items = self._request_json("GET", f"/Users/{user_id}/Items/Latest", params=params) if user_id else []
-			entries = [self._to_entry(item) for item in (items or [])]
+			entries = self._fetchHeroBucket("Items/Resume", limit, "continue", user_id)
+			if len(entries) < limit:
+				seenIds = {e[1].get('id') for e in entries}
+				for entry in self._fetchHeroBucket("Items/Latest", limit - len(entries), "suggested", user_id):
+					if entry[1].get('id') not in seenIds:
+						entries.append(entry)
 		except Exception as e:
 			printl("could not fetch hero suggestions: " + str(e), self, "W")
 			printl("", self, "C")
@@ -1848,7 +1927,7 @@ class JellyfinLibrary(DP_MediaLibrary):
 		}
 		return [mediaData]
 
-	def _to_entry(self, item: dict, currentViewMode: str = '') -> tuple:
+	def _to_entry(self, item: dict, currentViewMode: str = '', refreshParentId: str = None) -> tuple:
 		# Builds the same 5-tuple shape DP_PlexLibrary.getFullListEntry()
 		# returns - (title, entryData, contextMenu, viewState, nextUrl) - that
 		# DP_View/alterViewStateInList()/onEnter() index into directly
@@ -1967,4 +2046,12 @@ class JellyfinLibrary(DP_MediaLibrary):
 			entryData['source'] = 'jellyfin'
 
 		title = _(entryData['title'])
-		return title, entryData, None, viewState, itemId
+		# Same key DP_PlexLibrary.buildContextMenu() uses - DP_View reads it
+		# generically off context.get("libraryRefreshURL") for either
+		# backend (see refreshLibrarySection()). None when the caller has
+		# no section id to offer (top-level "Movies"/"Tv Shows"/"Music"
+		# virtual filters span every Jellyfin library of that type at once,
+		# hero/similar-suggestion rows, ...) - the refresh button then just
+		# re-fetches the listing without asking the server to rescan.
+		contextMenu = {'libraryRefreshURL': refreshParentId} if refreshParentId else None
+		return title, entryData, contextMenu, viewState, itemId

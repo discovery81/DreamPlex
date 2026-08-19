@@ -18,6 +18,18 @@
   number-key shortcuts, and a rotating "hero" banner on the server menu -
   poster, plot, a countdown to the next suggestion, playable with OK or the
   blue key
+- The hero banner now mixes "Continue watching" (in-progress/next-up) with
+  "Suggested" (recently added) titles, each labeled; a whole show suggested
+  this way opens its season/episode browser instead of doing nothing, and
+  the number of suggestions requested is configurable
+- Cast/director/rating detail panel (EPG key), previously only available
+  during playback, now also available while browsing
+- A second key (LIST, PVR, ARCHIVE, MEDIA or FILE, whichever the remote
+  actually sends) also opens the Help screen, for remotes whose HELP button
+  does not reach the box as KEY_HELP
+- "Refresh library" (yellow, browsing screens) is now a single, predictable
+  action - always a full refresh, including posters/backdrops, with an
+  on-screen "Updating..." indicator
 
 ### ⬆️ Upgrading from 3.0
 
@@ -53,6 +65,29 @@
   content never cached before
 - Switching skins from Settings only ever offered "default" - every other
   installed skin was silently ignored
+- The listing cache was written but never actually read back - every screen
+  change re-fetched from the server; now a recently-viewed folder loads
+  instantly, with a 5-minute freshness window
+- "Refresh library" crashed on Jellyfin (it only ever asked the server to
+  rescan on Plex); Jellyfin now gets the same real request
+- "Delete cache" (Settings) only ever cleared the listing cache, never
+  downloaded posters/backdrops - the only way to force one to re-download
+  used to be deleting it by hand
+- The Help key did nothing at all on the server picker, server menu and
+  browsing screens - the descriptions were there, but nothing ever opened
+  the Help screen on those three
+- A whole TV show suggested by the hero banner (as opposed to a single
+  episode) silently did nothing, or crashed the season browser if opened
+  through it
+- Metadata (year, cast, genre...) could randomly stay hidden for a movie row
+  in a mixed folder view until a different row was visited first
+- Several on-screen labels were never translated ("set 'Seen'", "fastScroll
+  'On/Off'", "playback mode '...'") or actively wrong ("Runtime:" showed as
+  "current status" in Italian)
+- Jellyfin never auto-selected a forced embedded subtitle track the way Plex
+  does
+- Low-contrast/invisible text and highlights in the Carousel skin (a wrong
+  assumption about how Enigma2 handles color transparency)
 
 ### 🔒 Security
 
@@ -78,7 +113,7 @@
 ### 🌍 Translations
 
 - Jellyfin strings are now extracted and translatable
-- Catalogue grows to 539 strings; Italian is complete
+- Catalogue grows to 568 strings; Italian is complete
 
 ---
 

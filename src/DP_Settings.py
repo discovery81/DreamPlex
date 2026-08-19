@@ -26,7 +26,7 @@ You should have received a copy of the GNU General Public License
 #=================================
 from enigma import eListboxPythonMultiContent, gFont, RT_HALIGN_LEFT, RT_VALIGN_CENTER
 
-from Components.ActionMap import ActionMap
+from Components.ActionMap import ActionMap, HelpableActionMap
 from Components.ConfigList import ConfigListScreen
 from Components.MenuList import MenuList
 from Components.Sources.StaticText import StaticText
@@ -92,6 +92,14 @@ class DPS_Settings(Screen, ConfigListScreen, HelpableScreen, DPH_PlexScreen):
 			"bouquet_down": self.keyBouquetDown,
 		}, -2)
 
+		# Second trigger for the same Help screen, on LIST - see
+		# DPH_ScreenHelper.DPH_Screen for why (remotes whose HELP button
+		# does not reach the box as KEY_HELP).
+		self["helpShortcut"] = HelpableActionMap(self, "DP_HelpShortcut",
+		{
+			"helpAlt": (self.showHelp, _("Show help")),
+		}, -2)
+
 		self.createSetup()
 
 		self["config"].onSelectionChanged.append(self.updateHelp)
@@ -152,6 +160,7 @@ class DPS_Settings(Screen, ConfigListScreen, HelpableScreen, DPH_PlexScreen):
 		self.cfglist.append(getConfigListEntry(_("> Main menu hero rotation (seconds, 0=off)"), settings.heroRotationInterval.getConfigElement(), _("The Carousel skin's main-menu banner switches to another suggested title after this many seconds. 0 keeps showing the same one.")))
 		if settings.heroRotationInterval.getValue():
 			self.cfglist.append(getConfigListEntry(_(">> Refresh suggestions after this many rotations"), settings.heroRefetchAfterLoops.getConfigElement(), _("How many times the banner cycles through its current list of suggestions before asking the server for a new one.")))
+		self.cfglist.append(getConfigListEntry(_("> Max hero suggestions to request"), settings.heroMaxItems.getConfigElement(), _("Upper limit only - the server may return fewer, depending on what it has to offer.")))
 
 		self.cfglist.append(getConfigListEntry(_("> Show Backdrops as Videos"), settings.useBackdropVideos.getConfigElement(), _("Use this if you have m1v videos as backdrops")))
 		self.cfglist.append(getConfigListEntry(_("> Stop Live TV on startup"), settings.stopLiveTvOnStartup.getConfigElement(), _("Stop live TV. Enables 'play themes', 'use backdrop videos'")))

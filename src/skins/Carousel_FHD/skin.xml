@@ -76,17 +76,28 @@
     <convert type="MenuEntryCompare">LiveTv</convert>
     <convert type="ConditionalShowHide" />
   </widget>
-  <!-- mini-tv (shifted right to clear the sidebar - no framing overlay:
-       frame-fs8.png was fitted to the old, unshifted position) -->
+  <!-- mini-tv (shifted right to clear the sidebar). Thin amber frame behind
+       it (2px oversize, same idea as heroFocusFrame in DPS_ServerMenu) ties
+       it visually to the marquee below, which uses the same color. -->
+  <eLabel position="538,116" size="704,398" zPosition="9" backgroundColor="#00e69405" />
   <widget name="miniTv" position="540,118" size="700,394" zPosition="10" backgroundColor="background-pig" />
   <!-- static marquee filler for the empty space below the miniTV - there is
        no hero here (no server chosen yet, see DP_MainMenu.py), so this pure
        skin.xml image (no Python) stands in for it. "DreamPlex" is baked into
        the image (brand name); the two tagline lines are real, translated
-       widgets on top of it. -->
-  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel_FHD/images/hero_filler.png" position="860,556" size="700,460" zPosition="9" alphatest="blend" />
-  <widget name="menuFillerLine1" position="860,790" zPosition="10" size="700,40" font="OpenSans; 26" halign="center" valign="center" foregroundColor="foreground" backgroundColor="background" transparent="1" />
-  <widget name="menuFillerLine2" position="860,832" zPosition="10" size="700,30" font="OpenSans; 18" halign="center" valign="center" foregroundColor="grey" backgroundColor="background" transparent="1" />
+       widgets on top of it. Left-aligned under the miniTV (was centered in
+       the leftover space) so the freed space to its right can hold the
+       contextual hint below - see DP_MainMenu._updateMenuHint(). -->
+  <ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel_FHD/images/hero_filler.png" position="540,586" size="700,460" zPosition="9" alphatest="blend" />
+  <widget name="menuFillerLine1" position="540,820" zPosition="10" size="700,40" font="OpenSans; 26" halign="center" valign="center" foregroundColor="foreground" backgroundColor="background" transparent="1" />
+  <widget name="menuFillerLine2" position="540,862" zPosition="10" size="700,30" font="OpenSans; 18" halign="center" valign="center" foregroundColor="grey" backgroundColor="background" transparent="1" />
+  <!-- contextual hint: "what happens if I press OK here" - updated per
+       selection by DP_MainMenu._updateMenuHint(), reusing the same
+       serverEntry/settingsEntry/aboutEntry/systemEntry/LiveTv kinds the
+       picon widgets above already key off of. -->
+  <widget name="menuHintEyebrow" position="1280,676" zPosition="10" size="500,30" font="OpenSans; 18" halign="left" valign="center" foregroundColor="#00e69405" backgroundColor="background" transparent="1" />
+  <widget name="menuHintTitle" position="1280,712" zPosition="10" size="500,60" font="OpenSans; 30" halign="left" valign="top" foregroundColor="foreground" backgroundColor="background" transparent="1" />
+  <widget name="menuHintBody" position="1280,780" zPosition="10" size="500,140" font="OpenSans; 22" halign="left" valign="top" foregroundColor="grey" backgroundColor="background" transparent="1" />
   <!-- clock -->
   <panel name="clockpanel" />
   <!-- title -->
@@ -285,13 +296,18 @@
          g_horizontal_menu/params reasoning. text=5 is the shortcut label
          (padTo=5 in DP_ServerMenu._appendShortcutLabels(), since listing
          rows here are the (title, entryData, contextMenu, viewState,
-         nextUrl) shape). -->
+         nextUrl) shape). itemHeight 80->58: the top-level menu never had
+         more than ~9 rows, but the "TV Shows"/"Movies" filter submenu
+         (getSectionFilter() - All/Unwatched/By Folder/By Genre/.../Search,
+         up to 12 rows) ran past this box's bottom edge and into the user-
+         info footer below it - live-tested, real overlap, not just a
+         theoretical worst case. 790/58 fits 13 rows without scrolling. -->
     <widget source="menu" render="Listbox" position="20,90" size="460,790" zPosition="1" scrollbarMode="showOnDemand" foregroundColor="grey" foregroundColorSelected="foreground" backgroundColor="background" transparent="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel_FHD/images/focus_list.png" backgroundPixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel_FHD/images/sel_bg.png">
       <convert type="TemplatedMultiContent">
-				{"template": [ MultiContentEntryText(pos = (14, 0), size = (52, 80), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 5, font = 1),
-				MultiContentEntryText(pos = (80, 0), size = (370, 80), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0, font = 0) ],
-				"fonts": [gFont("OpenSans", 32), gFont("OpenSans", 26)],
-				"itemHeight": 80,
+				{"template": [ MultiContentEntryText(pos = (14, 0), size = (52, 58), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 5, font = 1),
+				MultiContentEntryText(pos = (80, 0), size = (370, 58), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0, font = 0) ],
+				"fonts": [gFont("OpenSans", 26), gFont("OpenSans", 22)],
+				"itemHeight": 58,
 				"scrollbarMode": "showOnDemand" }
 			</convert>
     </widget>
@@ -326,10 +342,22 @@
          previous, tighter gap looked like an overlap on a real device even
          though the two boxes' declared rectangles did not actually
          intersect. -->
+    <!-- amber highlight behind the poster, shown only while the hero has
+         focus (OK/BLUE will play it) - same color as the sidebar's own
+         selected-row highlight, so a focused hero reads the same way a
+         selected menu row does. -->
+    <widget name="heroFocusFrame" position="534,610" size="232,342" zPosition="9" backgroundColor="#00e69405" />
     <widget name="heroPoster" position="540,616" size="220,330" zPosition="10" backgroundColor="background-pig" />
     <!-- countdown until the hero rotates to the next suggestion (see
          DP_ServerMenu._armHeroCountdown()), top-right next to the title -->
     <widget name="heroProgress" position="1230,604" size="260,8" zPosition="10" backgroundColor="background" foregroundColor="foreground" borderWidth="1" borderColor="grey" />
+    <!-- "Continue watching" / "Suggested" - see getHeroSuggestions()'s
+         heroKind tag -->
+    <!-- Solid amber pill instead of plain colored text over the backdrop -
+         live-tested: amber text directly on a photographic poster/backdrop
+         had far too little contrast to read reliably, regardless of the
+         exact color chosen. An opaque chip is legible against any image. -->
+    <widget name="heroKindBadge" position="790,594" zPosition="10" size="270,30" font="OpenSans; 18" halign="center" valign="center" foregroundColor="#00000000" backgroundColor="#00e69405" transparent="0" />
     <widget name="heroTitle" position="790,626" zPosition="10" size="700,45" font="OpenSans; 28" halign="left" valign="center" foregroundColor="foreground" backgroundColor="background" transparent="1" />
     <widget name="heroMeta" position="790,676" zPosition="10" size="700,35" font="OpenSans; 22" halign="left" valign="center" foregroundColor="grey" backgroundColor="background" transparent="1" />
     <widget name="heroSummary" position="790,721" zPosition="10" size="700,220" font="OpenSans; 22" halign="left" valign="top" foregroundColor="grey" backgroundColor="background" transparent="1" />

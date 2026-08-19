@@ -108,9 +108,14 @@ The plugin ships the `default`, `default_FHD`, `BlueMod`, `BlueMod_FHD`,
 `Carousel` is a vertical-sidebar take on the main and server menus: menu
 items get a number-key shortcut (1-9), and the server menu shows a rotating
 "hero" banner (poster, plot, a countdown to the next suggestion) that plays
-directly with OK or the blue key. The rotation interval and how many loops
-before it re-fetches its suggestion list are both configurable in Settings
-(0 disables rotation).
+directly with OK or the blue key. Suggestions mix in-progress/next-up
+("Continue watching") with recently-added titles ("Suggested"), each
+labeled; picking a whole show opens its season/episode browser instead of
+playing it. The rotation interval, how many loops before it re-fetches its
+suggestion list, and the maximum number of suggestions requested are all
+configurable in Settings (0 rotation interval disables rotation). On the
+server picker (no server chosen yet), a contextual hint next to the
+DreamPlex banner explains what each menu row does.
 
 ## Translations
 

@@ -234,7 +234,8 @@ def getSkinResolution():
 def revokeCacheFiles():
 	printl2("", "__common__::revokeCacheFiles", "S")
 	instance: Singleton = Singleton()
-	cachePath = instance.getSettingsInstance().cacheFolderPath.getValue()
+	settings = instance.getSettingsInstance()
+	cachePath = settings.cacheFolderPath.getValue()
 
 	try:
 		os.chdir(cachePath)
@@ -242,12 +243,30 @@ def revokeCacheFiles():
 		for filename in files:
 			os.unlink(filename)
 
-		printl2("", "__common__::revokeCacheFiles", "C")
+	except Exception as ex:
+		printl2("Exception(" + str(type(ex)) + "): " + str(ex), "__common__::revokeCacheFiles", "E")
+
+	# Posters/backdrops (mediaFolderPath) are a separate cache from the
+	# listing .cache files above - downloaded once by DP_Syncer/DP_View and
+	# never re-checked again once a file with that name exists (see
+	# DP_View.showPoster()/showBackdrop(), DP_Syncer.syncThroughMediaLibrary()) -
+	# "Delete cache" used to leave them untouched, the only way to force a
+	# redownload was deleting them by hand. bootlogo.m1v is left alone - it
+	# is not something this plugin downloads or regenerates, so it is not
+	# "cache" even though it lives in the same folder.
+	try:
+		mediaPath = settings.mediaFolderPath.getValue()
+		os.chdir(mediaPath)
+		for pattern in ('*.jpg', '*.m1v'):
+			for filename in glob.glob(pattern):
+				if filename == 'bootlogo.m1v':
+					continue
+				os.unlink(filename)
 
 	except Exception as ex:
 		printl2("Exception(" + str(type(ex)) + "): " + str(ex), "__common__::revokeCacheFiles", "E")
 
-		printl2("", "__common__::revokeCacheFiles", "C")
+	printl2("", "__common__::revokeCacheFiles", "C")
 
 #===============================================================================
 #

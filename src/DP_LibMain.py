@@ -25,6 +25,7 @@ You should have received a copy of the GNU General Public License
 # IMPORT
 #===============================================================================
 import os
+import time
 
 from six import PY2
 try:
@@ -46,6 +47,13 @@ from . import SettingsStorage
 #===============================================================================
 #
 #===============================================================================
+
+# How long a cached listing pickle is trusted before a "cache"-sourced load
+# (see loadLibraryData()/getLibraryData()) falls back to a live fetch anyway -
+# bounds staleness (watched-state, newly added/removed items) to a short
+# window instead of "forever until something forces an update", while still
+# making flipping back and forth between recently-browsed folders instant.
+CACHE_MAX_AGE_SECONDS = 300
 
 
 class DP_LibMain(Screen):
@@ -160,26 +168,35 @@ class DP_LibMain(Screen):
 
 		if "source" in entryData:
 			try:
-				source = entryData["source"]
 				uuid = entryData["uuid"]
 			except Exception:
-				source = "plex"
 				uuid = None
 		else:
-			source = "plex"
 			uuid = None
 
-		# in this case we do not use cache because there is no uuid and updated on information on this level
-		# maybe we find a way later and implement it than
 		if "nextViewMode" in entryData:
 			nextViewMode = entryData["nextViewMode"]
 			currentViewMode = entryData["currentViewMode"]
-			source = "plex"
 		else:
 			nextViewMode = entryData["type"]
 			currentViewMode = None
 
-		# in this case we have to ask plex for sure too
+		# "cache" (read the on-disk pickle, see getLibraryData()) vs "plex"
+		# (always fetch live - kept as the historical literal; it has
+		# nothing to do with which backend is active, that dispatch happens
+		# separately through Singleton().getMediaLibrary() inside
+		# getLibraryDataFromPlex()). Without a uuid there is no cache slot
+		# to read from; a specific single item's detail (key != "all") and
+		# an explicit forceUpdate both always need fresh data.
+		#
+		# This used to force "plex" unconditionally the moment nextViewMode
+		# was present - true for virtually every real listing - so the
+		# cache written a few lines below in getLibraryData() was written
+		# but never actually read back, on any screen, either backend
+		# (matches the "always a small wait on every context change" you
+		# noticed live - not something specific to Jellyfin).
+		source = "cache" if uuid else "plex"
+
 		if str(entryData.get('key')) != "all":
 			source = "plex"
 
@@ -207,9 +224,14 @@ class DP_LibMain(Screen):
 			if os.path.exists(self.pickleName):
 				pickleFileExists = True
 
-			# params['cache'] is default None. if it is present and it is False we know that we triggered refresh
-			# for this reason we have to set self.g_source = 'plex' because the if is with "or" and not with "and" which si not possible
-			if source == "cache" and pickleFileExists:
+			# Bounded staleness (CACHE_MAX_AGE_SECONDS) instead of trusting
+			# the pickle indefinitely - this is the first time "source ==
+			# cache" is actually reachable (see loadLibraryData()), so
+			# nothing has ever exercised how stale a long-lived cache file
+			# can get in practice.
+			cacheIsFresh = pickleFileExists and (time.time() - os.path.getmtime(self.pickleName)) < CACHE_MAX_AGE_SECONDS
+
+			if source == "cache" and cacheIsFresh:
 				try:
 					library = self.getLibraryDataFromPickle()
 					printl("from pickle", self, "D")
@@ -220,7 +242,7 @@ class DP_LibMain(Screen):
 			else:
 				library = self.getLibraryDataFromPlex(url, nextViewMode, currentViewMode)
 
-				if forceUpdate:
+				if forceUpdate or not cacheIsFresh:
 					regeneratePickleFile = True
 
 			if not pickleFileExists or regeneratePickleFile:

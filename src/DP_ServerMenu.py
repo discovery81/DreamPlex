@@ -44,6 +44,7 @@ from Screens.MessageBox import MessageBox
 from Screens.ChoiceBox import ChoiceBox
 from Screens.InputBox import InputBox
 from .DP_Player import DP_Player
+from .DP_LibShows import DP_LibShows
 from . import SettingsStorage, AbstractServerSettings, ServerSettings, ServerSettingsData
 from .DP_SettingsStorage import AuthorizationResult, USER_SWITCH_LOCAL_PROFILES
 
@@ -176,7 +177,12 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 												# warning. Both fixed: real help text here, plus a
 												# visible btn_red/btn_redText (see __init__/finishLayout,
 												# same pattern as btn_green just below).
-												"red": (self.onKeyRed, _("Sync/cache server data")),
+												# Renamed from "Sync/cache server data" - it only ever
+												# downloads posters/backdrops and metadata into the local
+												# cache (see DP_Syncer.syncThroughMediaLibrary()), never
+												# the actual video files. "Sync" read as "mirror the whole
+												# server locally", which is not what happens.
+												"red": (self.onKeyRed, _("Download posters and info (not videos)")),
 												"green": (self.onKeyGreen, _("Switch user")),
 												# Only meaningful when the hero banner is enabled -
 												# onKeyBlue() no-ops otherwise. Bound unconditionally
@@ -223,6 +229,17 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 			self["heroTitle"] = Label()
 			self["heroMeta"] = Label()
 			self["heroSummary"] = Label()
+			# "Continue watching" vs "Suggested" - see getHeroSuggestions()'s
+			# heroKind tag and _updateHeroDisplay().
+			self["heroKindBadge"] = Label()
+			# Sits behind heroPoster, slightly larger, same amber used for the
+			# sidebar's own selected-row highlight (skinParams "highlighted")
+			# - shown only while the hero actually has focus, so OK/BLUE
+			# playing it is never a surprise. Before this, the only cue was a
+			# "▶ " prefix in heroTitle's text, easy to miss (live-tested: it
+			# was missed).
+			self["heroFocusFrame"] = Label()
+			self["heroFocusFrame"].hide()
 			self._heroPicLoad = ePicLoad()
 			self._heroScale = AVSwitch().getFramebufferScale()
 			self._heroCandidates = []
@@ -276,7 +293,7 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 		# always available (unlike btn_green, gated on supportUsers() below) -
 		# see onKeyRed()/the "red" action above for why this needed a visible
 		# label at all.
-		self["btn_redText"].setText(_("Sync"))
+		self["btn_redText"].setText(_("Catalog"))
 
 		if self.miniTv:
 			self.initMiniTv()
@@ -1074,9 +1091,14 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 	#==========================================================================
 	#
 	#==========================================================================
-	def myCallback(self):
+	def myCallback(self, *args):
 		printl("", self, "S")
 
+		# *args: shared between two different callers with different close()
+		# shapes - self.selectedEntry.start (no return value) and DP_Player
+		# (always closes with one positional tuple, e.g. from
+		# leavePlayerConfirmed()/exitFunction()). Its content is not needed
+		# here, only that the decoder is free again.
 		if not self.settings.stopLiveTvOnStartup.getValue():
 			self.session.nav.playService(getLiveTv(), forceRestart=True)
 
@@ -1227,7 +1249,30 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 		printl("", self, "S")
 
 		try:
-			self._heroCandidates = self.mediaLibraryInstance.getHeroSuggestions() or []
+			candidates = self.mediaLibraryInstance.getHeroSuggestions(limit=self.settings.heroMaxItems.getValue()) or []
+			# Neither backend's getHeroSuggestions() filters out containers.
+			# type != 'Folder' (the first attempt at this) only catches raw
+			# filesystem folders - live-tested with a real log: a Jellyfin
+			# "Series" row from the Latest/Resume endpoints (a whole TV show,
+			# not an episode) has type 'Series', not 'Folder', and sailed
+			# right through. tagType is the one field both backends already
+			# normalize to "Video"/"Track" for an actually playable leaf
+			# (Movie/Episode/Audio - see JellyfinLibrary._LEAF_TAG_TYPES, and
+			# DP_PlexLibrary hardcodes "Video" for the same reason) and to
+			# the raw, backend-specific container type name (Series, Season,
+			# BoxSet, Playlist, Folder, ...) for anything else - a container
+			# has a title/poster/plot like any other row (which is why
+			# DP_Player still showed something), but no playable media of
+			# its own, so playback silently never started.
+			#
+			# 'Series' is the one container type kept anyway: a whole show
+			# suggested via Latest/Resume is still a meaningful suggestion -
+			# _playHeroItem() opens its season/episode browser instead of
+			# trying to play it directly (see there). Any other container
+			# (Season, BoxSet, Playlist, a raw folder, ...) is dropped, same
+			# as before - not common enough from these two endpoints to be
+			# worth a bespoke landing screen each.
+			self._heroCandidates = [c for c in candidates if c[1].get('tagType') in ('Video', 'Track', 'Series')]
 		except Exception as ex:
 			printl("could not fetch hero suggestions: " + str(ex), self, "W")
 			self._heroCandidates = []
@@ -1321,6 +1366,25 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 		if self._heroFocused:
 			displayTitle = "▶ " + displayTitle
 
+		if self._heroFocused:
+			self["heroFocusFrame"].show()
+		else:
+			self["heroFocusFrame"].hide()
+
+		# getHeroSuggestions() tags every candidate 'continue' (in progress/
+		# next up) or 'suggested' (recently added) - shown here so a title
+		# already started is not confused for a fresh recommendation. A
+		# whole show (tagType 'Series', see _fetchHeroCandidates()/
+		# _playHeroItem()) gets its own badge instead, replacing continue/
+		# suggested entirely - which bucket it came from matters less here
+		# than "OK/BLUE opens this, it will not start playing".
+		if entryData.get('tagType') == 'Series':
+			self["heroKindBadge"].setText(_("Open series"))
+		elif entryData.get('heroKind') == 'continue':
+			self["heroKindBadge"].setText(_("Continue watching"))
+		else:
+			self["heroKindBadge"].setText(_("Suggested"))
+
 		self["heroTitle"].setText(displayTitle)
 		self["heroMeta"].setText("   •   ".join(parts))
 
@@ -1340,7 +1404,13 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 			self["heroPoster"].instance.setPixmap(posterPtr)
 			self["heroPoster"].show()
 
-		self["btn_blueText"].setText(_("Play"))
+		# A show has nothing of its own to play - BLUE/OK open its season/
+		# episode browser instead (see _playHeroItem()), so the hint has to
+		# say so, not promise "Play".
+		if entryData.get('tagType') == 'Series':
+			self["btn_blueText"].setText(_("Browse"))
+		else:
+			self["btn_blueText"].setText(_("Play"))
 		self["btn_blue"].show()
 		self["btn_blueText"].show()
 
@@ -1396,7 +1466,31 @@ class DPS_ServerMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper, DPH_Filte
 			return
 
 		entry = self._heroCandidates[self._heroIndex]
-		self.session.open(DP_Player, [entry], 0, "mixed", False, True, self.g_serverConfig.playbackType().getValue())
+		title, entryData, contextMenu, viewState, nextUrl = entry
+
+		# A whole show (see _fetchHeroCandidates()'s tagType filter) has
+		# nothing of its own to play - land on its season/episode browser
+		# instead, the same screen "TV Shows" from the sidebar opens, just
+		# pre-seeded to this one show instead of the top-level list. Mirrors
+		# what DP_View.onEnter() does for any non-leaf row: contentUrl is
+		# never set on entryData until the row is actually entered (see
+		# JellyfinLibrary._to_entry()/DP_PlexLibrary.getFullListEntry()).
+		if entryData.get('tagType') == 'Series':
+			entryData['contentUrl'] = nextUrl
+			self.session.openWithCallback(self.myCallback, DP_LibShows, entryData)
+			printl("", self, "C")
+			return
+
+		# openWithCallback + myCallback (not a plain open()): DP_Player takes
+		# over decoder 0 for real playback, the same decoder self["miniTv"]
+		# uses to show live TV in the corner (see DPH_ScreenHelper). Every
+		# other screen here that can grab the decoder (see
+		# executeSelectedEntry() above) already restores live TV through
+		# myCallback once it closes - this was the one path that opened
+		# DP_Player directly and skipped it, which is what left the miniTV
+		# frozen on a black frame after leaving the player, until the next
+		# full re-entry into this screen reinitialized it from scratch.
+		self.session.openWithCallback(self.myCallback, DP_Player, [entry], 0, "mixed", False, True, self.g_serverConfig.playbackType().getValue(), autoSelectFirstMedia=True)
 
 		printl("", self, "C")
 

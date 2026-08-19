@@ -134,7 +134,17 @@ class DPS_ViewShows(DP_View):
 			self["childCount"].setText(str(self.details.get("childCount", " ")))
 
 			self.parentSeasonNr = self.details["ratingKey"]
-			self.bname = self.parentSeasonId
+			# self.parentSeasonId is only ever set a few lines up, in the
+			# "ShowShows" branch (the show's own list row) - normally
+			# already run by the time a season list renders, since you
+			# always pass through it first. Landing straight on a show's
+			# seasons (DP_ServerMenu's hero "Open series" - see
+			# _playHeroItem()) skips that step entirely, leaving it at its
+			# class default (None) and crashing the str concatenation a few
+			# lines down in getPictureInformationToLoad() - falls back to
+			# this season's own ratingKey instead, same idea (a stable per-
+			# item cache key), not the crash.
+			self.bname = self.parentSeasonId if self.parentSeasonId is not None else self.details["ratingKey"]
 			self.pname = self.details["ratingKey"]
 
 			self.changeBackdrop = True

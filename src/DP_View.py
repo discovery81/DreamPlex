@@ -26,6 +26,7 @@ You should have received a copy of the GNU General Public License
 #===============================================================================
 import math
 import os
+import time
 from os.path import join as path_join
 
 #noinspection PyUnresolvedReferences
@@ -62,6 +63,8 @@ from .DP_Settings import DPS_Settings
 from .DP_Server import DPS_Server
 
 from .DPH_StillPicture import StillPicture
+from .DPH_PlaybackInfo import DPH_PlaybackInfo
+from .DPH_BusyIndicator import DPH_BusyIndicator
 from .DPH_Singleton import Singleton
 from .DPH_ScreenHelper import DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Screen, DPH_Filter
 from .DP_ViewFactory import getNoneDirectoryElements, getDefaultDirectoryElementsList, getGuiElements
@@ -73,6 +76,11 @@ from . import _  # _ is translation
 #===========================================================================
 #
 #===========================================================================
+
+# Shortest time initiateRefresh()'s "Updating..." message is guaranteed to
+# stay up once shown, even if the work itself finishes faster - otherwise a
+# fast refresh could flash past unseen, defeating the point of showing it.
+BUSY_MIN_DISPLAY_SECONDS = 0.6
 
 
 class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter):
@@ -167,7 +175,23 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			DPH_ScreenHelper.__init__(self)
 
 		DPH_MultiColorFunctions.__init__(self)
-		DPH_Filter.__init__(self)
+		# 1-4 switch what the four color buttons do (see initColorFunctions()/
+		# setLevelActive()) - previously undocumented anywhere, discoverable
+		# only by pressing them. 5-9/0 keep the default "" (T9 search input
+		# once the search field has focus - not this screen's concern to
+		# explain, and true only in that one context).
+		DPH_Filter.__init__(self, digitHelp={
+			"1": _("Color buttons: playback mode / resume / watched / quality"),
+			"2": _("Color buttons: view / fast scroll / refresh library / details"),
+			"3": _("Color buttons: server settings / general settings / delete / path mapping"),
+			"4": _("Color buttons: filter mode"),
+		})
+
+		self.extendedInfoDialog = None
+		self.onClose.append(self.cleanupExtendedInfo)
+
+		self.busyIndicator = None
+		self.onClose.append(self.cleanupBusyIndicator)
 
 		self.initScreen(libraryName)
 
@@ -217,7 +241,10 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		# on the on-screen colour buttons, so a static Help entry here would
 		# go stale or be actively misleading. (menu/red_long/yellow_long/
 		# blue_long used to be bound here too, to handlers that did nothing
-		# at all - removed as dead code, not left unexplained.)
+		# at all - removed as dead code. yellow_long briefly held a real
+		# "force refresh" handler, but a hidden long-press turned out to be
+		# easy to miss - initiateRefresh() at level 2 now always does the
+		# full thing on a plain press instead, see there.)
 		self["actions"] = HelpableActionMap(self, "DP_View",
 		{
 			"ok": (self.onKeyOk, _("Open (movie, episode, folder, collection or playlist)")),
@@ -227,6 +254,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 			"up": (self.onKeyUp, _("Previous item")),
 			"down": (self.onKeyDown, _("Next item")),
 			"info": (self.onKeyInfo, _("Show extended info")),
+			"epgInfo": (self.showExtendedInfo, _("Show cast/director/rating details")),
 			"video": (self.onKeyVideo, _("Play trailer / extra")),
 			"audio": (self.onKeyAudio, _("Audio track menu")),
 			"red": (self.onKeyRed, ""),
@@ -552,6 +580,79 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "C")
 
 	#===========================================================================
+	# EPG: the same cast/director/rating popup DP_Player already shows on
+	# INFO/EPG during playback (DPH_PlaybackInfo) - self.details already
+	# carries every field it needs (it is what feeds the year/genre/writer/
+	# studio labels on screen), so this is just assembling the same two
+	# strings DP_Player.showPlaybackInfo() does, from a different dict.
+	#===========================================================================
+	def showExtendedInfo(self):
+		printl("", self, "S")
+
+		if self.details is None:
+			printl("", self, "C")
+			return
+
+		if self.extendedInfoDialog is None:
+			self.extendedInfoDialog = self.session.instantiateDialog(DPH_PlaybackInfo)
+
+		parts = []
+		year = self.details.get('year')
+		if year:
+			parts.append(str(year))
+		genre = self.details.get('genre')
+		if genre:
+			parts.append(str(genre))
+		duration = self.details.get('duration')
+		try:
+			totalMinutes = int(duration) // 60000
+		except (TypeError, ValueError):
+			totalMinutes = 0
+		if totalMinutes > 0:
+			parts.append(_("%d min") % totalMinutes)
+		contentRating = self.details.get('contentRating')
+		if contentRating:
+			parts.append(str(contentRating))
+		rating = self.details.get('rating')
+		try:
+			if rating:
+				parts.append("★ %.1f" % float(rating))
+		except (TypeError, ValueError):
+			pass
+		metaLine = "   •   ".join(parts)
+
+		extra = []
+		director = self.details.get('director')
+		if director:
+			extra.append(_("Director: %s") % director)
+		writer = self.details.get('writer')
+		if writer:
+			extra.append(_("Writer: %s") % writer)
+		cast = self.details.get('cast')
+		if cast:
+			extra.append(_("Cast: %s") % cast)
+		summary = self.details.get('summary') or ""
+		if extra:
+			summary = (summary + "\n\n" if summary else "") + "\n".join(extra)
+
+		posterPtr = self.EXpicloadPoster.getData() if self.EXpicloadPoster is not None else None
+		self.extendedInfoDialog.showInfo(self.details.get('title', ''), summary, metaLine, posterPtr)
+
+		printl("", self, "C")
+
+	def cleanupExtendedInfo(self):
+		if self.extendedInfoDialog is not None:
+			self.extendedInfoDialog.hideInfo()
+			self.session.deleteDialog(self.extendedInfoDialog)
+			self.extendedInfoDialog = None
+
+	def cleanupBusyIndicator(self):
+		if self.busyIndicator is not None:
+			self.busyIndicator.hideBusy()
+			self.session.deleteDialog(self.busyIndicator)
+			self.busyIndicator = None
+
+	#===========================================================================
 	#
 	#===========================================================================
 	def onKeyVideo(self):
@@ -741,15 +842,15 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		self.setColorFunction(color="red", level="1", functionList=("", self.togglePlayMode))
 		self.setColorFunction(color="green", level="1", functionList=("", self.toggleResumeMode))
 		self.setColorFunction(color="yellow", level="1", functionList=("", self.executeLibraryFunction))  # name is empty because we set it dynamical
-		self.setColorFunction(color="blue", level="1", functionList=(_("playback mode '" + self.playbackModes[self.configuredPlaybackMode][1] + "'"), self.togglePlaybackMode))
+		self.setColorFunction(color="blue", level="1", functionList=(_("playback mode '") + self.playbackModes[self.configuredPlaybackMode][1] + "'", self.togglePlaybackMode))
 
 		self.setColorFunction(color="red", level="2", functionList=(_("View '") + str(self.currentViewName) + " '", self.onToggleView))
 		self.setColorFunction(color="green", level="2", functionList=("", self.toggleFastScroll))  # name is empty because we set it dynamical
-		self.setColorFunction(color="yellow", level="2", functionList=("refresh Library", self.initiateRefresh))
+		self.setColorFunction(color="yellow", level="2", functionList=(_("refresh Library"), self.initiateRefresh))
 		self.setColorFunction(color="blue", level="2", functionList=(_("show 'Details'"), self.toggleDetails))
 
-		self.setColorFunction(color="red", level="3", functionList=("Server Settings", self.showServerSettings))
-		self.setColorFunction(color="green", level="3", functionList=("Plex Settings", self.showGeneralSettings))
+		self.setColorFunction(color="red", level="3", functionList=(_("Server Settings"), self.showServerSettings))
+		self.setColorFunction(color="green", level="3", functionList=(_("General Settings"), self.showGeneralSettings))
 		self.setColorFunction(color="yellow", level="3", functionList=(_("delete Medias"), self.deleteMedias))
 		self.setColorFunction(color="blue", level="3", functionList=(_("use for Mapping"), self.useForMappingHelper))
 
@@ -1002,12 +1103,12 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		if self.fastScroll:
 			self.fastScroll = False
-			self["btn_" + color + "Text"].setText("fastScroll 'Off'")
+			self["btn_" + color + "Text"].setText(_("fastScroll 'Off'"))
 			self["info"].hide()
 			self["infoLabel"].hide()
 		else:
 			self.fastScroll = True
-			self["btn_" + color + "Text"].setText("fastScroll 'On'")
+			self["btn_" + color + "Text"].setText(_("fastScroll 'On'"))
 			self["info"].show()
 			self["infoLabel"].show()
 			self["miniTv"].hide()
@@ -1064,7 +1165,7 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		except Exception as e:
 			printl("could not persist playback mode: " + str(e), self, "W")
 
-		self["btn_" + color + "Text"].setText("playback mode '" + myName + "'")
+		self["btn_" + color + "Text"].setText(_("playback mode '") + myName + "'")
 
 		printl("", self, "C")
 
@@ -1376,17 +1477,12 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		printl("", self, "S")
 		index = self["listview"].getIndex()
 
-		# Already on page 1 (same boundary math as refresh()'s own
-		# pageCurrent, further below) - there is nowhere "previous" to page
-		# to, so LEFT falls through to going back a level instead, the way
-		# a Carousel-skin sidebar column does. This was a pure no-op before
-		# (index clamped to itself, then refresh()), so the fallback is safe
-		# for every skin: nothing that used to happen here still doesn't.
-		if index < self.itemsPerPage:
-			self.onLeave()
-			printl("", self, "C")
-			return
-
+		# LEFT never leaves the level from inside a leaf listing, on any
+		# row: live testing showed "LEFT goes back once you're anywhere on
+		# page 1" was surprising and easy to trigger by accident. Only
+		# ESC/EXIT (onKeyCancel -> onLeave) goes back a level here; LEFT
+		# is page-only, a no-op once already on page 1 - same behavior it
+		# always had before the Carousel sidebar work.
 		if index < 0:
 			index = 0
 		self["listview"].setIndex(index)
@@ -1809,9 +1905,9 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 		color = "yellow"
 
 		if self.seen:
-			viewStateName = "set 'Unseen'"
+			viewStateName = _("set 'Unseen'")
 		else:
-			viewStateName = "set 'Seen'"
+			viewStateName = _("set 'Seen'")
 
 		if not noInit:
 			self.initPlayMode()
@@ -1878,12 +1974,19 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 
 		if self.miniTvInUse:
 			self["miniTv"].show()
-		if self.lastTagType == "Directory":
-			self.toggleElementVisibilityWithLabel("audio")
-			self.toggleElementVisibilityWithLabel("subtitles")
-			self.toggleElementVisibilityWithLabel("genre")
-			self.toggleElementVisibilityWithLabel("duration")
-			self.toggleElementVisibilityWithLabel("year")
+		# Used to only run coming FROM a folder row (lastTagType ==
+		# "Directory") - correct for that transition, but landing on a leaf
+		# row straight from folder ENTRY (onEnter() resets lastTagType to
+		# None right before the first row of the new listing renders - see
+		# there) never matches either, so these fields never got shown at
+		# all until the user happened to visit an actual sub-folder once and
+		# come back. show()/hide() are idempotent, so there is no cost to
+		# just always restoring them here.
+		self.toggleElementVisibilityWithLabel("audio")
+		self.toggleElementVisibilityWithLabel("subtitles")
+		self.toggleElementVisibilityWithLabel("genre")
+		self.toggleElementVisibilityWithLabel("duration")
+		self.toggleElementVisibilityWithLabel("year")
 
 		printl("", self, "C")
 	#===============================================================================
@@ -2402,13 +2505,83 @@ class DP_View(DPH_Screen, DPH_ScreenHelper, DPH_MultiColorFunctions, DPH_Filter)
 	#===========================================================================
 	#
 	#===========================================================================
+	# YELLOW at level 2: always a full refresh, no separate "light" tier
+	# and no long-press variant to discover - live-tested feedback was that
+	# a hidden long-press for the "real" refresh was too easy to miss, and
+	# splitting light/deep by folder size (subfolder count was floated)
+	# would only trade that for a different unpredictability (the same
+	# press sometimes doing more than other times, for a reason not visible
+	# on screen). Deleting a handful of local image files and re-fetching
+	# one listing is cheap enough on a personal library that there is no
+	# real need to offer a cheaper tier at all.
 	def initiateRefresh(self):
 		printl("", self, "S")
+
+		if self.isFolder:
+			printl("", self, "C")
+			return
+
+		if self.busyIndicator is None:
+			self.busyIndicator = self.session.instantiateDialog(DPH_BusyIndicator)
+		self.busyIndicator.showBusy(_("Updating..."))
+		self._busyShownAt = time.time()
+
+		# Enigma2 does not repaint mid-function - a 10ms defer (tried first,
+		# live-tested) was not reliably enough time for the compositor to
+		# actually flush the message before the blocking network calls in
+		# _doRefresh() started, so on a fast connection it never visibly
+		# appeared at all - only the generic "Main thread is busy" spinner
+		# did, once the block itself was already under way.
+		self._refreshDeferTimer = eTimer()
+		self._refreshDeferTimer.callback.append(self._doRefresh)
+		self._refreshDeferTimer.start(250, True)
+
+		printl("", self, "C")
+
+	def _doRefresh(self):
+		printl("", self, "S")
+
 		self.forceUpdate = True
 
-		if not self.isFolder:
-			Singleton().getMediaLibrary().doRequest(self.refreshUrl)
-			self.getViewListData()
+		# This section's already-downloaded posters/backdrops for the view/
+		# resolution currently on screen - showPoster()/showBackdrop() (and
+		# DP_Syncer's bulk "Sincronizza") only ever download a file that is
+		# missing, never re-check one that already exists, so deleting it
+		# here is what makes the lazy-load pick up a corrected image instead
+		# of reusing the stale one. Scoped to just this section/resolution,
+		# not a full library wipe - that is what "Delete cache" in Settings
+		# is for.
+		for entry in self.listViewList:
+			ratingKey = entry[1].get('ratingKey')
+			if not ratingKey:
+				continue
+			for path in (
+				self.mediaPath + self.image_prefix + "_" + str(ratingKey) + self.poster_postfix,
+				self.mediaPath + self.image_prefix + "_" + str(ratingKey) + self.backdrop_postfix,
+			):
+				try:
+					if fileExists(path):
+						os.remove(path)
+				except Exception as ex:
+					printl("could not delete cached image " + str(path) + ": " + str(ex), self, "W")
+
+		# self.refreshUrl (context["libraryRefreshURL"]) asks the *server*
+		# to rescan this library section on disk - its value is backend-
+		# opaque (a full URL for Plex, an item id for Jellyfin, see
+		# DP_MediaLibrary.refreshLibrarySection()) and can be empty for
+		# listings that never set it (e.g. hero/similar suggestions), which
+		# is a no-op there, not an error.
+		Singleton().getMediaLibrary().refreshLibrarySection(self.refreshUrl)
+		self.getViewListData()
+
+		elapsed = time.time() - self._busyShownAt
+		remaining = BUSY_MIN_DISPLAY_SECONDS - elapsed
+		if remaining > 0:
+			self._busyHideTimer = eTimer()
+			self._busyHideTimer.callback.append(self.busyIndicator.hideBusy)
+			self._busyHideTimer.start(int(remaining * 1000), True)
+		else:
+			self.busyIndicator.hideBusy()
 
 		printl("", self, "C")
 

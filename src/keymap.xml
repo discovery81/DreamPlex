@@ -57,7 +57,23 @@
 		</device>
         <key id="KEY_STOP" mapto="stop" flags="m" />
     </map>
-	
+
+    <!-- second trigger for the native Help screen, for remotes whose HELP
+         button does not reach the box as KEY_HELP. None of these are used
+         anywhere else in this plugin, and their one native meaning (open
+         the recordings list) only applies inside the live-TV InfoBar - a
+         handful of candidates rather than just KEY_LIST, since the
+         "recordings list" icon (three lines + R) maps to a different
+         physical keycode across remote models. Only the one the remote
+         actually sends will ever fire; the rest just sit unused. -->
+    <map context="DP_HelpShortcut">
+        <key id="KEY_LIST" mapto="helpAlt" flags="m" />
+        <key id="KEY_PVR" mapto="helpAlt" flags="m" />
+        <key id="KEY_ARCHIVE" mapto="helpAlt" flags="m" />
+        <key id="KEY_MEDIA" mapto="helpAlt" flags="m" />
+        <key id="KEY_FILE" mapto="helpAlt" flags="m" />
+    </map>
+
 	<map context="DPS_Settings">
 		<key id="KEY_CHANNELUP" mapto="bouquet_up" flags="m" />
 		<key id="KEY_CHANNELDOWN" mapto="bouquet_down" flags="m" />
@@ -68,7 +84,6 @@
 			<key id="KEY_RED" mapto="red" flags="b" />
 			<key id="KEY_RED" mapto="red_long" flags="l" />
 			<key id="KEY_YELLOW" mapto="yellow" flags="b" />
-			<key id="KEY_YELLOW" mapto="yellow_long" flags="l" />
 			<key id="KEY_GREEN" mapto="green" flags="b" />
 			<key id="KEY_GREEN" mapto="green_long" flags="l" />
 			<key id="KEY_BLUE" mapto="blue" flags="b" />
@@ -93,10 +108,10 @@
 		<key id="KEY_LEFT" mapto="left" flags="b" />
 		<key id="KEY_RIGHT" mapto="right" flags="b" />
 		<key id="KEY_INFO" mapto="info" flags="m" />
+		<key id="KEY_EPG" mapto="epgInfo" flags="m" />
 		<key id="KEY_RED" mapto="red" flags="b" />
 		<key id="KEY_RED" mapto="red_long" flags="l" />
 		<key id="KEY_YELLOW" mapto="yellow" flags="b" />
-		<key id="KEY_YELLOW" mapto="yellow_long" flags="l" />
 		<key id="KEY_GREEN" mapto="green" flags="b" />
 		<key id="KEY_GREEN" mapto="green_long" flags="l" />
 		<key id="KEY_BLUE" mapto="blue" flags="b" />

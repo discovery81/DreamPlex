@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-plugin-extensions-dreamplex 3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 23:30+0200\n"
+"POT-Creation-Date: 2026-08-20 00:05+0200\n"
 "PO-Revision-Date: 2026-08-14 23:05+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -381,6 +381,9 @@ msgstr ""
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr ""
 
+msgid "> Max hero suggestions to request"
+msgstr ""
+
 msgid "> Media Folder Path"
 msgstr ""
 
@@ -555,6 +558,9 @@ msgstr ""
 msgid "Authentication "
 msgstr ""
 
+msgid "Back to live TV"
+msgstr ""
+
 msgid "Backdrops"
 msgstr ""
 
@@ -562,6 +568,12 @@ msgid "Background"
 msgstr ""
 
 msgid "Bitrate:"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse Movies, TV Shows and Music on this server."
 msgstr ""
 
 msgid "By Collection"
@@ -631,6 +643,12 @@ msgstr ""
 msgid "Cast: %s"
 msgstr "У ролях: %s"
 
+msgid "Catalog"
+msgstr ""
+
+msgid "Catalog Download"
+msgstr ""
+
 msgid "Change PIN"
 msgstr "Змінити PIN-код"
 
@@ -659,6 +677,21 @@ msgstr ""
 msgid "Collections"
 msgstr "Колекції"
 
+msgid "Color buttons: filter mode"
+msgstr ""
+
+msgid "Color buttons: playback mode / resume / watched / quality"
+msgstr ""
+
+msgid "Color buttons: server settings / general settings / delete / path mapping"
+msgstr ""
+
+msgid "Color buttons: view / fast scroll / refresh library / details"
+msgstr ""
+
+msgid "Configure the plugin: servers, skin, cache and more."
+msgstr ""
+
 msgid "Confirm rating / accept suggested title"
 msgstr ""
 
@@ -666,6 +699,9 @@ msgid "Confirmed User from Plex was configured!"
 msgstr ""
 
 msgid "Connection Settings "
+msgstr ""
+
+msgid "Continue watching"
 msgstr ""
 
 msgid ""
@@ -718,6 +754,9 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "Download posters and info (not videos)"
+msgstr ""
+
 msgid "DreamPlex"
 msgstr ""
 
@@ -751,6 +790,10 @@ msgid "Enable trailer function. Only works with PlexPass or YYTrailer plugin."
 msgstr ""
 
 msgid "End host (1-254)"
+msgstr ""
+
+#, python-format
+msgid "Enter %s"
 msgstr ""
 
 msgid "Enter Jellyfin password"
@@ -832,6 +875,9 @@ msgstr ""
 msgid "Functions List:"
 msgstr ""
 
+msgid "General Settings"
+msgstr ""
+
 msgid "General Settings "
 msgstr ""
 
@@ -874,7 +920,13 @@ msgstr ""
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
 msgid "Info:"
+msgstr ""
+
+msgid "Information and credits for the plugin."
 msgstr ""
 
 msgid "Initiate Library refresh"
@@ -925,6 +977,9 @@ msgstr ""
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
 msgstr "ВЛІВО/ВПРАВО: перегляд     ВГОРУ/ВНИЗ: прокрутка     OK: відтворити зараз     EXIT: скасувати"
+
+msgid "Live TV"
+msgstr ""
 
 msgid "LiveTv"
 msgstr ""
@@ -1041,7 +1096,17 @@ msgstr ""
 msgid "On Deck"
 msgstr ""
 
+#, python-format
+msgid "Open %s"
+msgstr ""
+
 msgid "Open (movie, episode, folder, collection or playlist)"
+msgstr ""
+
+msgid "Open Settings"
+msgstr ""
+
+msgid "Open series"
 msgstr ""
 
 msgid "Original Quality"
@@ -1329,6 +1394,9 @@ msgstr ""
 msgid "Server Menu"
 msgstr ""
 
+msgid "Server Settings"
+msgstr ""
+
 msgid "Server Syncer"
 msgstr ""
 
@@ -1341,7 +1409,13 @@ msgstr ""
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr ""
 
+msgid "Show cast/director/rating details"
+msgstr ""
+
 msgid "Show extended info"
+msgstr ""
+
+msgid "Show help"
 msgstr ""
 
 msgid "Show live tv while you are navigating through your libs."
@@ -1374,10 +1448,10 @@ msgstr ""
 msgid "Specify what view type should start automatically."
 msgstr ""
 
-msgid "Start Rendering"
+msgid "Start Download"
 msgstr ""
 
-msgid "Start Sync"
+msgid "Start Rendering"
 msgstr ""
 
 msgid "Start host (1-254)"
@@ -1416,6 +1490,9 @@ msgstr ""
 msgid "Subtitles:"
 msgstr ""
 
+msgid "Suggested"
+msgstr ""
+
 #, python-format
 msgid "Suggestion in %d s"
 msgstr "Пропозиція через %d с"
@@ -1435,9 +1512,6 @@ msgstr "Перемкнутися на цього користувача"
 msgid "Switch user"
 msgstr ""
 
-msgid "Sync"
-msgstr ""
-
 msgid "Sync Media"
 msgstr ""
 
@@ -1450,9 +1524,6 @@ msgid ""
 msgstr ""
 
 msgid "Sync this content."
-msgstr ""
-
-msgid "Sync/cache server data"
 msgstr ""
 
 msgid "System"
@@ -1555,6 +1626,12 @@ msgstr ""
 msgid "Unwatched"
 msgstr ""
 
+msgid "Updating..."
+msgstr ""
+
+msgid "Upper limit only - the server may return fewer, depending on what it has to offer."
+msgstr ""
+
 msgid "Use Home Users?"
 msgstr ""
 
@@ -1604,6 +1681,10 @@ msgid "Without this option we just print to console."
 msgstr ""
 
 msgid "Writer:"
+msgstr ""
+
+#, python-format
+msgid "Writer: %s"
 msgstr ""
 
 msgid "Wrong pincode!"
@@ -1697,10 +1778,19 @@ msgstr ""
 msgid "press 'Text'"
 msgstr ""
 
+msgid "refresh Library"
+msgstr ""
+
 msgid "resume 'Off'"
 msgstr ""
 
 msgid "resume 'On'"
+msgstr ""
+
+msgid "set 'Seen'"
+msgstr ""
+
+msgid "set 'Unseen'"
 msgstr ""
 
 msgid "show 'Description'"

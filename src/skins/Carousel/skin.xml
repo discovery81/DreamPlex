@@ -100,13 +100,21 @@
 			<convert type="ConditionalShowHide" />
 		</widget>
 
-		<!-- mini-tv (shifted right to clear the sidebar, no framing overlay -
-		     frame-fs8.png was fitted to the old, unshifted position) -->
+		<!-- mini-tv (shifted right to clear the sidebar). Thin amber frame
+		     behind it, same idea as the FHD variant. -->
+		<eLabel position="371,84" size="384,224" zPosition="9" backgroundColor="#00e69405"/>
 		<widget name="miniTv" position="373,86" size="380,220" zPosition="10" backgroundColor="#ff111111"/>
-		<!-- static marquee filler, see the FHD variant for the full explanation -->
-		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel/images/hero_filler-fs8.png" position="573,350" size="467,307" zPosition="9" alphatest="blend" />
-		<widget name="menuFillerLine1" position="573,505" zPosition="10" size="467,26" font="OpenSans; 17" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" />
-		<widget name="menuFillerLine2" position="573,535" zPosition="10" size="467,20" font="OpenSans; 12" halign="center" valign="center" foregroundColor="#5C5C5C" backgroundColor="#000000" transparent="1" />
+		<!-- static marquee filler, left-aligned under the miniTV (was
+		     centered) - see the FHD variant for the full explanation. -->
+		<ePixmap pixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel/images/hero_filler-fs8.png" position="373,350" size="467,307" zPosition="9" alphatest="blend" />
+		<widget name="menuFillerLine1" position="373,505" zPosition="10" size="467,26" font="OpenSans; 17" halign="center" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" />
+		<widget name="menuFillerLine2" position="373,535" zPosition="10" size="467,20" font="OpenSans; 12" halign="center" valign="center" foregroundColor="#5C5C5C" backgroundColor="#000000" transparent="1" />
+		<!-- contextual hint - see the FHD variant/DP_MainMenu._updateMenuHint().
+		     Kept below the picon row above (which ends around y=470) to avoid
+		     overlapping it, so shorter than the FHD version. -->
+		<widget name="menuHintEyebrow" position="860,480" zPosition="10" size="400,18" font="OpenSans; 12" halign="left" valign="center" foregroundColor="#00e69405" backgroundColor="#000000" transparent="1" />
+		<widget name="menuHintTitle" position="860,500" zPosition="10" size="400,36" font="OpenSans; 18" halign="left" valign="top" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" />
+		<widget name="menuHintBody" position="860,538" zPosition="10" size="400,100" font="OpenSans; 13" halign="left" valign="top" foregroundColor="#5C5C5C" backgroundColor="#000000" transparent="1" />
 
 	</screen>
 
@@ -252,13 +260,16 @@
 		<eLabel position="0,43" size="333,677" zPosition="2" backgroundColor="#000000" transparent="0" />
 
 		<!-- menu: real vertical sidebar. text=5 is the shortcut label
-		     (padTo=5 in DP_ServerMenu._appendShortcutLabels()). -->
+		     (padTo=5 in DP_ServerMenu._appendShortcutLabels()). itemHeight
+		     53->40: same fix as the FHD variant - the filter submenu
+		     (getSectionFilter(), up to 12 rows) ran past this box into the
+		     footer below it; 520/40 fits 13 rows without scrolling. -->
 		<widget source="menu" render="Listbox" position="13,60" size="307,520" zPosition="3" scrollbarMode="showOnDemand" foregroundColor="#5C5C5C" foregroundColorSelected="#ffffff" backgroundColor="#212121" transparent="1" selectionPixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel/images/focus_list-fs8.png" backgroundPixmap="/usr/lib/enigma2/python/Plugins/Extensions/DreamPlex/skins/Carousel/images/sel_bg-fs8.png">
 			<convert type="TemplatedMultiContent">
-				{"template": [ MultiContentEntryText(pos = (9, 0), size = (36, 53), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 5, font = 1),
-				MultiContentEntryText(pos = (53, 0), size = (245, 53), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0, font = 0) ],
-				"fonts": [gFont("OpenSans", 22), gFont("OpenSans", 18)],
-				"itemHeight": 53,
+				{"template": [ MultiContentEntryText(pos = (9, 0), size = (36, 40), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 5, font = 1),
+				MultiContentEntryText(pos = (53, 0), size = (245, 40), flags = RT_HALIGN_LEFT | RT_VALIGN_CENTER, text = 0, font = 0) ],
+				"fonts": [gFont("OpenSans", 18), gFont("OpenSans", 15)],
+				"itemHeight": 40,
 				"scrollbarMode": "showOnDemand" }
 			</convert>
 		</widget>
@@ -292,8 +303,17 @@
 		<widget name="miniTv" position="373,86" size="380,220" zPosition="10" backgroundColor="#ff111111"/>
 
 		<!-- hero banner, see the FHD variant for the full explanation -->
+		<!-- amber highlight behind the poster, shown only while the hero has
+		     focus (OK/BLUE will play it) - same color as the sidebar's own
+		     selected-row highlight. -->
+		<widget name="heroFocusFrame" position="369,402" size="138,203" zPosition="9" backgroundColor="#00e69405" />
 		<widget name="heroPoster" position="373,406" size="130,195" zPosition="10" backgroundColor="#ff111111" />
 		<widget name="heroProgress" position="820,403" size="173,5" zPosition="10" backgroundColor="#000000" foregroundColor="#ffffff" borderWidth="1" borderColor="#5C5C5C" />
+		<!-- "Continue watching" / "Suggested" - see getHeroSuggestions()'s
+		     heroKind tag. Solid amber pill, not plain colored text over the
+		     backdrop - live-tested, too little contrast to read either
+		     way. -->
+		<widget name="heroKindBadge" position="513,391" zPosition="10" size="170,20" font="OpenSans; 13" halign="center" valign="center" foregroundColor="#00000000" backgroundColor="#00e69405" transparent="0" />
 		<widget name="heroTitle" position="513,413" zPosition="10" size="460,28" font="OpenSans; 20" halign="left" valign="center" foregroundColor="#ffffff" backgroundColor="#000000" transparent="1" />
 		<widget name="heroMeta" position="513,446" zPosition="10" size="460,22" font="OpenSans; 16" halign="left" valign="center" foregroundColor="#5C5C5C" backgroundColor="#000000" transparent="1" />
 		<widget name="heroSummary" position="513,474" zPosition="10" size="460,125" font="OpenSans; 16" halign="left" valign="top" foregroundColor="#5C5C5C" backgroundColor="#000000" transparent="1" />

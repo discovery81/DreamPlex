@@ -453,6 +453,11 @@ class SettingsStorage(object):
 		# time (e.g. excluding what was already shown) without the timer
 		# logic itself needing to know or care.
 		self._heroRefetchAfterLoops = BaseSettings[int, ConfigInteger]("heroRefetchAfterLoops", ConfigInteger(default=3, limits=(1, 50)), self)
+		# Upper bound passed as getHeroSuggestions(limit=...) - the actual
+		# count is still whatever the server has to offer (On Deck/Resume
+		# and Recently Added/Latest can both come back shorter than this),
+		# this just caps how many it is ever asked for.
+		self._heroMaxItems = BaseSettings[int, ConfigInteger]("heroMaxItems", ConfigInteger(default=6, limits=(1, 30)), self)
 
 		self._defaultMovieView = BaseSettings[str, ConfigSelection]("defaultMovieView", None, self)
 		self._defaultShowView = BaseSettings[str, ConfigSelection]("defaultShowView", None, self)
@@ -652,6 +657,10 @@ class SettingsStorage(object):
 	@property
 	def heroRefetchAfterLoops(self) -> BaseSettings[int, ConfigInteger]:
 		return self._heroRefetchAfterLoops
+
+	@property
+	def heroMaxItems(self) -> BaseSettings[int, ConfigInteger]:
+		return self._heroMaxItems
 
 	@property
 	def defaultMovieView(self) -> BaseSettings[str, ConfigSelection]:

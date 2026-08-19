@@ -19,6 +19,19 @@
   con scorciatoie numeriche, e un banner "hero" con rotazione nel menu
   server - locandina, trama, conto alla rovescia al prossimo suggerimento,
   avviabile con OK o il tasto blu
+- Il banner hero ora unisce "Continua a guardare" (in corso/prossimo
+  episodio) e "Proposto" (aggiunti di recente), ciascuno etichettato; una
+  serie intera suggerita così apre la sfoglia stagioni/episodi invece di non
+  fare nulla, e il numero di suggerimenti richiesti è personalizzabile
+- Pannello dettagli con cast/regia/valutazione (tasto EPG), prima
+  disponibile solo durante la riproduzione, ora anche mentre sfogli le
+  cartelle
+- Un secondo tasto (LIST, PVR, ARCHIVE, MEDIA o FILE, quale che sia inviato
+  dal telecomando) apre anch'esso la schermata Aiuto, per i telecomandi il
+  cui tasto HELP non arriva al decoder come KEY_HELP
+- "Aggiorna libreria" (giallo, schermate di sfoglio) è ora un'unica azione
+  prevedibile - sempre un aggiornamento completo, incluse locandine/sfondi,
+  con un avviso a schermo "Aggiornamento in corso..."
 
 ### ⬆️ Aggiornamento dalla 3.0
 
@@ -55,6 +68,29 @@
   contenuti mai messi in cache prima
 - Il cambio skin da Impostazioni proponeva solo "default" - ogni altra skin
   installata veniva ignorata in silenzio
+- La cache delle liste veniva scritta ma mai riletta - ogni cambio di
+  schermata ricaricava dal server; ora una cartella vista di recente si apre
+  all'istante, con una finestra di validità di 5 minuti
+- "Aggiorna libreria" chiedeva al server di riscansionare solo su Plex, su
+  Jellyfin andava in crash; ora riceve la stessa richiesta reale
+- "Elimina cache" (Impostazioni) cancellava solo la cache delle liste, mai
+  le locandine/sfondi scaricati - l'unico modo per forzarne un nuovo
+  download era cancellarli a mano
+- Il tasto Help non faceva nulla nel selettore server, nel menu server e
+  nelle schermate di sfoglio - le descrizioni c'erano, ma niente apriva
+  davvero la schermata Aiuto in quelle tre
+- Una serie intera suggerita dal banner hero (a differenza di un singolo
+  episodio) non faceva nulla in silenzio, o mandava in crash la sfoglia
+  stagioni se aperta da lì
+- I metadati (anno, cast, genere...) potevano restare nascosti a caso per un
+  film in una cartella mista, finché non si visitava prima un'altra riga
+- Alcune etichette a schermo non erano mai tradotte ("set 'Seen'",
+  "fastScroll 'On/Off'", "playback mode '...'") o erano proprio sbagliate
+  ("Runtime:" appariva come "Stato corrente" in italiano)
+- Jellyfin non selezionava mai automaticamente un sottotitolo incorporato
+  forzato, a differenza di Plex
+- Testi ed evidenziazioni poco leggibili/invisibili nella skin Carousel (un
+  presupposto sbagliato su come Enigma2 gestisce la trasparenza dei colori)
 
 ### 🔒 Sicurezza
 
@@ -80,7 +116,7 @@
 ### 🌍 Traduzioni
 
 - Le stringhe di Jellyfin sono ora estratte e traducibili
-- Il catalogo sale a 539 stringhe; l'italiano è completo
+- Il catalogo sale a 568 stringhe; l'italiano è completo
 
 ---
 

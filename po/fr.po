@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DreamPlex\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-18 23:30+0200\n"
+"POT-Creation-Date: 2026-08-20 00:05+0200\n"
 "PO-Revision-Date: 2018-09-15 17:50+0200\n"
 "Last-Translator: DonDavici <dondavici@gmail.com>\n"
 "Language-Team: dondavici@gmail.com <dondavici@gmail.com>\n"
@@ -416,6 +416,9 @@ msgstr "> Chemin du dossier des logs"
 msgid "> Main menu hero rotation (seconds, 0=off)"
 msgstr ""
 
+msgid "> Max hero suggestions to request"
+msgstr ""
+
 msgid "> Media Folder Path"
 msgstr "> Chemin du dossier média"
 
@@ -593,6 +596,9 @@ msgstr "Son:"
 msgid "Authentication "
 msgstr ""
 
+msgid "Back to live TV"
+msgstr ""
+
 msgid "Backdrops"
 msgstr "Arrière-plans"
 
@@ -601,6 +607,12 @@ msgstr "Arrière-plan"
 
 msgid "Bitrate:"
 msgstr "Débit:"
+
+msgid "Browse"
+msgstr ""
+
+msgid "Browse Movies, TV Shows and Music on this server."
+msgstr ""
 
 msgid "By Collection"
 msgstr "Par la collection"
@@ -669,6 +681,12 @@ msgstr "Acteur:"
 msgid "Cast: %s"
 msgstr "Distribution : %s"
 
+msgid "Catalog"
+msgstr ""
+
+msgid "Catalog Download"
+msgstr ""
+
 msgid "Change PIN"
 msgstr "Changer le code PIN"
 
@@ -697,6 +715,21 @@ msgstr ""
 msgid "Collections"
 msgstr "Collections"
 
+msgid "Color buttons: filter mode"
+msgstr ""
+
+msgid "Color buttons: playback mode / resume / watched / quality"
+msgstr ""
+
+msgid "Color buttons: server settings / general settings / delete / path mapping"
+msgstr ""
+
+msgid "Color buttons: view / fast scroll / refresh library / details"
+msgstr ""
+
+msgid "Configure the plugin: servers, skin, cache and more."
+msgstr ""
+
 msgid "Confirm rating / accept suggested title"
 msgstr ""
 
@@ -705,6 +738,9 @@ msgstr "L'utilisateur confirmé de Plex a été configuré!"
 
 msgid "Connection Settings "
 msgstr "Paramètres de connexion "
+
+msgid "Continue watching"
+msgstr ""
 
 msgid ""
 "Could not reach the server.\n"
@@ -756,6 +792,9 @@ msgstr ""
 msgid "Dismiss"
 msgstr ""
 
+msgid "Download posters and info (not videos)"
+msgstr ""
+
 msgid "DreamPlex"
 msgstr "DreamPlex"
 
@@ -789,6 +828,10 @@ msgid "Enable trailer function. Only works with PlexPass or YYTrailer plugin."
 msgstr "Activer la fonction bande-annonce. Fonctionne uniquement avec PlexPass ou YYTrailer plugin."
 
 msgid "End host (1-254)"
+msgstr ""
+
+#, python-format
+msgid "Enter %s"
 msgstr ""
 
 msgid "Enter Jellyfin password"
@@ -875,6 +918,9 @@ msgstr "Img/sec:"
 msgid "Functions List:"
 msgstr "Fonctions média:"
 
+msgid "General Settings"
+msgstr ""
+
 msgid "General Settings "
 msgstr "Paramètres généraux "
 
@@ -917,8 +963,14 @@ msgstr "Lors du changement du Skin vous devez redémarrer le GUI !"
 msgid "If you do nothing, the next episode starts after this many seconds."
 msgstr ""
 
+msgid "Info"
+msgstr ""
+
 msgid "Info:"
 msgstr "Info:"
+
+msgid "Information and credits for the plugin."
+msgstr ""
 
 msgid "Initiate Library refresh"
 msgstr "Démarrer mise à jour de la librairie"
@@ -968,6 +1020,9 @@ msgstr ""
 
 msgid "LEFT/RIGHT: browse     UP/DOWN: scroll     OK: play now     EXIT: cancel"
 msgstr "GAUCHE/DROITE : parcourir     HAUT/BAS : défiler     OK : lire maintenant     EXIT : annuler"
+
+msgid "Live TV"
+msgstr ""
 
 msgid "LiveTv"
 msgstr "LiveTv"
@@ -1087,7 +1142,17 @@ msgstr "Ok"
 msgid "On Deck"
 msgstr "Sur le Deck"
 
+#, python-format
+msgid "Open %s"
+msgstr ""
+
 msgid "Open (movie, episode, folder, collection or playlist)"
+msgstr ""
+
+msgid "Open Settings"
+msgstr ""
+
+msgid "Open series"
 msgstr ""
 
 msgid "Original Quality"
@@ -1387,6 +1452,9 @@ msgstr "Serveurs:"
 msgid "Server Menu"
 msgstr "Serveur menu"
 
+msgid "Server Settings"
+msgstr ""
+
 msgid "Server Syncer"
 msgstr ""
 
@@ -1399,7 +1467,13 @@ msgstr "Paramètres"
 msgid "Show additional filter in an additional menu step e.g. OnDeck"
 msgstr "Afficher le filtre supplémentaire dans une étape de menu supplémentaire p. ex. Ondeck"
 
+msgid "Show cast/director/rating details"
+msgstr ""
+
 msgid "Show extended info"
+msgstr ""
+
+msgid "Show help"
 msgstr ""
 
 msgid "Show live tv while you are navigating through your libs."
@@ -1432,11 +1506,11 @@ msgstr "Spécifiez ce que le bouton EXIT dans le lecteur doit faire."
 msgid "Specify what view type should start automatically."
 msgstr "Spécifiez le type d'affichage qui doit démarrer automatiquement."
 
+msgid "Start Download"
+msgstr ""
+
 msgid "Start Rendering"
 msgstr "Démarrer rendu"
-
-msgid "Start Sync"
-msgstr "Syncroniser"
 
 msgid "Start host (1-254)"
 msgstr ""
@@ -1477,6 +1551,9 @@ msgstr ""
 msgid "Subtitles:"
 msgstr "Sous-titres:"
 
+msgid "Suggested"
+msgstr ""
+
 #, python-format
 msgid "Suggestion in %d s"
 msgstr "Suggestion dans %d s"
@@ -1496,9 +1573,6 @@ msgstr "Passer à cet utilisateur"
 msgid "Switch user"
 msgstr ""
 
-msgid "Sync"
-msgstr ""
-
 msgid "Sync Media"
 msgstr "Synchroniser médias"
 
@@ -1514,9 +1588,6 @@ msgstr ""
 
 msgid "Sync this content."
 msgstr "Synchronisez ce contenu."
-
-msgid "Sync/cache server data"
-msgstr ""
 
 msgid "System"
 msgstr "Système"
@@ -1624,6 +1695,12 @@ msgstr ""
 msgid "Unwatched"
 msgstr "Non vu"
 
+msgid "Updating..."
+msgstr ""
+
+msgid "Upper limit only - the server may return fewer, depending on what it has to offer."
+msgstr ""
+
 msgid "Use Home Users?"
 msgstr "Utiliser les utilisateurs domestiques?"
 
@@ -1674,6 +1751,10 @@ msgstr "Sans cette option, nous venons l’imprimer sur la console."
 
 msgid "Writer:"
 msgstr "Scénariste:"
+
+#, python-format
+msgid "Writer: %s"
+msgstr ""
 
 msgid "Wrong pincode!"
 msgstr "Code PIN incorrect !"
@@ -1771,11 +1852,20 @@ msgstr "appuyez 'Info'"
 msgid "press 'Text'"
 msgstr "appuyez 'Text'"
 
+msgid "refresh Library"
+msgstr ""
+
 msgid "resume 'Off'"
 msgstr "résumer 'Non'"
 
 msgid "resume 'On'"
 msgstr "résumer 'Oui'"
+
+msgid "set 'Seen'"
+msgstr ""
+
+msgid "set 'Unseen'"
+msgstr ""
 
 msgid "show 'Description'"
 msgstr "afficher 'Déscription'"
@@ -1873,6 +1963,9 @@ msgstr "☆☆☆☆☆  (effacé)"
 
 #~ msgid "No update available"
 #~ msgstr "Pas de mise à jour"
+
+#~ msgid "Start Sync"
+#~ msgstr "Syncroniser"
 
 #~ msgid ""
 #~ "The selected lib/package/plugin is not installed!\n"

@@ -1745,6 +1745,20 @@ class PlexLibrary(DP_MediaLibrary):
 			traceback.print_exc()
 			printl("error: " + str(ex), self, "D")
 
+	def refreshLibrarySection(self, token):
+		printl("", self, "S")
+
+		# token is already the full URL to GET, built once by
+		# buildContextMenu() from the current listing's own url - unchanged
+		# behavior from before this became its own abstract method.
+		if token:
+			self.doRequest(token)
+
+		printl("", self, "C")
+
+	#============================================================================
+	#
+	#============================================================================
 	def getSimilarItems(self, server, itemId, limit=6):
 		"""Best-effort "you might also like" carousel via Plex's related-hub
 		endpoint. Unlike Jellyfin's flat /Items/{id}/Similar, Plex nests
@@ -1785,33 +1799,49 @@ class PlexLibrary(DP_MediaLibrary):
 		printl("", self, "C")
 		return entries
 
+	def _fetchHeroBucket(self, urlPath, limit, heroKind):
+		"""One hero bucket (see getHeroSuggestions()) - urlPath is one of
+		Plex's own hub endpoints ("/library/onDeck", "/library/
+		recentlyAdded", both already used elsewhere for the "On Deck"/"New"
+		menu rows), heroKind tags every entryData so DP_ServerMenu can show
+		a "Continue"/"Suggested" badge on the hero banner."""
+		if not self.g_currentServer:
+			return []
+
+		url = "%s://%s%s" % (self.http, self.g_currentServer, urlPath)
+		tree = self.getXmlTreeFromUrl(url)
+		videoNodes = tree.findall(".//Video")[:limit] if tree is not None else []
+
+		entries = []
+		for entry in videoNodes:
+			entryData = dict(entry.items())
+			entryData['server'] = str(self.g_currentServer)
+			entryData['tagType'] = "Video"
+			entryData['genre'] = " / ".join(self.getListFromTag(entry, "Genre"))
+			entryData['director'] = " / ".join(self.getListFromTag(entry, "Director"))
+			entryData['cast'] = " / ".join(self.getListFromTag(entry, "Role"))
+			entryData['heroKind'] = heroKind
+			entryData = self.getImageData(entryData, entry, self.g_currentServer)
+			entries.append(self.getFullListEntry(entryData, url))
+		return entries
+
 	def getHeroSuggestions(self, limit=6):
-		"""Plex's "On Deck" hub (already used by getAllSections()'s own
-		On Deck row) - the concrete fetch behind DP_MediaLibrary.
+		"""Plex's "On Deck" hub (in-progress/next-up, already used by
+		getAllSections()'s own On Deck row) for the "continue" bucket, and
+		"recentlyAdded" (its own "New" row) for "suggested" once On Deck
+		runs out of items - the concrete fetch behind DP_MediaLibrary.
 		getHeroSuggestions() (see there for why this is its own method
 		rather than something DP_MainMenu calls directly). Same
 		reviewed-by-inspection-only caveat as getSimilarItems() above."""
 		printl("", self, "S")
 
-		if not self.g_currentServer:
-			printl("", self, "C")
-			return []
-
 		try:
-			url = "%s://%s/library/onDeck" % (self.http, self.g_currentServer)
-			tree = self.getXmlTreeFromUrl(url)
-			videoNodes = tree.findall(".//Video")[:limit] if tree is not None else []
-
-			entries = []
-			for entry in videoNodes:
-				entryData = dict(entry.items())
-				entryData['server'] = str(self.g_currentServer)
-				entryData['tagType'] = "Video"
-				entryData['genre'] = " / ".join(self.getListFromTag(entry, "Genre"))
-				entryData['director'] = " / ".join(self.getListFromTag(entry, "Director"))
-				entryData['cast'] = " / ".join(self.getListFromTag(entry, "Role"))
-				entryData = self.getImageData(entryData, entry, self.g_currentServer)
-				entries.append(self.getFullListEntry(entryData, url))
+			entries = self._fetchHeroBucket("/library/onDeck", limit, "continue")
+			if len(entries) < limit:
+				seenKeys = {e[1].get('ratingKey') for e in entries}
+				for entry in self._fetchHeroBucket("/library/recentlyAdded", limit - len(entries), "suggested"):
+					if entry[1].get('ratingKey') not in seenKeys:
+						entries.append(entry)
 		except Exception as e:
 			printl("could not fetch hero suggestions: " + str(e), self, "W")
 			printl("", self, "C")

@@ -187,7 +187,7 @@ class DP_Player(Screen, InfoBarBase, InfoBarShowHide, InfoBarCueSheetSupport,
 	#
 	#===========================================================================
 
-	def __init__(self, session, listViewList, currentIndex, libraryName, autoPlayMode, resumeMode, playbackMode, forceResume=False, isExtraData=False, sessionData=None, subtitleData=None, startedByRemotePlayer=False):
+	def __init__(self, session, listViewList, currentIndex, libraryName, autoPlayMode, resumeMode, playbackMode, forceResume=False, isExtraData=False, sessionData=None, subtitleData=None, startedByRemotePlayer=False, autoSelectFirstMedia=False):
 		printl("", self, "S")
 		Screen.__init__(self, session)
 
@@ -220,6 +220,14 @@ class DP_Player(Screen, InfoBarBase, InfoBarShowHide, InfoBarCueSheetSupport,
 		self.sessionData = sessionData
 		self.subtitleData = subtitleData
 		self.startedByRemotePlayer = startedByRemotePlayer
+		# The Carousel hero's BLUE-key shortcut promises "play now" -
+		# stopping at an unlabeled ChoiceBox for a multi-version item (see
+		# selectMedia()) instead reads as "nothing happened": the poster/
+		# title are already on screen from the constructor args below, the
+		# ChoiceBox itself is easy to miss, and STOP from there abandons
+		# playback entirely (see DP_ServerMenu._playHeroItem()). Set only by
+		# that one caller - every other entry point keeps the picker.
+		self.autoSelectFirstMedia = autoSelectFirstMedia
 		self.onChangedEntry = []
 
 		printl("mh: subtitleData=" + str(subtitleData), self, "D")
@@ -286,6 +294,14 @@ class DP_Player(Screen, InfoBarBase, InfoBarShowHide, InfoBarCueSheetSupport,
 		# DP_Player used these keys before).
 		"up": (self._onKeyUp, _("Scroll suggestion text up")),
 		"down": (self._onKeyDown, _("Scroll suggestion text down")),
+		}, -2)
+
+		# Second trigger for the same Help screen, on LIST - see
+		# DPH_ScreenHelper.DPH_Screen for why (remotes whose HELP button
+		# does not reach the box as KEY_HELP).
+		self["helpShortcut"] = HelpableActionMap(self, "DP_HelpShortcut",
+		{
+		"helpAlt": (self.showHelp, _("Show help")),
 		}, -2)
 
 		self.playbackInfoDialog = None
@@ -536,7 +552,7 @@ class DP_Player(Screen, InfoBarBase, InfoBarShowHide, InfoBarCueSheetSupport,
 			response = Singleton().getMediaLibrary().getLastResponse()
 			self.session.open(MessageBox, (_("Error:") + "\n%s") % response, MessageBox.TYPE_INFO)
 		else:
-			if count > 1:
+			if count > 1 and not self.autoSelectFirstMedia:
 				printl("we have more than one playable part ...", self, "I")
 				indexCount = 0
 				functionList = []
