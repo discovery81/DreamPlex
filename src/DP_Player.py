@@ -951,7 +951,7 @@ class DP_Player(Screen, InfoBarBase, InfoBarShowHide, InfoBarCueSheetSupport,
 
 						#mh : external force subs are first in list and are undefined
 						forceMatch = False
-						if self.plexInstance.getServerConfig().useForcedSubtitles.value:
+						if self.plexInstance.getServerConfig().useForcedSubtitles().getValue():
 							if foundDefined == False:
 								if myLanguage == "<unknown>":
 									if description == "UTF-8 text":

@@ -91,6 +91,16 @@
   forzato, a differenza di Plex
 - Testi ed evidenziazioni poco leggibili/invisibili nella skin Carousel (un
   presupposto sbagliato su come Enigma2 gestisce la trasparenza dei colori)
+- Il Wake on Lan è ora disponibile anche per Jellyfin, non solo per Plex; il
+  messaggio di server irraggiungibile non dice più "Plexserver"
+  indipendentemente dal backend in uso
+- Lo Scarica catalogo poteva scaricare locandine/sfondi senza un header di
+  autenticazione su un server Jellyfin raggiungibile direttamente, e andava
+  in crash se l'header veniva effettivamente allegato
+- L'impostazione "preferisci sottotitoli forzati" del player non veniva mai
+  letta
+- Un paio di testi a schermo citavano "Plex" anche configurando un server
+  Jellyfin
 
 ### 🔒 Sicurezza
 
@@ -112,6 +122,9 @@
 - Sostituite le clausole `except:` nude in tutto il codice
 - Aggiunta la configurazione per l'analisi statica e alcuni script di test
 - Rimossi alcuni handler di tasti del telecomando morti, mai implementati
+- Il test di raggiungibilità del server e le impostazioni Wake on Lan sono
+  ora dichiarati sull'interfaccia comune dei server, così un backend futuro
+  non può più saltarli in silenzio
 
 ### 🌍 Traduzioni
 

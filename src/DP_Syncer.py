@@ -1323,14 +1323,15 @@ class BackgroundMediaSyncer(Thread):
 		# we establish the connection once here
 		self.urllibInstance = URLopener()
 
-		# we add headers only in special cases
-		connectionType = self.serverConfig.connectionType().getValue()
-		localAuth = self.serverConfig.localAuth().getValue()
-
-		if connectionType == "2" or localAuth:
-			authHeader = self.plexInstance.get_hTokenForServer(server)
-			for (h, v) in authHeader:
-				self.urllibInstance.addheader(h, v)
+		# get_hTokenForServer() already returns an empty dict when this
+		# backend/server has no token to attach (Plex: try/except around a
+		# missing cache entry; Jellyfin: no token found) - no need to guess
+		# here, from shared code, whether a header is needed by inspecting
+		# connectionType()/localAuth(), which only Plex's own values mean
+		# anything for.
+		authHeader = self.plexInstance.get_hTokenForServer(server)
+		for h, v in authHeader.items():
+			self.urllibInstance.addheader(h, v)
 
 		printl("", self, "C")
 

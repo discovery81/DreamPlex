@@ -567,29 +567,6 @@ def checkDirectory(directory):
 #===============================================================================
 
 
-def getServerFromURL(url):  # CHECKED
-	"""
-    Simply split the URL up and get the server portion, sans port
-
-    @param url: with or without protocol
-    @return: the server URL
-    """
-	printl2("", "__common__::getServerFromURL", "S")
-
-	if url[0:4] == "http" or url[0:4] == "plex":
-
-		printl2("", "__common__::getServerFromURL", "C")
-		return url.split('/')[2]
-	else:
-
-		printl2("", "__common__::getServerFromURL", "C")
-		return url.split('/')[0]
-
-#===============================================================================
-#
-#===============================================================================
-
-
 def getBoxInformation():
 	"""
     @return: manu, model, arch, version

@@ -88,6 +88,14 @@
   does
 - Low-contrast/invisible text and highlights in the Carousel skin (a wrong
   assumption about how Enigma2 handles color transparency)
+- Wake on Lan is now available for Jellyfin too, not just Plex; the offline
+  message no longer says "Plexserver" regardless of which backend is used
+- Catalog Download could silently fetch posters/backdrops without an
+  authentication header on a directly-reachable Jellyfin server, and crashed
+  if the header was ever actually attached
+- The "prefer forced subtitles" player setting was never actually read
+- A couple of on-screen strings referenced "Plex" even when configuring a
+  Jellyfin server
 
 ### 🔒 Security
 
@@ -109,6 +117,9 @@
 - Bare `except:` clauses replaced throughout
 - Added static analysis config and a few regression-test scripts
 - A handful of dead, unimplemented remote-control key handlers removed
+- Server reachability testing and Wake on Lan settings are now declared on
+  the shared server-settings interface, so a future backend can no longer
+  silently skip them
 
 ### 🌍 Translations
 

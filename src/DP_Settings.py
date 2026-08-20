@@ -138,7 +138,7 @@ class DPS_Settings(Screen, ConfigListScreen, HelpableScreen, DPH_PlexScreen):
 		self.cfglist.append(getConfigListEntry(_("> Boxname"), settings.boxName.getConfigElement(), _("Enter the name of your box, e.g. Livingroom.")))
 		self.cfglist.append(getConfigListEntry(_("> Used Skin"), settings.skinName.getConfigElement(), _("If you change the skin you have to restart at least the GUI!")))
 		self.cfglist.append(getConfigListEntry(_("> Show Plugin in Main Menu"), settings.showInMainMenu.getConfigElement(), _("Use this to start the plugin direct in the main menu.")))
-		self.cfglist.append(getConfigListEntry(_("> Use Cache for Sections"), settings.useCache.getConfigElement(), _("Save plex server answers in cache to speed up a bit.")))
+		self.cfglist.append(getConfigListEntry(_("> Use Cache for Sections"), settings.useCache.getConfigElement(), _("Save server answers in cache to speed up a bit.")))
 		self.cfglist.append(getConfigListEntry(_("> Use Picture Cache"), settings.usePicCache.getConfigElement(), _("Use this only if you do have enough space on your hdd drive or flash.")))
 		self.cfglist.append(getConfigListEntry(_("> Show Player Poster on external LCD"), settings.lcd4linux.getConfigElement(), _("e.g. lcd4linux")))
 

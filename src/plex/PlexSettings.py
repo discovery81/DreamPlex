@@ -4,7 +4,7 @@ from xml.etree.ElementTree import Element
 
 from .. import AbstractServerSettingsFactory, Singleton
 from ..__common__ import EntryServer, DiscoveredServer, printl2 as printl, printl2, getBoxInformation, getVersion, \
-	getUUID
+	getUUID, testMediaServerConnectivity, testInetConnectivity
 from .. import _
 
 from Components.config import ConfigInteger, ConfigYesNo, ConfigText, ConfigSelection, ConfigIP, ConfigPIN, \
@@ -160,16 +160,8 @@ class PlexSettings(AbstractServerSettings["PlexSettings"]):
 		printl("nasOverrideIp: " + str(self._nasOverrideIp.getValue()), "PlexSettings::__init__", "D")
 		printl("nasRoot: " + str(self._nasRoot.getValue()), "PlexSettings::__init__", "D")
 
-		# WOL
-		self._wol = BaseSettings[bool, ConfigYesNo]("wol", ConfigYesNo(), owner, parent)
-		self._wol_mac = BaseSettings[str, ConfigText]("wol_mac", ConfigText(default="00AA00BB00CC", visible_width=12,
-																 fixed_size=False), owner, parent)
-		self._wol_delay = BaseSettings[int, ConfigInteger]("wol_delay", ConfigInteger(default=60, limits=(1, 180)), owner, parent)
-
-		printl("=== WOL ===", "PlexSettings::__init__", "D")
-		printl("wol: " + str(self._wol.getValue()), "PlexSettings::__init__", "D")
-		printl("wol_mac: " + str(self._wol_mac.getValue()), "PlexSettings::__init__", "D")
-		printl("wol_delay: " + str(self._wol_delay.getValue()), "PlexSettings::__init__", "D")
+		# WOL fields/accessors are declared once on AbstractServerSettings
+		# (see DP_SettingsStorage.py) - identical for every backend.
 
 		printl("=== SYNC ===", "PlexSettings::__init__", "D")
 		self._syncMovies = BaseSettings[bool, ConfigYesNo]("syncMovies", ConfigYesNo(default=True), owner, parent)
@@ -201,6 +193,21 @@ class PlexSettings(AbstractServerSettings["PlexSettings"]):
 
 	def port(self) -> BaseSettings[int, ConfigInteger]:
 		return self._port
+
+	def isReachable(self) -> bool:
+		connType = str(self._connectionType.getValue())
+		if connType == _CONNECTION_TYPE_IP:
+			ip = "%d.%d.%d.%d" % tuple(self._ip.getValue())
+			port = int(self._port.getValue())
+			return testMediaServerConnectivity(ip, port)
+		if connType == _CONNECTION_TYPE_PLEX_TV:
+			# The cloud relay's own reachability isn't something a direct
+			# socket probe can test - the closest meaningful check
+			# (whether this box has an internet connection at all) is done
+			# right below for the DNS case anyway, so just trust plex.tv is
+			# up rather than doubling that check for no real benefit.
+			return True
+		return testInetConnectivity()
 
 	def playbackType(self) -> BaseSettings[str, ConfigSelection]:
 		return self._playbackType
@@ -234,15 +241,6 @@ class PlexSettings(AbstractServerSettings["PlexSettings"]):
 
 	def universalTranscoder(self) -> BaseSettings[bool, ConfigYesNo]:
 		return self._universalTranscoder
-
-	def wol(self) -> BaseSettings[bool, ConfigYesNo]:
-		return self._wol
-
-	def wol_mac(self) -> BaseSettings[str, ConfigText]:
-		return self._wol_mac
-
-	def wol_delay(self) -> BaseSettings[int, ConfigInteger]:
-		return self._wol_delay
 
 	def syncMovies(self) -> BaseSettings[bool, ConfigYesNo]:
 		return self._syncMovies
@@ -579,14 +577,7 @@ class PlexSettings(AbstractServerSettings["PlexSettings"]):
 					getConfigListEntry(_(" >> Target subtitle language"), self._subtitlesLanguage.getConfigElement(),
 									   _("Search string that should be removed from srt file.")))
 
-		##
-		config.append(getConfigListEntry(_("Wake On Lan Settings ") + separator, self._settings.about.getConfigElement(), _(" ")))
-		##
-		config.append(getConfigListEntry(_(" > Use Wake on Lan (WoL)"), self._wol.getConfigElement(), _(" ")))
-
-		if self._wol.getValue():
-			config.append(getConfigListEntry(_(" >> Mac address (Size: 12 alphanumeric no seperator) only for WoL"), self._wol_mac.getConfigElement(), _(" ")))
-			config.append(getConfigListEntry(_(" >> Wait for server delay (max 180 seconds) only for WoL"), self._wol_delay.getConfigElement(), _(" ")))
+		self._appendWakeOnLanConfigList(config, separator)
 
 		##
 		config.append(getConfigListEntry(_("Sync Settings ") + separator, self._settings.about.getConfigElement(), _(" ")))

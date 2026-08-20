@@ -11,7 +11,7 @@ from typing import Generic, TypeVar, Type, Any, Union, TYPE_CHECKING
 from enum import Enum
 
 from Components.config import ConfigElement, ConfigYesNo, ConfigDirectory, ConfigText, ConfigSelection, \
-	ConfigSubsection, ConfigInteger, ConfigPassword, ConfigPIN
+	ConfigSubsection, ConfigInteger, ConfigPassword, ConfigPIN, ConfigIP, getConfigListEntry
 from .__common__ import EntryServer, DiscoveredServer, printl2 as printl, indentXml
 
 from Tools.Directories import resolveFilename, SCOPE_PLUGINS
@@ -150,6 +150,18 @@ class AbstractServerSettings(AbstractSettings[T]):
 		self._mappings: list[AbstractMappingSettings[T]] = []
 		self._users: list[AbstractUserSettings[T]] = []
 
+		# Wake on Lan - identical fields/behavior for every backend (sending
+		# a magic packet has nothing backend-specific about it), so they live
+		# here rather than being redeclared per subclass. This also means a
+		# future backend (e.g. Emby) gets a working wakeOnLanAvailable() for
+		# free just by extending this class, instead of silently crashing
+		# with an AttributeError the first time something calls self.wol()
+		# and that backend forgot to declare it.
+		self._wol = BaseSettings[bool, ConfigYesNo]("wol", ConfigYesNo(), owner, parent)
+		self._wol_mac = BaseSettings[str, ConfigText]("wol_mac", ConfigText(default="00AA00BB00CC", visible_width=12,
+																 fixed_size=False), owner, parent)
+		self._wol_delay = BaseSettings[int, ConfigInteger]("wol_delay", ConfigInteger(default=60, limits=(1, 180)), owner, parent)
+
 	def listMappings(self) -> list[AbstractMappingSettings[T]]:
 		return self._mappings
 
@@ -158,6 +170,71 @@ class AbstractServerSettings(AbstractSettings[T]):
 
 	def saveChanges(self) -> None:
 		self._settings.writeToFile()
+
+	def wol(self) -> 'BaseSettings[bool, ConfigYesNo]':
+		return self._wol
+
+	def wol_mac(self) -> 'BaseSettings[str, ConfigText]':
+		return self._wol_mac
+
+	def wol_delay(self) -> 'BaseSettings[int, ConfigInteger]':
+		return self._wol_delay
+
+	def wakeOnLanAvailable(self) -> bool:
+		"""True if this server is configured for Wake on Lan AND reached by
+		direct IP (connectionType "0") - a magic packet is a local-subnet UDP
+		broadcast, so it is only meaningful when the configured address is
+		presumed to be on the same LAN as this box, not a DNS name or a cloud
+		relay (Plex's connectionType "2"). connectionType() itself is still
+		duck-typed (declared concretely by each backend, not on this base) -
+		a pre-existing gap this method inherits rather than introduces."""
+		return bool(self._wol.getValue()) and str(self.connectionType().getValue()) == "0"
+
+	def _appendWakeOnLanConfigList(self, config: list, separator: str) -> None:
+		"""Shared UI section for getConfigList() - append once from each
+		backend's own implementation instead of repeating these three lines
+		per backend."""
+		# Deferred import: this module is imported by __init__.py (line 39)
+		# before __init__.py defines _() (line 46) - a module-level "from .
+		# import _" here would be a circular import failing at load time.
+		from . import _
+		config.append(getConfigListEntry(_("Wake On Lan Settings ") + separator, self._settings.about.getConfigElement(), _(" ")))
+		config.append(getConfigListEntry(_(" > Use Wake on Lan (WoL)"), self._wol.getConfigElement(), _(" ")))
+		if self._wol.getValue():
+			config.append(getConfigListEntry(_(" >> Mac address (Size: 12 alphanumeric no seperator) only for WoL"), self._wol_mac.getConfigElement(), _(" ")))
+			config.append(getConfigListEntry(_(" >> Wait for server delay (max 180 seconds) only for WoL"), self._wol_delay.getConfigElement(), _(" ")))
+
+	@abstractmethod
+	def connectionType(self) -> 'BaseSettings[str, ConfigSelection]':
+		"""Choices differ per backend (Plex adds a plex.tv cloud-relay option
+		Jellyfin has no equivalent for), so this stays declared-not-shared -
+		unlike wol()/wol_mac()/wol_delay() above, which are identical for
+		every backend and so are implemented once, concretely, on this base
+		class instead of being declared abstract here."""
+		pass
+
+	@abstractmethod
+	def ip(self) -> 'BaseSettings[str, ConfigIP]':
+		pass
+
+	@abstractmethod
+	def dns(self) -> 'BaseSettings[str, ConfigText]':
+		pass
+
+	@abstractmethod
+	def port(self) -> 'BaseSettings[int, ConfigInteger]':
+		pass
+
+	@abstractmethod
+	def isReachable(self) -> bool:
+		"""True if this server can be reached right now, tested however this
+		backend's own connectionType() values call for - e.g. a direct IP/
+		port socket probe, a DNS-resolved host check, or (Plex only) simply
+		trusting a cloud-relay connection is up. DP_MainMenu.checkServerState()
+		calls this instead of ever inspecting connectionType() itself, so no
+		caller needs to know what any of a backend's own connectionType
+		values actually mean."""
+		pass
 
 	@abstractmethod
 	def getIndex(self) -> int | None:

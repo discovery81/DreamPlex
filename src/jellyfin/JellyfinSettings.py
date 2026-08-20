@@ -6,7 +6,8 @@ from http.client import HTTPConnection
 
 from .. import AbstractServerSettingsFactory, Singleton
 from .. import DPH_Vault
-from ..__common__ import EntryServer, DiscoveredServer, printl2 as printl, getVersion, getUUID
+from ..__common__ import EntryServer, DiscoveredServer, printl2 as printl, getVersion, getUUID, \
+	testMediaServerConnectivity, testInetConnectivity
 from .. import _
 
 from Components.config import ConfigInteger, ConfigYesNo, ConfigText, ConfigSelection, ConfigIP, \
@@ -157,6 +158,9 @@ class JellyfinSettings(AbstractServerSettings["JellyfinSettings"]):
 		printl("overrideAudioIndex: " + str(self._overrideAudioIndex.getValue()), "JellyfinSettings::__init__", "D")
 		printl("overrideSubtitleIndex: " + str(self._overrideSubtitleIndex.getValue()), "JellyfinSettings::__init__", "D")
 
+		# WOL fields/accessors are declared once on AbstractServerSettings
+		# (see DP_SettingsStorage.py) - identical for every backend.
+
 		# Carica eventuali utenti Jellyfin dal nodo XML
 		try:
 			usersElem = self._parent.find('users') if self._parent is not None else None
@@ -224,6 +228,14 @@ class JellyfinSettings(AbstractServerSettings["JellyfinSettings"]):
 
 	def port(self) -> BaseSettings[int, ConfigInteger]:
 		return self._port
+
+	def isReachable(self) -> bool:
+		# Jellyfin has no plex.tv-style cloud relay - only IP direct or DNS.
+		if str(self._connectionType.getValue()) == "0":
+			ip = "%d.%d.%d.%d" % tuple(self._ip.getValue())
+			port = int(self._port.getValue())
+			return testMediaServerConnectivity(ip, port)
+		return testInetConnectivity()
 
 	def playbackType(self) -> BaseSettings[str, ConfigSelection]:
 		return self._playbackType
@@ -485,6 +497,8 @@ class JellyfinSettings(AbstractServerSettings["JellyfinSettings"]):
 		config.append(getConfigListEntry(_(" >> Audio language (optional)"), self._audioLanguage.getConfigElement(), _("Preferred audio language, fallback to subtitles language.")))
 		config.append(getConfigListEntry(_(" >> Subtitle method"), self._subtitleMethod.getConfigElement(), _("Choose how to deliver subtitles (External/Embed).")))
 		config.append(getConfigListEntry(_(" >> Custom Max Bitrate (0 = auto)"), self._customMaxBitrate.getConfigElement(), _("Override bitrate from quality profile.")))
+
+		self._appendWakeOnLanConfigList(config, separator)
 
 		# Jellyfin: no mappings/home users section (non necessario)
 		res["useMappings"] = False

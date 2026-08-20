@@ -49,7 +49,7 @@ from .DPH_MovingLabel import DPH_HorizontalMenu
 from .DPH_WOL import wake_on_lan
 from .DPH_ScreenHelper import DPH_ScreenHelper, DPH_Screen
 
-from .__common__ import printl2 as printl, testMediaServerConnectivity, testInetConnectivity, saveLiveTv
+from .__common__ import printl2 as printl, saveLiveTv
 from .__plugin__ import Plugin
 from . import _  # _ is translation
 
@@ -586,35 +586,19 @@ class DPS_MainMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper):
 	def checkServerState(self):
 		printl("", self, "S")
 
-		# Wake on Lan is a Plex-only feature - Jellyfin servers have no wol()/
-		# wol_mac()/wol_delay() accessors at all.
-		if hasattr(self.g_serverConfig, "wol"):
-			self.g_wolon = self.g_serverConfig.wol().getValue()
-			self.g_wakeserver = str(self.g_serverConfig.wol_mac().getValue())
-			self.g_woldelay = int(self.g_serverConfig.wol_delay().getValue())
-		else:
-			self.g_wolon = False
-			self.g_wakeserver = ""
-			self.g_woldelay = 0
-		connectionType = str(self.g_serverConfig.connectionType().getValue())
-		if connectionType == "0":
-			ip = "%d.%d.%d.%d" % tuple(self.g_serverConfig.ip().getValue())
-			port = int(self.g_serverConfig.port().getValue())
-			isOnline = testMediaServerConnectivity(ip, port)
-
-		elif connectionType == "2":
-			isOnline = True
-		else:
-			isOnline = testInetConnectivity()
+		self.g_wolon = self.g_serverConfig.wakeOnLanAvailable()
+		self.g_wakeserver = str(self.g_serverConfig.wol_mac().getValue())
+		self.g_woldelay = int(self.g_serverConfig.wol_delay().getValue())
+		isOnline = self.g_serverConfig.isReachable()
 
 		if isOnline:
 			stateText = "Online"
 		else:
 			stateText = "Offline"
 
-		printl("Plexserver State: " + str(stateText), self, "I")
+		printl("Server State: " + str(stateText), self, "I")
 		if not isOnline:
-			if self.g_wolon == True and connectionType == "0":
+			if self.g_wolon:
 				self.showWakeMessage()
 
 			else:
@@ -642,7 +626,7 @@ class DPS_MainMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper):
 	def showWakeMessage(self):
 		printl("", self, "S")
 
-		self.session.openWithCallback(self.executeWakeOnLan, MessageBox, _("Plexserver seems to be offline. Start with Wake on Lan settings? \n\nPlease note: \nIf you press yes the spinner will run for " + str(self.g_woldelay) + " seconds. \nAccording to your settings."), MessageBox.TYPE_YESNO)
+		self.session.openWithCallback(self.executeWakeOnLan, MessageBox, _("Server seems to be offline. Start with Wake on Lan settings? \n\nPlease note: \nIf you press yes the spinner will run for " + str(self.g_woldelay) + " seconds. \nAccording to your settings."), MessageBox.TYPE_YESNO)
 
 		printl("", self, "C")
 
@@ -652,7 +636,7 @@ class DPS_MainMenu(DPH_Screen, DPH_HorizontalMenu, DPH_ScreenHelper):
 	def showOfflineMessage(self):
 		printl("", self, "S")
 
-		self.session.openWithCallback(self.startServerMenu, MessageBox, _("Plexserver seems to be offline. Please check your your settings or connection!\n Retry?"), MessageBox.TYPE_YESNO)
+		self.session.openWithCallback(self.startServerMenu, MessageBox, _("Server seems to be offline. Please check your your settings or connection!\n Retry?"), MessageBox.TYPE_YESNO)
 
 		printl("", self, "C")
 

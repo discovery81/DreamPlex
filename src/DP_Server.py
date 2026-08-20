@@ -36,7 +36,7 @@ from Components.Sources.StaticText import StaticText
 from Components.Sources.List import List
 from Components.Label import Label
 from Components.Pixmap import Pixmap
-from Components.config import ConfigElement, ConfigSelection, getConfigListEntry
+from Components.config import ConfigElement, ConfigSelection, ConfigIP, ConfigInteger, ConfigText, getConfigListEntry
 from Components.Input import Input
 
 from Screens.MessageBox import MessageBox
@@ -958,6 +958,33 @@ class EmptyServerSettings(AbstractServerSettings[None]):
 		serverTypeChoices = [(key, data.name) for key, data in ServerSettings.items()]
 		self._serverType = ConfigSelection(choices=serverTypeChoices, default=EMPTY_SERVER_CONF)
 
+		# Placeholder connection fields, only to satisfy AbstractServerSettings'
+		# interface (ip()/port()/dns()/connectionType() are abstract there,
+		# since their choices/defaults genuinely differ per real backend) -
+		# this instance is swapped for a real PlexSettings/JellyfinSettings as
+		# soon as a type is picked (see createSetup()), so these values are
+		# never actually shown or used for a real connection.
+		self._connectionType = BaseSettings[str, ConfigSelection]("connectionType", ConfigSelection(default="0", choices=[("0", _("IP")), ("1", _("DNS"))]), owner)
+		self._ip = BaseSettings[str, ConfigIP]("ip", ConfigIP(default=[0, 0, 0, 0]), owner)
+		self._dns = BaseSettings[str, ConfigText]("dns", ConfigText(default="", visible_width=50, fixed_size=False), owner)
+		self._port = BaseSettings[int, ConfigInteger]("port", ConfigInteger(default=0, limits=(0, 65555)), owner)
+
+	def connectionType(self) -> 'BaseSettings[str, ConfigSelection]':
+		return self._connectionType
+
+	def ip(self) -> 'BaseSettings[str, ConfigIP]':
+		return self._ip
+
+	def dns(self) -> 'BaseSettings[str, ConfigText]':
+		return self._dns
+
+	def port(self) -> 'BaseSettings[int, ConfigInteger]':
+		return self._port
+
+	def isReachable(self) -> bool:
+		# Not a real server - "Add server" hasn't picked a type yet.
+		return False
+
 	def getSelectedType(self) -> str:
 		return self._serverType.getValue()
 
@@ -978,8 +1005,8 @@ class EmptyServerSettings(AbstractServerSettings[None]):
 	def registerServer(self, session) -> bool:
 		return False
 
-	def buildAuthorization(self, session, mode: AuthorizationMode) -> bool:
-		return False
+	def buildAuthorization(self, session, mode: AuthorizationMode) -> tuple[bool, dict[AuthorizationResult, str]]:
+		return False, {}
 
 	def supportServerMapping(self) -> bool:
 		return False

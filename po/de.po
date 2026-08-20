@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: DreamPlex\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 00:05+0200\n"
+"POT-Creation-Date: 2026-08-20 14:04+0200\n"
 "PO-Revision-Date: 2014-10-07 22:19+0100\n"
 "Last-Translator: DonDavici <dondavici@gmail.com>\n"
 "Language-Team: dondavici@gmail.com <dondavici@gmail.com>\n"
@@ -1231,18 +1231,6 @@ msgstr "Bitte vor dem Speichern einen Servertyp auswählen."
 msgid "Please verify you direct local settings"
 msgstr "Bitte lokale Einstellungen übeprüfen"
 
-msgid ""
-"Plexserver seems to be offline. Please check your your settings or connection!\n"
-" Retry?"
-msgstr "Der Plexserver ist nicht erreichbar, bitte Verbindung prüfen.  Wiederholen?"
-
-msgid ""
-"Plexserver seems to be offline. Start with Wake on Lan settings? \n"
-"\n"
-"Please note: \n"
-"If you press yes the spinner will run for "
-msgstr " "
-
 msgid "Prefer forced subtitles if available."
 msgstr ""
 
@@ -1343,7 +1331,7 @@ msgstr "Laufzeit:"
 msgid "Save"
 msgstr "Speichern"
 
-msgid "Save plex server answers in cache to speed up a bit."
+msgid "Save server answers in cache to speed up a bit."
 msgstr ""
 
 msgid "Save this server?"
@@ -1409,11 +1397,11 @@ msgstr ""
 msgid "Select media to play"
 msgstr "Medien zum Abspielen auswählen"
 
-msgid "Select plex folder"
-msgstr ""
-
 msgid "Select server"
 msgstr "Server auswählen"
+
+msgid "Select server folder"
+msgstr ""
 
 msgid "Select the type of server to add."
 msgstr "Wähle den Servertyp, der hinzugefügt werden soll."
@@ -1440,6 +1428,18 @@ msgid "Server Settings"
 msgstr ""
 
 msgid "Server Syncer"
+msgstr ""
+
+msgid ""
+"Server seems to be offline. Please check your your settings or connection!\n"
+" Retry?"
+msgstr ""
+
+msgid ""
+"Server seems to be offline. Start with Wake on Lan settings? \n"
+"\n"
+"Please note: \n"
+"If you press yes the spinner will run for "
 msgstr ""
 
 msgid "Set PIN"
@@ -1965,6 +1965,18 @@ msgstr "☆☆☆☆☆  (gelöscht)"
 
 #~ msgid "Playback Settings"
 #~ msgstr "Wiedergabe Einstellungen"
+
+#~ msgid ""
+#~ "Plexserver seems to be offline. Please check your your settings or connection!\n"
+#~ " Retry?"
+#~ msgstr "Der Plexserver ist nicht erreichbar, bitte Verbindung prüfen.  Wiederholen?"
+
+#~ msgid ""
+#~ "Plexserver seems to be offline. Start with Wake on Lan settings? \n"
+#~ "\n"
+#~ "Please note: \n"
+#~ "If you press yes the spinner will run for "
+#~ msgstr " "
 
 #~ msgid ""
 #~ "Process aborted.\n"

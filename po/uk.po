@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: enigma2-plugin-extensions-dreamplex 3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 00:05+0200\n"
+"POT-Creation-Date: 2026-08-20 14:04+0200\n"
 "PO-Revision-Date: 2026-08-14 23:05+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -1191,18 +1191,6 @@ msgstr "Виберіть тип сервера перед збереженням
 msgid "Please verify you direct local settings"
 msgstr ""
 
-msgid ""
-"Plexserver seems to be offline. Please check your your settings or connection!\n"
-" Retry?"
-msgstr ""
-
-msgid ""
-"Plexserver seems to be offline. Start with Wake on Lan settings? \n"
-"\n"
-"Please note: \n"
-"If you press yes the spinner will run for "
-msgstr ""
-
 msgid "Prefer forced subtitles if available."
 msgstr ""
 
@@ -1301,7 +1289,7 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-msgid "Save plex server answers in cache to speed up a bit."
+msgid "Save server answers in cache to speed up a bit."
 msgstr ""
 
 msgid "Save this server?"
@@ -1367,10 +1355,10 @@ msgstr ""
 msgid "Select media to play"
 msgstr ""
 
-msgid "Select plex folder"
+msgid "Select server"
 msgstr ""
 
-msgid "Select server"
+msgid "Select server folder"
 msgstr ""
 
 msgid "Select the type of server to add."
@@ -1398,6 +1386,18 @@ msgid "Server Settings"
 msgstr ""
 
 msgid "Server Syncer"
+msgstr ""
+
+msgid ""
+"Server seems to be offline. Please check your your settings or connection!\n"
+" Retry?"
+msgstr ""
+
+msgid ""
+"Server seems to be offline. Start with Wake on Lan settings? \n"
+"\n"
+"Please note: \n"
+"If you press yes the spinner will run for "
 msgstr ""
 
 msgid "Set PIN"

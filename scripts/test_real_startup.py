@@ -275,6 +275,7 @@ def main():
 	assert reloaded_plex.uniQuality().getValue() == "3"
 	reloaded_plex.universalTranscoder().getValue()
 	reloaded_plex.wol().getValue()
+	assert reloaded_plex.wakeOnLanAvailable() in (False, True)
 	reloaded_plex.syncMovies().getValue()
 	reloaded_plex.myplexTokenUsername().setValue("alessio")
 	assert reloaded_plex.myplexTokenUsername().getValue() == "alessio"
@@ -289,8 +290,24 @@ def main():
 	assert reloaded_jf.quality().getValue() == "7"
 	reloaded_jf.username().setValue("alessio")
 	assert reloaded_jf.username().getValue() == "alessio"
-	assert not hasattr(reloaded_jf, "wol"), "Jellyfin has no Wake-on-Lan support - wol() must not exist"
+	reloaded_jf.wol().getValue()
+	assert reloaded_jf.wakeOnLanAvailable() in (False, True), "wakeOnLanAvailable() must work for Jellyfin too, same as Plex"
 	print("OK: JellyfinSettings field accessors all reachable and read/write correctly")
+
+	print("checking EmptyServerSettings (DP_Server.py) - the \"pick a server "
+		  "type\" placeholder shown by the real \"Add server\" flow - still "
+		  "instantiates now that ip()/port()/dns()/connectionType() are "
+		  "abstract on AbstractServerSettings, since Plex's connectionType "
+		  "has an extra choice (plex.tv) Jellyfin has no equivalent for and "
+		  "so could not be pulled up as one shared concrete implementation "
+		  "the way wol()/wol_mac()/wol_delay() were ...")
+	from Plugins.Extensions.DreamPlex.DP_Server import EmptyServerSettings
+	emptyServer = EmptyServerSettings(storage2)
+	assert emptyServer.ip().getValue() is not None
+	assert emptyServer.port().getValue() is not None
+	assert emptyServer.connectionType().getValue() is not None
+	assert emptyServer.wakeOnLanAvailable() is False
+	print("OK: EmptyServerSettings satisfies the full AbstractServerSettings interface")
 
 	reloadedUsers = reloaded_jf.listUsers()
 	assert len(reloadedUsers) == 1, "the PIN-protected user should have survived save+reload"
