@@ -150,6 +150,8 @@ def getXmlContent(location):
 
 
 common.getXmlContent = getXmlContent
+common.testMediaServerConnectivity = lambda ip, port: True
+common.testInetConnectivity = lambda *a, **k: True
 
 
 class EntryServer:
@@ -171,7 +173,7 @@ sys.modules["dp.__common__"] = common
 
 init = types.ModuleType("dp.__init__")
 init._ = lambda s: s
-init.getInstalledSkins = lambda: ("default", [("default", "default")])
+init.getInstalledSkins = lambda skinFolderPath=None: ("default", [("default", "default")])
 init.ServerSettings = {}
 init.AbstractServerSettingsFactory = object
 init.Singleton = object
@@ -199,7 +201,7 @@ pkg.ServerSettingsData = ServerSettingsData
 pkg.DP_MediaLibrary = DP_MediaLibrary
 pkg.AbstractServerSettingsFactory = object
 pkg.Singleton = object
-pkg.getInstalledSkins = lambda: ("default", [("default", "default")])
+pkg.getInstalledSkins = lambda skinFolderPath=None: ("default", [("default", "default")])
 pkg.ServerSettings = {}
 pkg._ = lambda s: s
 

@@ -4,6 +4,20 @@
 
 ---
 
+## 3.1.1
+
+### 🐛 Correzioni
+
+- I server Jellyfin 12.0 rifiutavano ogni richiesta con "401 unauthorized" -
+  sfoglia, immagini e riproduzione diretta si basavano tutte su metodi di
+  autenticazione (`X-Emby-Authorization`, `X-MediaBrowser-Token`,
+  `?api_key=`) rimossi del tutto dalla 12.0. Passato ovunque al moderno
+  header `Authorization: MediaBrowser ...`, incluso un espediente per gli
+  URL di riproduzione diretta passati direttamente al player nativo.
+  Funziona invariato anche con qualsiasi server Jellyfin dalla 10.8 in poi.
+
+---
+
 ## 3.1.0
 
 ### ✨ Novità

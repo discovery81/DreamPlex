@@ -24,7 +24,7 @@ You should have received a copy of the GNU General Public License
 #===============================================================================
 
 from __future__ import annotations
-from .JellyfinSettings import JellyfinSettings
+from .JellyfinSettings import JellyfinSettings, buildAuthorizationHeaderValue
 from ..DP_MediaLibrary import DP_MediaLibrary, RATING_KIND_FAVORITE
 
 try:
@@ -196,8 +196,21 @@ class JellyfinLibrary(DP_MediaLibrary):
 		if add_token:
 			token = self._token()
 			if token:
-				sep = "&" if ("?" in base) else "?"
-				base = base + f"{sep}api_key={token}"
+				# ?api_key=... was removed in Jellyfin 12.0 along with the
+				# other legacy auth methods. These URLs end up in two very
+				# different places: handed to doRequest() (our own fetch,
+				# which already attaches a real Authorization header via
+				# self.g_headers - this fragment is inert there, urllib
+				# never sends a URL fragment over the wire) or, for direct
+				# playback, embedded straight into an eServiceReference and
+				# fetched by gstreamer/servicemp3 outside any of our code -
+				# that path has no other way to receive a custom header.
+				# Enigma2's own convention for that (used by other IPTV
+				# plugins) is "url#Header=value&Header2=value2", parsed out
+				# before the URL is handed to gstreamer - so this is the one
+				# place that condition actually matters.
+				headerValue = quote_plus(buildAuthorizationHeaderValue(token))
+				base = base + f"#Authorization={headerValue}"
 		return base
 
 	def _request_json(self, method: str, path: str, params: dict | None = None, data: bytes | None = None, _retried: bool = False):
@@ -977,10 +990,9 @@ class JellyfinLibrary(DP_MediaLibrary):
 			# Fallback minimale
 			self.g_headers = {
 				'Accept': 'application/json',
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				'Authorization': buildAuthorizationHeaderValue(accessToken)
 			}
-			if accessToken:
-				self.g_headers['X-MediaBrowser-Token'] = accessToken
 
 		# Aggiorna dizionario server
 		if isinstance(self.g_serverDict, dict):
@@ -1744,8 +1756,8 @@ class JellyfinLibrary(DP_MediaLibrary):
 		# Return headers containing token
 		token = self._token()
 		headers = getattr(self, 'g_headers', None) or {}
-		if token and 'X-MediaBrowser-Token' not in headers:
-			headers['X-MediaBrowser-Token'] = token
+		if token and 'Authorization' not in headers:
+			headers['Authorization'] = buildAuthorizationHeaderValue(token)
 		printl("", self, "C")
 		return headers
 

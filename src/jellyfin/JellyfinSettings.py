@@ -17,6 +17,21 @@ from ..DP_SettingsStorage import SettingsStorage, BaseSettings, AbstractServerSe
 	AbstractUserSettings, T, USER_SWITCH_LOCAL_PROFILES
 
 
+def buildAuthorizationHeaderValue(token: str | None = None) -> str:
+	"""Builds the value for the "Authorization" HTTP header Jellyfin expects
+	- the only auth mechanism still accepted from server 12.0 on, which
+	removed X-Emby-Authorization/X-Emby-Token/X-MediaBrowser-Token and the
+	?api_key= query parameter entirely (EnableLegacyAuthorization defaults
+	to disabled there). This exact "Authorization: MediaBrowser ..." scheme
+	has been supported since at least Jellyfin 10.8, so there is nothing
+	version-specific here - one implementation covers every server this
+	plugin talks to, old and new."""
+	value = 'MediaBrowser Client="DreamPlex", Device="Enigma2", DeviceId="' + getUUID() + '", Version="' + getVersion() + '"'
+	if token:
+		value += ', Token="' + token + '"'
+	return value
+
+
 class _DeviceEncryptedText(BaseSettings[str, ConfigText]):
 	"""A BaseSettings[str, ConfigText] whose on-disk XML text is masked with
 	DPH_Vault's device-derived key, transparently to everything else.
@@ -637,11 +652,8 @@ class JellyfinSettingsFactory(AbstractServerSettingsFactory["JellyfinSettings"])
 		headers = {
 			'Content-Type': 'application/json',
 			'Accept': 'application/json',
-			'X-Emby-Authorization': 'MediaBrowser Client="DreamPlex", Device="Enigma2", DeviceId="' + getUUID() + '", Version="' + getVersion() + '"'
+			'Authorization': buildAuthorizationHeaderValue(g_sessionID)
 		}
-
-		if g_sessionID:
-			headers['X-MediaBrowser-Token'] = g_sessionID
 
 		if asDict:
 			return headers
@@ -655,7 +667,7 @@ class JellyfinSettingsFactory(AbstractServerSettingsFactory["JellyfinSettings"])
 		jellyfinHeader = {
 			"Content-type": "application/json",
 			"Accept": "application/json",
-			"X-Emby-Authorization": 'MediaBrowser Client="DreamPlex", Device="Enigma2", DeviceId="' + getUUID() + '", Version="' + getVersion() + '"'
+			"Authorization": buildAuthorizationHeaderValue()
 		}
 		return jellyfinHeader
 

@@ -1,4 +1,4 @@
-AC_INIT([enigma2-plugin-extensions-dreamplex],[3.1.0])
+AC_INIT([enigma2-plugin-extensions-dreamplex],[3.1.1])
 AM_INIT_AUTOMAKE([dist-bzip2 foreign no-define tar-pax])
 AC_CONFIG_HEADERS([enigma2-plugins-config.h])
 
